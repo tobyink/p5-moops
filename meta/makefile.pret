@@ -1,0 +1,8 @@
+# This file provides instructions for packaging.
+
+`MooX-Aspartame`
+	perl_version_from m`MooX::Aspartame`;
+	version_from      m`MooX::Aspartame`;
+	readme_from       m`MooX::Aspartame` ;
+	.
+

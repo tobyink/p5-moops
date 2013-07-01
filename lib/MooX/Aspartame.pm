@@ -7,6 +7,9 @@ use 5.014;
 use warnings FATAL => 'all';
 no warnings @crud;
 
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.001';
+
 use B                               qw(perlstring);
 use Carp                            qw(croak);
 use Devel::Pragma         0.54      qw(ccstash);
@@ -102,7 +105,7 @@ sub import
 	}
 }
 
-sub _relationships 
+sub _relationships
 {
 	shift;
 	my ($kw) = @_;
@@ -131,7 +134,7 @@ sub _package_preamble
 	unless ($empty)
 	{
 		$inject .= "use Carp qw(confess);";
-		$inject .= "use Function::Parameters qw(:strict);";
+		$inject .= "use Function::Parameters { fun => 'function_strict', method => 'method_strict', classmethod => 'classmethod_strict' };";
 		$inject .= "use Scalar::Util qw(blessed);";
 		$inject .= "use Try::Tiny;";
 		$inject .= "use Types::Standard qw(-types);";
@@ -261,8 +264,8 @@ Perl 5.14 features. (MooX::Aspartame requires Perl 5.14.)
 
 =item *
 
-Strictures, including fatal warnings, but not uninitialized, void, once
-or numeric warnings.
+Strictures, including C<FATAL> warnings, but not C<uninitialized>, C<void>,
+C<once> or C<numeric> warnings.
 
 =item *
 

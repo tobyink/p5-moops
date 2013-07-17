@@ -4,3 +4,11 @@
 	issued  2013-07-01;
 	label   "Initial release".
 
+`MooX-Aspartame 0.002 cpan:TOBYINK`
+	issued  2013-07-17;
+	changeset [
+		item "Misc internal refactoring."^^Change;
+		item "use MooX::late 0.014."^^Addition;
+		item "use Moo 1.003000."^^Update;
+	].
+

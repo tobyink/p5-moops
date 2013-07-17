@@ -10,7 +10,8 @@
 	requires          p`Import::Into 1.000000`;
 	requires          p`Keyword::Simple 0.01`;
 	requires          p`Module::Runtime 0.013`;
-	requires          p`Moo 1.002000`;
+	requires          p`Moo 1.003000`;
+	requires          p`MooX::late 0.014`;
 	requires          p`Scalar::Util 1.24`;
 	requires          p`Try::Tiny 0.12`;
 	requires          p`namespace::sweep 0.006`;

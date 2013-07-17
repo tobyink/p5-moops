@@ -19,6 +19,7 @@ use Import::Into          1.000000  qw();
 use Keyword::Simple       0.01      qw();
 use Module::Runtime       0.013     qw($module_name_rx module_notional_filename use_package_optimistically);
 use Moo                   1.002000  qw();
+use MooX::late            0.014     qw();
 use Scalar::Util          1.24      qw();
 use Try::Tiny             0.12      qw();
 use namespace::sweep      0.006;
@@ -153,9 +154,9 @@ sub _package_preamble_relationship_providing
 
 {
 	my %TEMPLATE1 = (
-		Moo   => { class => 'use Moo;',    role => 'use Moo::Role;' },
-		Moose => { class => 'use Moose;',  role => 'use Moose::Role;' },
-		Mouse => { class => 'use Mouse;',  role => 'use Mouse::Role;' },
+		Moo   => { class => 'use Moo; use MooX::late;',         role => 'use Moo::Role; use MooX::late;' },
+		Moose => { class => 'use Moose;',                       role => 'use Moose::Role;' },
+		Mouse => { class => 'use Mouse;',                       role => 'use Mouse::Role;' },
 		Tiny  => { class => 'use Acme::Has::Tiny qw(new has);', role => 'use Role::Tiny;' },
 	);
 	my %TEMPLATE2 = (

@@ -85,7 +85,7 @@ sub import
 			}
 			
 			# Next we expect either the start of a block, or a semicolon.
-			die "syntax error near $kw $package - expected '{' or ';' - got '".substr($$ref, 0, 4)."'"
+			die "syntax error near $kw $package - expected '{' or ';' - got '".substr($$ref, 0, 6)."'"
 				unless $$ref =~ m/^([\{;])/;
 			my $empty = ($1 eq ';');
 			$$ref =~ s/^\{//;
@@ -115,36 +115,108 @@ sub _relationships
 	return qw();
 }
 
+sub _package_preamble_always
+{
+	my $class = shift;
+	my ($kw, $package, $empty) = @_;
+	
+	return if $empty;
+	
+	return (
+		"use Carp qw(confess);",
+		"use Function::Parameters { fun => 'function_strict', method => 'method_strict', classmethod => 'classmethod_strict' };",
+		"use Scalar::Util qw(blessed);",
+		"use Try::Tiny;",
+		"use Types::Standard qw(-types);",
+		"use constant { true => !!1, false => !!0 };",
+		"no warnings qw(@crud);",
+	);
+}
+
+sub _package_preamble_relationship_extends
+{
+	my $class = shift;
+	my ($kw, $package, $empty, $classes) = @_;
+	
+	return unless @$classes;
+	return sprintf "extends(%s);", join ",", map perlstring($_), @$classes;
+}
+
+sub _package_preamble_relationship_providing
+{
+	my $class = shift;
+	my ($kw, $package, $empty, $funcs) = @_;
+	
+	return unless @$funcs;
+	return sprintf "BEGIN { push(our \@EXPORT_OK => %s) };", join ",", map perlstring($_), @$funcs;
+}
+
+{
+	my %TEMPLATE1 = (
+		Moo   => { class => 'use Moo;',    role => 'use Moo::Role;' },
+		Moose => { class => 'use Moose;',  role => 'use Moose::Role;' },
+		Mouse => { class => 'use Mouse;',  role => 'use Mouse::Role;' },
+		Tiny  => { class => 'use Acme::Has::Tiny qw(new has);', role => 'use Role::Tiny;' },
+	);
+	my %TEMPLATE2 = (
+		class    => 'use namespace::sweep;',
+		role     => 'use namespace::sweep;',
+		exporter => 'use parent qw( Exporter::TypeTiny );',
+	);
+	
+	sub _package_preamble_relationship_using
+	{
+		my $class = shift;
+		my ($kw, $package, $empty, $using) = @_;
+		(
+			($TEMPLATE1{$using//"Moo"}{$kw} // ''),
+			($TEMPLATE2{$kw} // ''),
+		)
+	}
+}
+
+sub _package_preamble_relationship_with
+{
+	my $class = shift;
+	my ($kw, $package, $empty, $roles) = @_;
+	
+	return unless @$roles;
+	return sprintf "with(%s);", join ",", map perlstring($_), @$roles;
+}
+
 sub _package_preamble
 {
-	shift;
+	my $class = shift;
 	my ($kw, $package, $empty, %relationships) = @_;
 	
-	my $inject = '';
-	my $using = $relationships{using}[0] // "Moo";
-	if ($kw eq 'role' or $kw eq 'class')
+	my @lines = (
+		$class->_package_preamble_relationship_using(
+			$kw,
+			$package,
+			$empty,
+			$relationships{using}[0],
+		),
+		$class->_package_preamble_always(
+			$kw,
+			$package,
+			$empty,
+		),
+	);
+	
+	for my $key (sort keys %relationships)
 	{
-		$inject .= ($kw eq 'role' ? "use $using\::Role;" : "use $using;");
-		$inject .= "use namespace::sweep;";
+		next if $key eq 'using';
+		
+		my $method = "_package_preamble_relationship_$key";
+		push @lines, $class->$method(
+			$kw,
+			$package,
+			$empty,
+			$relationships{$key},
+		);
 	}
-	elsif ($kw eq 'exporter')
-	{
-		$inject .= "use parent 'Exporter::TypeTiny';";
-	}
-	unless ($empty)
-	{
-		$inject .= "use Carp qw(confess);";
-		$inject .= "use Function::Parameters { fun => 'function_strict', method => 'method_strict', classmethod => 'classmethod_strict' };";
-		$inject .= "use Scalar::Util qw(blessed);";
-		$inject .= "use Try::Tiny;";
-		$inject .= "use Types::Standard qw(-types);";
-		$inject .= "use constant { true => !!1, false => !!0 };";
-		$inject .= "no warnings qw(@crud);";
-	}
-	$inject .= sprintf("BEGIN { push(our \@EXPORT_OK => %s) };", join ",", map perlstring($_), @{$relationships{providing}}) if $relationships{providing};
-	$inject .= sprintf("extends(%s);", join ",", map perlstring($_), @{$relationships{extends}}) if $relationships{extends};
-	$inject .= sprintf("with(%s);", join ",", map perlstring($_), @{$relationships{with}}) if $relationships{with};
-	return $inject;
+	
+	join "\n", @lines;
 }
 
 sub _do_imports

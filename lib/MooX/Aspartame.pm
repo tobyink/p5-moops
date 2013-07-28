@@ -30,7 +30,7 @@ my @IMPORTS;
 sub unimport
 {
 	shift;
-	Keyword::Simple::undefine $_ for qw/ class role exporter /;
+	Keyword::Simple::undefine $_ for qw/ class role exporter namespace /;
 }
 
 sub import
@@ -53,7 +53,7 @@ sub import
 	push @IMPORTS, $imports;
 	my $id = $#IMPORTS;
 	
-	for my $kw (qw/class role exporter/)
+	for my $kw (qw/class role exporter namespace/)
 	{
 		Keyword::Simple::define $kw => sub
 		{
@@ -187,6 +187,7 @@ sub _package_preamble_relationship_providing
 	$TEMPLATE1{''} = +{
 		%{ $TEMPLATE1{'Moo'} },
 		%{ $TEMPLATE1{'Exporter::TypeTiny'} },
+		namespace => '',
 	};
 	
 	sub _package_preamble_relationship_using
@@ -302,7 +303,7 @@ MooX::Aspartame - it seems sweet, but it probably has long-term adverse health e
 =head1 DESCRIPTION
 
 This is something like a lightweight L<MooseX::Declare>. It gives you
-three keywords:
+four keywords:
 
 =over
 
@@ -340,10 +341,13 @@ add function names to C<< @EXPORT_OK >>.
 
 Exporters are built using L<Exporter::TypeTiny>.
 
+=item C<namespace>
+
+Declares a package without giving it any special semantics.
+
 =back
 
-Note that the names of classes, roles and exporters get qualified like subs.
-So:
+Note that the names of the declared things get qualified like subs. So:
 
    package Foo;
    use MooX::Aspartame;

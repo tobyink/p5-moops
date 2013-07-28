@@ -63,7 +63,7 @@ sub import
 			# First thing after the keyword is the name of the package
 			# being declared.
 			my $ref = shift;
-			my ($space1, $package, $space2) = ($$ref =~ /^(\s*)(\+?$module_name_rx)\b(\s*)/sm);
+			my ($space1, $package, $space2) = ($$ref =~ /^(\s*)((?:::)?$module_name_rx)\b(\s*)/sm);
 			substr($$ref, 0, length($space1.$package.$space2)) = "";
 			
 			# This is optionally followed by a version number.
@@ -77,7 +77,7 @@ sub import
 			# Then a list of relationships such as `extends Foo`.
 			my $RELS = join '|', map quotemeta, $class->_relationships($kw);
 			my %relationships;
-			while ($$ref =~ /^($RELS)(\s+)(\+?$module_name_rx(?:\s*,\s*\+?$module_name_rx)*)\b(\s*)/sm)
+			while ($$ref =~ /^($RELS)(\s+)((?:::)?$module_name_rx(?:\s*,\s*(?:::)?$module_name_rx)*)\b(\s*)/sm)
 			{
 				my $rel = $1; my $space1 = $2; my $modules = $3; my $space2 = $4;
 				substr($$ref, 0, length($rel.$space1.$modules.$space2)) = "";

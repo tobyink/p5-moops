@@ -45,7 +45,6 @@ sub import
 			[ warnings    => [ FATAL => 'all' ] ],
 			[ feature     => [ ':5.14' ] ],
 			[ true        => [] ],
-			[ 'Try::Tiny' => [] ],
 		);
 	warnings->unimport(@crud);
 	
@@ -419,7 +418,7 @@ It is possible to inject other functions into all packages using:
       'List::MoreUtils' => [qw( any all none )],
    ];
 
-In the "outer" package (where MooX::Aspartame is used), L<Try::Tiny> and
+In the "outer" package (where MooX::Aspartame is used), strictures and
 L<true> are provided.
 
 =head1 BUGS

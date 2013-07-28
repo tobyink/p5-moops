@@ -112,8 +112,25 @@ sub _relationships
 	my ($kw) = @_;
 	return qw(with using)          if $kw eq q(role);
 	return qw(with extends using)  if $kw eq q(class);
-	return qw(providing)           if $kw eq q(exporter);
+	return qw(providing using)     if $kw eq q(exporter);
 	return qw();
+}
+
+sub _should_qualify
+{
+	shift;
+	return 1 if $_[0] =~ /^(package|with|extends)$/;
+}
+
+sub _qualify
+{
+	my $class = shift;
+	my ($bareword, $caller, $rel) = @_;
+	return $1                    if $bareword =~ /^::(.+)$/;
+	return $bareword             if $caller eq 'main';
+	return $bareword             if $bareword =~ /::/;
+	return "$caller\::$bareword" if $class->_should_qualify($rel);
+	return $bareword;
 }
 
 sub _package_preamble_always
@@ -158,19 +175,26 @@ sub _package_preamble_relationship_providing
 		Moose => { class => 'use Moose;',                       role => 'use Moose::Role;' },
 		Mouse => { class => 'use Mouse;',                       role => 'use Mouse::Role;' },
 		Tiny  => { class => 'use Acme::Has::Tiny qw(new has);', role => 'use Role::Tiny;' },
+		'Exporter::TypeTiny'  => { exporter => 'use parent qw( Exporter::TypeTiny );' },
+		'Exporter'            => { exporter => 'use Exporter qw( import );' },
 	);
 	my %TEMPLATE2 = (
 		class    => 'use namespace::sweep;',
 		role     => 'use namespace::sweep;',
-		exporter => 'use parent qw( Exporter::TypeTiny );',
 	);
+	
+	# For use with missing 'using' option
+	$TEMPLATE1{''} = +{
+		%{ $TEMPLATE1{'Moo'} },
+		%{ $TEMPLATE1{'Exporter::TypeTiny'} },
+	};
 	
 	sub _package_preamble_relationship_using
 	{
 		my $class = shift;
 		my ($kw, $package, $empty, $using) = @_;
 		(
-			($TEMPLATE1{$using//"Moo"}{$kw} // ''),
+			($TEMPLATE1{$using//''}{$kw} // croak("Cannot build $kw using $using")),
 			($TEMPLATE2{$kw} // ''),
 		)
 	}
@@ -235,14 +259,6 @@ sub _do_imports
 			(ref($params) eq q(HASH) ? %$params : ref($params) eq q(ARRAY) ? @$params : ()),
 		);
 	}
-}
-
-sub _qualify
-{
-	shift;
-	my ($bare, $caller, $rel) = @_;
-	return $1 if $bare =~ /^\+(.+)$/;
-	return $bare;
 }
 
 1;
@@ -325,6 +341,28 @@ add function names to C<< @EXPORT_OK >>.
 Exporters are built using L<Exporter::TypeTiny>.
 
 =back
+
+Note that the names of classes, roles and exporters get qualified like subs.
+So:
+
+   package Foo;
+   use MooX::Aspartame;
+   
+   class Bar {     # declares Foo::Bar
+      role Baz {   # declares Foo::Bar::Baz
+         ...;
+      }
+   }
+   exporter ::Quux {  # declares Quux
+      ...;
+   }
+   
+   package main;
+   use MooX::Aspartame;
+   
+   class Bar {     # declares Bar
+      ...;
+   }
 
 Within the packages declared by these keywords, the following features are
 always available:

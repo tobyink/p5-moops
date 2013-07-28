@@ -41,5 +41,13 @@ catch {
 	like($_[0], qr{^Value "1.1" did not pass type constraint "Int"});
 };
 
+package Quux {
+	class Quuux {
+		class Quuuux {
+			::is(__PACKAGE__, 'Quux::Quuux::Quuuux');
+		}
+	}
+}
+
 done_testing;
 

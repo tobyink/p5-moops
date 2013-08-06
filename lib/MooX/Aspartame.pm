@@ -170,12 +170,13 @@ sub _package_preamble_relationship_providing
 
 {
 	my %TEMPLATE1 = (
-		Moo   => { class => 'use Moo; use MooX::late;',         role => 'use Moo::Role; use MooX::late;' },
-		Moose => { class => 'use Moose;',                       role => 'use Moose::Role;' },
-		Mouse => { class => 'use Mouse;',                       role => 'use Mouse::Role;' },
-		Tiny  => { class => 'use Acme::Has::Tiny qw(new has);', role => 'use Role::Tiny;' },
+		Moo   => { class => 'use Moo; use MooX::late;',                role => 'use Moo::Role; use MooX::late;' },
+		Moose => { class => 'use Moose;',                              role => 'use Moose::Role;' },
+		Mouse => { class => 'use Mouse;',                              role => 'use Mouse::Role;' },
+		Tiny  => { exporter => 'use parent qw( Exporter::TypeTiny );', role => 'use Role::Tiny;' },
 		'Exporter::TypeTiny'  => { exporter => 'use parent qw( Exporter::TypeTiny );' },
 		'Exporter'            => { exporter => 'use Exporter qw( import );' },
+		(map { $_ => { role => "use $_;" } } qw/ Role::Basic Role::Tiny Moo::Role Mouse::Role Moose::Role /)
 	);
 	my %TEMPLATE2 = (
 		class    => 'use namespace::sweep;',
@@ -316,6 +317,12 @@ promote a class to L<Moose> with the C<using> option:
 Other options for classes are C<extends> for setting a parent class,
 and C<with> for composing roles.
 
+   class Employee extends Person with Employment;
+
+Note that if you're not directly defining any methods for a class,
+you can use a trailing semicolon (as above) rather than an empty
+C<< { } >> pair.
+
 =item C<role>
 
 Declares a role using L<Moo::Role>. This also supports C<< using Moose >>,
@@ -338,7 +345,8 @@ add function names to C<< @EXPORT_OK >>.
    use Utils find_person => { -as => "get_person" };
    my $bob = get_person("Bob");
 
-Exporters are built using L<Exporter::TypeTiny>.
+Exporters are built using L<Exporter::TypeTiny> by default, but there's a
+C<< using Exporter >> option.
 
 =item C<namespace>
 
@@ -355,6 +363,7 @@ Note that the names of the declared things get qualified like subs. So:
       role Baz {   # declares Foo::Bar::Baz
          ...;
       }
+      class Xyzzy with Baz;
    }
    exporter ::Quux {  # declares Quux
       ...;
@@ -407,7 +416,7 @@ Constants for C<true> and C<false>.
 
 =item *
 
-L<namespace::sweep>, except within exporters.
+L<namespace::sweep> (only for classes and roles).
 
 =back
 

@@ -25,6 +25,7 @@ use warnings;
 use Test::More;
 
 use MooX::Aspartame;
+use Try::Tiny;
 
 role Foo {
 	has foo => (is => "ro", isa => Int, required => true);

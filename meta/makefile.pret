@@ -1,21 +1,20 @@
 # This file provides instructions for packaging.
 
+@prefix : <http://ontologi.es/doap-deps#> .
+
 `MooX-Aspartame`
-	perl_version_from m`MooX::Aspartame`;
-	version_from      m`MooX::Aspartame`;
-	readme_from       m`MooX::Aspartame` ;
-	requires          p`Devel::Pragma 0.54`;
-	requires          p`Exporter::TypeTiny 0.014`;
-	requires          p`Function::Parameters 1.0104`;
-	requires          p`Import::Into 1.000000`;
-	requires          p`Keyword::Simple 0.01`;
-	requires          p`Module::Runtime 0.013`;
-	requires          p`Moo 1.003000`;
-	requires          p`MooX::late 0.014`;
-	requires          p`Scalar::Util 1.24`;
-	requires          p`Try::Tiny 0.12`;
-	requires          p`namespace::sweep 0.006`;
-	requires          p`true 0.18`;
-	test_requires     p`Test::More 0.96`;
+	:runtime-requirement [ :on "Devel::Pragma 0.54"^^CpanId ];
+	:runtime-requirement [ :on "Exporter::TypeTiny 0.014"^^CpanId ];
+	:runtime-requirement [ :on "Function::Parameters 1.0104"^^CpanId ];
+	:runtime-requirement [ :on "Import::Into 1.000000"^^CpanId ];
+	:runtime-requirement [ :on "Keyword::Simple 0.01"^^CpanId ];
+	:runtime-requirement [ :on "Module::Runtime 0.013"^^CpanId ];
+	:runtime-requirement [ :on "Moo 1.003000"^^CpanId ];
+	:runtime-requirement [ :on "MooX::late 0.014"^^CpanId ];
+	:runtime-requirement [ :on "Scalar::Util 1.24"^^CpanId ];
+	:runtime-requirement [ :on "Try::Tiny 0.12"^^CpanId ];
+	:runtime-requirement [ :on "namespace::sweep 0.006"^^CpanId ];
+	:runtime-requirement [ :on "true 0.18"^^CpanId ];
+	:test-requirement    [ :on "Test::More 0.96"^^CpanId ];
 	.
 

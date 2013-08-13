@@ -12,3 +12,14 @@
 		item "use Moo 1.003000."^^Update;
 	].
 
+`MooX-Aspartame 0.003 cpan:TOBYINK`
+	issued  2013-08-13;
+	changeset [
+		item "Misc internal refactoring."^^Change;
+		item "use Function::Parameters 1.0201, because it has configurable type constraint reification."^^Update;
+		item "use Dist::Inkt."^^Packaging;
+		item "New keyword `namespace`."^^Addition;
+		item "Re-implement relative package names, in a new, saner way."^^Change;
+		item "Don't export Try::Tiny to the outer scope, as it's not lexical."^^Change;
+	].
+

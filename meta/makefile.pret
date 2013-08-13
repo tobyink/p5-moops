@@ -4,17 +4,19 @@
 
 `MooX-Aspartame`
 	:runtime-requirement [ :on "Devel::Pragma 0.54"^^CpanId ];
-	:runtime-requirement [ :on "Exporter::TypeTiny 0.014"^^CpanId ];
-	:runtime-requirement [ :on "Function::Parameters 1.0104"^^CpanId ];
+	:runtime-requirement [ :on "Exporter::TypeTiny 0.022"^^CpanId ];
+	:runtime-requirement [ :on "Function::Parameters 1.0201"^^CpanId ];
 	:runtime-requirement [ :on "Import::Into 1.000000"^^CpanId ];
 	:runtime-requirement [ :on "Keyword::Simple 0.01"^^CpanId ];
 	:runtime-requirement [ :on "Module::Runtime 0.013"^^CpanId ];
 	:runtime-requirement [ :on "Moo 1.003000"^^CpanId ];
 	:runtime-requirement [ :on "MooX::late 0.014"^^CpanId ];
 	:runtime-requirement [ :on "Scalar::Util 1.24"^^CpanId ];
+	:runtime-requirement [ :on "Type::Utils 0.022"^^CpanId ];
 	:runtime-requirement [ :on "Try::Tiny 0.12"^^CpanId ];
 	:runtime-requirement [ :on "namespace::sweep 0.006"^^CpanId ];
 	:runtime-requirement [ :on "true 0.18"^^CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^CpanId ];
+	:test-requirement    [ :on "Test::Fatal"^^CpanId ];
 	.
 

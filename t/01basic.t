@@ -23,12 +23,16 @@ the same terms as the Perl 5 programming language system itself.
 use strict;
 use warnings;
 use Test::More;
+use Test::Fatal;
 
 use MooX::Aspartame;
 use Try::Tiny;
 
 role Foo {
-	has foo => (is => "ro", isa => Int, required => true);
+	has foo => (is => "rwp", isa => Int, required => true);
+	method add_to_foo (Int $x) {
+		$self->_set_foo( $self->foo + $x );
+	}
 }
 
 role Bar with Foo;
@@ -49,6 +53,15 @@ package Quux {
 		}
 	}
 }
+
+my $baz = 'Baz'->new(foo => 40);
+$baz->add_to_foo(2);
+is($baz->foo, 42);
+
+like(
+	exception { $baz->add_to_foo([]) },
+	qr{did not pass type constraint "Int"},
+);
 
 done_testing;
 

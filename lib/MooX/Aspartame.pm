@@ -22,6 +22,7 @@ use Moo                   1.002000  qw();
 use MooX::late            0.014     qw();
 use Scalar::Util          1.24      qw();
 use Try::Tiny             0.12      qw();
+use Type::Utils           0.022     qw();
 use namespace::sweep      0.006;
 use true                  0.18;
 
@@ -132,6 +133,50 @@ sub _qualify
 	return $bareword;
 }
 
+sub _function_parameters_args
+{
+	my $class = shift;
+	my ($pkg) = @_;
+	
+	my $reify = sub {
+		require Type::Utils;
+		Type::Utils::dwim_type($_[0], for => $_[1]);
+	};
+	
+	return +{
+		fun => {
+			name                 => 'optional',
+			default_arguments    => 1,
+			check_argument_count => 1,
+			named_parameters     => 1,
+			types                => 1,
+			reify_type           => $reify,
+		},
+		method => {
+			name                 => 'optional',
+			default_arguments    => 1,
+			check_argument_count => 1,
+			named_parameters     => 1,
+			types                => 1,
+			reify_type           => $reify,
+			attrs                => ':method',
+			shift                => '$self',
+			invocant             => 1,
+		},
+		classmethod => {
+			name                 => 'optional',
+			default_arguments    => 1,
+			check_argument_count => 1,
+			named_parameters     => 1,
+			types                => 1,
+			reify_type           => $reify,
+			attributes           => ':method',
+			shift                => '$class',
+			invocant             => 1,
+		},
+	};
+}
+
 sub _package_preamble_always
 {
 	my $class = shift;
@@ -140,12 +185,12 @@ sub _package_preamble_always
 	return if $empty;
 	
 	return (
-		"use Carp qw(confess);",
-		"use Function::Parameters { fun => 'function_strict', method => 'method_strict', classmethod => 'classmethod_strict' };",
-		"use Scalar::Util qw(blessed);",
-		"use Try::Tiny;",
-		"use Types::Standard qw(-types);",
-		"use constant { true => !!1, false => !!0 };",
+		'use Carp qw(confess);',
+		"use Function::Parameters $class\->_function_parameters_args(q[$package]);",
+		'use Scalar::Util qw(blessed);',
+		'use Try::Tiny;',
+		'use Types::Standard qw(-types);',
+		'use constant { true => !!1, false => !!0 };',
 		"no warnings qw(@crud);",
 	);
 }
@@ -290,12 +335,12 @@ MooX::Aspartame - it seems sweet, but it probably has long-term adverse health e
       has job_title => (is => "rwp", isa => Str);
       has employer  => (is => "rwp", isa => InstanceOf["Company"]);
       
-      method change_job ( (Object) $employer, (Str) $title ) {
+      method change_job ( Object $employer, Str $title ) {
          $self->_set_job_title($title);
          $self->_set_employer($employer);
       }
       
-      method promote ( (Str) $title ) {
+      method promote ( Str $title ) {
          $self->_set_job_title($title);
       }
    }
@@ -334,10 +379,10 @@ Declares a utilities package. This supports a C<providing> option to
 add function names to C<< @EXPORT_OK >>.
 
    exporter Utils providing find_person, find_company {
-      fun find_person ( (Str) $name ) {
+      fun find_person ( Str $name ) {
          ...;
       }
-      fun find_company ( (Str) $name ) {
+      fun find_company ( Str $name ) {
          ...;
       }
    }

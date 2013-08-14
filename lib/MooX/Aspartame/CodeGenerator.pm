@@ -62,7 +62,9 @@ sub generate_package_setup
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',
 		'use constant { true => !!1, false => !!0 };',
-		'use strict; use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
+		'use v5.14;',
+		'use strict;',
+		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 	);
 }
 

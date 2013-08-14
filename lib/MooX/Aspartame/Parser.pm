@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package MooX::Aspartame::Parser;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.004';
+our $VERSION   = '0.005';
 
 use Moo;
 use Module::Runtime qw($module_name_rx);

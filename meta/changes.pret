@@ -33,3 +33,9 @@
 		item "The `method` keyword is only available in classes and roles; not plain namespaces."^^Change;
 	].
 
+`MooX-Aspartame 0.005 cpan:TOBYINK`
+	issued  2013-08-14;
+	changeset [
+		item "Massive amounts of refactoring to simplify maintenance and make subclassing easier."^^Change;		
+	].
+

@@ -334,9 +334,9 @@ package MooX::Aspartame::MethodModifiers
 		my $package = shift;
 		my $ps      = 'Package::Stash'->new($package);
 		my @symbols = map {
-			 my $name = $_ . $_[0];
-			 my $def = $ps->get_symbol( $name );
-			 defined($def) ? [$name, $def] : ()
+			my $name = $_ . $_[0];
+			my $def = $ps->get_symbol( $name );
+			defined($def) ? [$name, $def] : ()
 		} '$', '@', '%', '';
 		$ps->remove_glob( $_[0] );
 		$ps->add_symbol( @$_ ) for @symbols;

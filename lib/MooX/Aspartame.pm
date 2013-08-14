@@ -31,7 +31,7 @@ my @IMPORTS;
 sub unimport
 {
 	shift;
-	Keyword::Simple::undefine $_ for qw/ class role exporter namespace /;
+	Keyword::Simple::undefine $_ for qw/ class role namespace /;
 }
 
 sub import
@@ -53,7 +53,7 @@ sub import
 	push @IMPORTS, $imports;
 	my $id = $#IMPORTS;
 	
-	for my $kw (qw/class role exporter namespace/)
+	for my $kw (qw/class role namespace/)
 	{
 		Keyword::Simple::define $kw => sub
 		{
@@ -113,7 +113,6 @@ sub _relationships
 	my ($kw) = @_;
 	return qw(with using)          if $kw eq q(role);
 	return qw(with extends using)  if $kw eq q(class);
-	return qw(providing using)     if $kw eq q(exporter);
 	return qw();
 }
 
@@ -184,84 +183,6 @@ sub _function_parameters_args
 	return \%keywords;
 }
 
-sub _package_preamble_always
-{
-	my $class = shift;
-	my ($kw, $package, $empty) = @_;
-	
-	return if $empty;
-	
-	return (
-		'use Carp qw(confess);',
-		"use Function::Parameters $class\->_function_parameters_args(q[$kw], q[$package]);",
-		'use Scalar::Util qw(blessed);',
-		'use Try::Tiny;',
-		'use Types::Standard qw(-types);',
-		'use constant { true => !!1, false => !!0 };',
-		"no warnings qw(@crud);",
-	);
-}
-
-sub _package_preamble_relationship_extends
-{
-	my $class = shift;
-	my ($kw, $package, $empty, $classes) = @_;
-	
-	return unless @$classes;
-	return sprintf "extends(%s);", join ",", map perlstring($_), @$classes;
-}
-
-sub _package_preamble_relationship_providing
-{
-	my $class = shift;
-	my ($kw, $package, $empty, $funcs) = @_;
-	
-	return unless @$funcs;
-	return sprintf "BEGIN { push(our \@EXPORT_OK => %s) };", join ",", map perlstring($_), @$funcs;
-}
-
-{
-	my %TEMPLATE1 = (
-		Moo   => { class => 'use Moo; use MooX::late;',                role => 'use Moo::Role; use MooX::late;' },
-		Moose => { class => 'use Moose;',                              role => 'use Moose::Role;' },
-		Mouse => { class => 'use Mouse;',                              role => 'use Mouse::Role;' },
-		Tiny  => { exporter => 'use parent qw( Exporter::TypeTiny );', role => 'use Role::Tiny;' },
-		'Exporter::TypeTiny'  => { exporter => 'use parent qw( Exporter::TypeTiny );' },
-		'Exporter'            => { exporter => 'use Exporter qw( import );' },
-		(map { $_ => { role => "use $_;" } } qw/ Role::Basic Role::Tiny Moo::Role Mouse::Role Moose::Role /)
-	);
-	my %TEMPLATE2 = (
-		class    => 'use namespace::sweep;',
-		role     => 'use namespace::sweep;',
-	);
-	
-	# For use with missing 'using' option
-	$TEMPLATE1{''} = +{
-		%{ $TEMPLATE1{'Moo'} },
-		%{ $TEMPLATE1{'Exporter::TypeTiny'} },
-		namespace => '',
-	};
-	
-	sub _package_preamble_relationship_using
-	{
-		my $class = shift;
-		my ($kw, $package, $empty, $using) = @_;
-		(
-			($TEMPLATE1{$using//''}{$kw} // croak("Cannot build $kw using $using")),
-			($TEMPLATE2{$kw} // ''),
-		)
-	}
-}
-
-sub _package_preamble_relationship_with
-{
-	my $class = shift;
-	my ($kw, $package, $empty, $roles) = @_;
-	
-	return unless @$roles;
-	return sprintf "with(%s);", join ",", map perlstring($_), @$roles;
-}
-
 sub _package_preamble
 {
 	my $class = shift;
@@ -295,6 +216,72 @@ sub _package_preamble
 	}
 	
 	join "\n", @lines;
+}
+
+sub _package_preamble_always
+{
+	my $class = shift;
+	my ($kw, $package, $empty) = @_;
+	
+	return if $empty;
+	
+	return (
+		'use Carp qw(confess);',
+		"use Function::Parameters $class\->_function_parameters_args(q[$kw], q[$package]);",
+		'use Scalar::Util qw(blessed);',
+		'use Try::Tiny;',
+		'use Types::Standard qw(-types);',
+		'use constant { true => !!1, false => !!0 };',
+		"no warnings qw(@crud);",
+	);
+}
+
+sub _package_preamble_relationship_extends
+{
+	my $class = shift;
+	my ($kw, $package, $empty, $classes) = @_;
+	
+	return unless @$classes;
+	return sprintf "extends(%s);", join ",", map perlstring($_), @$classes;
+}
+
+sub _package_preamble_relationship_with
+{
+	my $class = shift;
+	my ($kw, $package, $empty, $roles) = @_;
+	
+	return unless @$roles;
+	return sprintf "with(%s);", join ",", map perlstring($_), @$roles;
+}
+
+{
+	my %TEMPLATE1 = (
+		Moo   => { class => 'use Moo; use MooX::late;',                role => 'use Moo::Role; use MooX::late;' },
+		Moose => { class => 'use Moose;',                              role => 'use Moose::Role;' },
+		Mouse => { class => 'use Mouse;',                              role => 'use Mouse::Role;' },
+		Tiny  => {                                                     role => 'use Role::Tiny;' },
+		(map { $_ => { role => "use $_;" } } qw/ Role::Basic Role::Tiny Moo::Role Mouse::Role Moose::Role /)
+	);
+	my %TEMPLATE2 = (
+		class    => 'use namespace::sweep;',
+		role     => 'use namespace::sweep;',
+	);
+	
+	# For use with missing 'using' option
+	$TEMPLATE1{''} = +{
+		%{ $TEMPLATE1{'Moo'} },
+		namespace => '',
+	};
+	
+	sub _package_preamble_relationship_using
+	{
+		my $class = shift;
+		my ($kw, $package, $empty, $using) = @_;
+		(
+			($TEMPLATE1{$using//''}{$kw} // croak("Cannot build $kw using $using")),
+			($TEMPLATE2{$kw} // ''),
+		)
+	}
 }
 
 sub _do_imports
@@ -421,7 +408,7 @@ MooX::Aspartame - it seems sweet, but it probably has long-term adverse health e
 =head1 DESCRIPTION
 
 This is something like a lightweight L<MooseX::Declare>. It gives you
-four keywords:
+three keywords:
 
 =over
 
@@ -446,26 +433,6 @@ C<< { } >> pair.
 Declares a role using L<Moo::Role>. This also supports C<< using Moose >>,
 and C<with>.
 
-=item C<exporter>
-
-Declares a utilities package. This supports a C<providing> option to
-add function names to C<< @EXPORT_OK >>.
-
-   exporter Utils providing find_person, find_company {
-      fun find_person ( Str $name ) {
-         ...;
-      }
-      fun find_company ( Str $name ) {
-         ...;
-      }
-   }
-   
-   use Utils find_person => { -as => "get_person" };
-   my $bob = get_person("Bob");
-
-Exporters are built using L<Exporter::TypeTiny> by default, but there's a
-C<< using Exporter >> option.
-
 =item C<namespace>
 
 Declares a package without giving it any special semantics.
@@ -483,7 +450,7 @@ Note that the names of the declared things get qualified like subs. So:
       }
       class Xyzzy with Baz;
    }
-   exporter ::Quux {  # declares Quux
+   class ::Quux {  # declares Quux
       ...;
    }
    
@@ -565,14 +532,16 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=MooX-Aspartame>.
 =head1 SEE ALSO
 
 Similar:
-L<MooseX::Declare>.
+L<MooseX::Declare>,
+L<https://github.com/stevan/p5-mop-redux>.
 
 Main functionality exposed by this module:
-L<Moo>, L<Function::Parameters>, L<Try::Tiny>, L<Types::Standard>,
-L<namespace::sweep>, L<Exporter::TypeTiny>.
+L<Moo>/L<MooX::late>, L<Function::Parameters>, L<Try::Tiny>,
+L<Types::Standard>, L<namespace::sweep>, L<true>.
 
 Internals fueled by:
-L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>, L<Devel::Pragma>.
+L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>, L<Devel::Pragma>,
+L<Attribute::Handlers>.
 
 =head1 AUTHOR
 

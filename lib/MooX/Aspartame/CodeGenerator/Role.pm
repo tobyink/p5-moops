@@ -58,32 +58,30 @@ around generate_package_setup => sub
 	);
 };
 
+my %using = (
+	Moo   => 'use Moo::Role; use MooX::late;',
+	Moose => 'use Moose::Role;',
+	Mouse => 'use Mouse::Role;',
+	Tiny  => 'use Role::Tiny;',
+	(
+		map { $_ => "use $_;" }
+		qw/ Role::Basic Role::Tiny Moo::Role Mouse::Role Moose::Role /
+	),
+);
+
+sub generate_package_setup_oo
 {
-	my %using = (
-		Moo   => 'use Moo::Role; use MooX::late;',
-		Moose => 'use Moose::Role;',
-		Mouse => 'use Mouse::Role;',
-		Tiny  => 'use Role::Tiny;',
-		(
-			map { $_ => "use $_;" }
-			qw/ Role::Basic Role::Tiny Moo::Role Mouse::Role Moose::Role /
-		),
-	);
+	my $self  = shift;
+	my $using = $self->relations->{using}[0] // 'Moo';
 	
-	sub generate_package_setup_oo
-	{
-		my $self  = shift;
-		my $using = $self->relations->{using}[0] // 'Moo';
-		
-		exists($using{$using})
-			or Carp::croak("Cannot create a package using $using; stopped");
-		
-		return (
-			$using{$using},
-			$self->generate_package_setup_relationships,
-			'use namespace::sweep;',
-		);
-	}
+	exists($using{$using})
+		or Carp::croak("Cannot create a package using $using; stopped");
+	
+	return (
+		$using{$using},
+		$self->generate_package_setup_relationships,
+		'use namespace::sweep;',
+	);
 }
 
 sub generate_package_setup_relationships

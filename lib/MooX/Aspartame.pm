@@ -26,12 +26,6 @@ sub class_for_parser
 	'MooX::Aspartame::Parser';
 }
 
-sub class_for_code_generator
-{
-	require MooX::Aspartame::CodeGenerator;
-	'MooX::Aspartame::CodeGenerator';
-}
-
 sub unimport
 {
 	my $class = shift;
@@ -65,21 +59,9 @@ sub import
 				ref       => $ref,
 				ccstash   => scalar(ccstash),
 			);
-			
 			$parser->parse;
 			
-			my $codegen = $class->class_for_code_generator->new(
-				package   => $parser->package,
-				(version  => $parser->version) x!!($parser->has_version),
-				relations => $parser->relations,
-				is_empty  => $parser->is_empty,
-				keyword   => $parser->keyword,
-				ccstash   => $parser->ccstash,
-				(imports  => $imports) x!!(defined $imports),
-			);
-			
-			my $code = $codegen->generate;
-			
+			my $code = $parser->code_generator($imports)->generate;
 			substr($$ref, 0, 0) = ($parser->is_empty ? "{ $code }" : "{ $code ");
 		};
 	}

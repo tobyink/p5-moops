@@ -165,4 +165,39 @@ sub qualify_module_name
 	return $bareword;
 }
 
+sub class_for_code_generator
+{
+	my $self = shift;
+	my $kw = $self->keyword;
+	
+	if ($kw eq 'class') {
+		require MooX::Aspartame::CodeGenerator::Class;
+		return 'MooX::Aspartame::CodeGenerator::Class';
+	}
+	elsif ($kw eq 'role') {
+		require MooX::Aspartame::CodeGenerator::Role;
+		return 'MooX::Aspartame::CodeGenerator::Role';
+	}
+	else {
+		require MooX::Aspartame::CodeGenerator;
+		return 'MooX::Aspartame::CodeGenerator';
+	}
+}
+
+sub code_generator
+{
+	my $self = shift;
+	my ($imports) = @_;
+	
+	$self->class_for_code_generator->new(
+		package   => $self->package,
+		(version  => $self->version) x!!($self->has_version),
+		relations => $self->relations,
+		is_empty  => $self->is_empty,
+		keyword   => $self->keyword,
+		ccstash   => $self->ccstash,
+		(imports  => $imports) x!!(defined $imports),
+	);
+}
+
 1;

@@ -152,7 +152,11 @@ sub _function_parameters_args
 			types                => 1,
 			reify_type           => $reify,
 		},
-		method => {
+	);
+	
+	if ($kw eq 'class' or $kw eq 'role')
+	{
+		$keywords{method} = {
 			name                 => 'optional',
 			default_arguments    => 1,
 			check_argument_count => 1,
@@ -162,11 +166,7 @@ sub _function_parameters_args
 			attrs                => ':method',
 			shift                => '$self',
 			invocant             => 1,
-		},
-	);
-	
-	if ($kw eq 'class' or $kw eq 'role')
-	{
+		};
 		$keywords{ lc($_) } = {
 			name                 => 'required',
 			default_arguments    => 1,
@@ -232,7 +232,7 @@ sub _package_preamble_always
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',
 		'use constant { true => !!1, false => !!0 };',
-		"no warnings qw(@crud);",
+		"use strict; use warnings FATAL => 'all'; no warnings qw(@crud);",
 	);
 }
 
@@ -481,12 +481,13 @@ because those are irritating.
 
 L<Function::Parameters> (in strict mode).
 
-This provides C<fun> and C<method> keywords.
+This provides the C<fun> keyword.
 
-Within roles and classes, it also provides C<before>, C<after>
-and C<around> modifiers. Unlike Moo/Moose, within around modifiers
-the coderef being wrapped is I<not> available in C<< $_[0] >>, but
-is instead in the magic global variable C<< ${^NEXT} >>.
+Within roles and classes, it also provides C<method>, and the
+C<before>, C<after> and C<around> method modifiers. Unlike Moo/Moose,
+within C<around> modifiers the coderef being wrapped is I<not> available
+in C<< $_[0] >>, but is instead found in the magic global variable
+C<< ${^NEXT} >>.
 
 =item *
 

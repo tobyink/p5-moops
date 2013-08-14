@@ -31,7 +31,13 @@ use Try::Tiny;
 role Foo {
 	has foo => (is => "rwp", isa => Int, required => true);
 	method add_to_foo (Int $x) {
-		$self->_set_foo( $self->foo + $x );
+		try {
+			die;
+		}
+		catch {
+			$self->_set_foo( $self->foo + $x );
+		};
+		return $self;
 	}
 }
 
@@ -55,7 +61,7 @@ package Quux {
 }
 
 my $baz = 'Baz'->new(foo => 40);
-$baz->add_to_foo(2);
+is($baz->add_to_foo(2), $baz);
 is($baz->foo, 42);
 
 like(

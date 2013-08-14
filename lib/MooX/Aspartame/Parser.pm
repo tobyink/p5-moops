@@ -50,13 +50,14 @@ sub _eat_space
 	my $self = shift;
 	my $ref = $self->ref;
 	
-	while ($$ref =~ m{\A( \s+ )}x)
-	{
-		$self->_eat($1);
-		if ($$ref =~ m{\A\#})
-		{
-			$self->_eat(qr{\A\#.+?\n}sm);
-		}
+	my $X;
+	while (
+		($$ref =~ m{\A( \s+ )}x and $X = 1)
+		or ($$ref =~ m{\A\#} and $X = 2)
+	) {
+		$X==2
+			? $self->_eat(qr{\A\#.+?\n}sm)
+			: $self->_eat($1);
 	}
 	return;
 }

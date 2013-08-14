@@ -23,6 +23,7 @@ use MooX::late            0.014     qw();
 use Scalar::Util          1.24      qw();
 use Try::Tiny             0.12      qw();
 use Type::Utils           0.022     qw();
+use feature                         qw();
 use namespace::sweep      0.006;
 use true                  0.18;
 
@@ -39,15 +40,11 @@ sub import
 	my $class  = shift;
 	my $caller = caller;
 	
-	our $_;
-	$_->[0]->import::into($caller, @{ $_->[1] || [] })
-		for (
-			[ strict      => [] ],
-			[ warnings    => [ FATAL => 'all' ] ],
-			[ feature     => [ ':5.14' ] ],
-			[ true        => [] ],
-		);
-	warnings->unimport(@crud);
+	'strict'->import();
+	'warnings'->import(FATAL => 'all');
+	'warnings'->unimport(@crud);
+	'feature'->import(':5.14');
+	'true'->import();
 	
 	my $imports = mkopt($_[0] || []);
 	push @IMPORTS, $imports;
@@ -228,6 +225,7 @@ sub _package_preamble_always
 	return (
 		'use Carp qw(confess);',
 		"use Function::Parameters $class\->_function_parameters_args(q[$kw], q[$package]);",
+		'use MooX::Aspartame::DefineKeyword;',
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',
@@ -314,6 +312,7 @@ sub _at_runtime
 
 package MooX::Aspartame::MethodModifiers
 {
+	$INC{'MooX/Aspartame/MethodModifiers.pm'} = __FILE__;
 	use Attribute::Handlers;
 	
 	sub handle
@@ -365,7 +364,36 @@ package MooX::Aspartame::MethodModifiers
 	sub UNIVERSAL::Before :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
 	sub UNIVERSAL::After  :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
 	sub UNIVERSAL::Around :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
-};
+}
+
+package MooX::Aspartame::DefineKeyword
+{
+	$INC{'MooX/Aspartame/DefineKeyword.pm'} = __FILE__;
+	
+	sub import
+	{
+		shift;
+		if (@_) {
+			my ($name, $value) = @_;
+			my $caller = caller;
+			eval qq[
+				package $caller;
+				sub $name () { \$value };
+				1;
+			] or die "ARGH: $@";
+			return;
+		}
+		Keyword::Simple::define 'define' => sub {
+			my $line = shift;
+			my ($whitespace1, $name, $whitespace2, $equals) = 
+				( $$line =~ m{\A([\n\s]*)(\w+)([\n\s]*)(=\>?)}s )
+				or Carp::croak("Syntax error near 'define'");
+			my $len = length($whitespace1. $name. $whitespace2. $equals);
+			substr($$line, 0, $len) = "; use MooX::Aspartame::DefineKeyword $name => ";
+		}
+	}
+}
+
 
 1;
 
@@ -488,6 +516,22 @@ C<before>, C<after> and C<around> method modifiers. Unlike Moo/Moose,
 within C<around> modifiers the coderef being wrapped is I<not> available
 in C<< $_[0] >>, but is instead found in the magic global variable
 C<< ${^NEXT} >>.
+
+=item *
+
+A C<define> keyword to declare constants:
+
+   use MooX::Aspartame;
+   
+   class Calculator {
+      define PI = 3.2;
+      method circular_area (Num $r) {
+         return PI * ($r ** 2);
+      }
+   }
+   
+   my $calc = Calculator->new;
+   say "The circle's area is ", $calc->circular_area(r => 1.0);
 
 =item *
 

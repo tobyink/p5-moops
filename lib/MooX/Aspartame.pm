@@ -14,18 +14,38 @@ use Keyword::Simple qw();
 use Module::Runtime qw(use_package_optimistically);
 use true qw();
 
+sub class_for_import_set
+{
+	require MooX::Aspartame::ImportSet;
+	'MooX::Aspartame::ImportSet';
+}
+
+sub class_for_parser
+{
+	require MooX::Aspartame::Parser;
+	'MooX::Aspartame::Parser';
+}
+
+sub class_for_code_generator
+{
+	require MooX::Aspartame::CodeGenerator;
+	'MooX::Aspartame::CodeGenerator';
+}
+
 sub unimport
 {
-	shift;
-	Keyword::Simple::undefine $_ for qw/ class role namespace /;
+	my $class = shift;
+	Keyword::Simple::undefine($_)
+		for $class->class_for_parser->keywords;
 }
 
 sub import
 {
 	my $caller  = caller;
 	my $class   = shift;
+	
 	my $imports = ref($_[0]) eq 'ARRAY'
-		? use_package_optimistically('MooX::Aspartame::ImportSet')->new(imports => mkopt($_[0]))
+		? $class->class_for_import_set->new(imports => mkopt(shift))
 		: undef;
 	
 	'strict'->import();
@@ -40,7 +60,7 @@ sub import
 		{
 			my $ref = $_[0];
 			
-			my $parser = use_package_optimistically('MooX::Aspartame::Parser')->new(
+			my $parser = $class->class_for_parser->new(
 				keyword   => $kw,
 				ref       => $ref,
 				ccstash   => scalar(ccstash),
@@ -48,7 +68,7 @@ sub import
 			
 			$parser->parse;
 			
-			my $codegen = use_package_optimistically('MooX::Aspartame::CodeGenerator')->new(
+			my $codegen = $class->class_for_code_generator->new(
 				package   => $parser->package,
 				(version  => $parser->version) x!!($parser->has_version),
 				relations => $parser->relations,

@@ -70,14 +70,14 @@ sub _eat_package
 {
 	my $self = shift;
 	my $pkg  = $self->_eat(qr{(?:::)?$module_name_rx});
-	return $self->_qualify($pkg, @_);
+	return $self->qualify_module_name($pkg, @_);
 }
 
 sub _eat_relations
 {
 	my $self = shift;
 	
-	my $RELS = join '|', map quotemeta, $self->_relationships;
+	my $RELS = join '|', map quotemeta, $self->relationships;
 	$RELS = qr/\A($RELS)/sm;
 	
 	my %relationships;
@@ -132,7 +132,12 @@ sub parse
 	$self->_set_done(1);
 }
 
-sub _relationships
+sub keywords
+{
+	qw/ class role namespace /;
+}
+
+sub relationships
 {
 	my $self = shift;
 	my $kw   = $self->keyword;
@@ -141,13 +146,13 @@ sub _relationships
 	return qw();
 }
 
-sub _should_qualify
+sub module_name_should_be_qualified
 {
 	shift;
 	return 1 if $_[0] =~ /^(package|with|extends)$/;
 }
 
-sub _qualify
+sub qualify_module_name
 {
 	my $self = shift;
 	my ($bareword, $rel) = @_;
@@ -156,7 +161,7 @@ sub _qualify
 	return $1                    if $bareword =~ /^::(.+)$/;
 	return $bareword             if $caller eq 'main';
 	return $bareword             if $bareword =~ /::/;
-	return "$caller\::$bareword" if $self->_should_qualify($rel);
+	return "$caller\::$bareword" if $self->module_name_should_be_qualified($rel);
 	return $bareword;
 }
 

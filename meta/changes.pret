@@ -23,3 +23,13 @@
 		item "Don't export Try::Tiny to the outer scope, as it's not lexical."^^Change;
 	].
 
+`MooX-Aspartame 0.004 cpan:TOBYINK`
+	issued  2013-08-14;
+	changeset [
+		item "Implement `before`, `after` and `around` method modifiers."^^Addition;
+		item "Implement `define` keyword to declare constants."^^Addition;
+		item "Drop the `exporter` keyword; it is better to explicitly create a class extending Exporter::TypeTiny or Exporter."^^Removal;
+		item "Drop the `classmethod` keyword; it's better to use `method` and give the invocant an explicit variable name."^^Removal;
+		item "The `method` keyword is only available in classes and roles; not plain namespaces."^^Change;
+	].
+

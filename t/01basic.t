@@ -45,6 +45,9 @@ role Bar with Foo;
 
 class Baz with Bar;
 
+ok('Baz'->does('Bar'));
+ok('Baz'->does('Foo'));
+
 try {
 	'Baz'->new(foo => 1.1);
 }
@@ -52,13 +55,16 @@ catch {
 	like($_[0], qr{^Value "1.1" did not pass type constraint "Int"});
 };
 
-package Quux {
-	class Quuux {
+package Quux v1.2.3 {
+	class Quuux 1.23 {
 		class Quuuux {
 			::is(__PACKAGE__, 'Quux::Quuux::Quuuux');
 		}
 	}
 }
+
+is('Quux'->VERSION, 'v1.2.3');
+is('Quux::Quuux'->VERSION, 1.23);
 
 my $baz = 'Baz'->new(foo => 40);
 is($baz->add_to_foo(2), $baz);
@@ -70,4 +76,3 @@ like(
 );
 
 done_testing;
-

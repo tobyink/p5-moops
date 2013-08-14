@@ -124,9 +124,9 @@ sub parse
 	$self->_set_relations(
 		$self->_eat_relations
 	);
-
+	
 	$self->_eat_space;
-
+	
 	$self->_peek(qr/\A;/) ? $self->_set_is_empty(1) : $self->_eat('{');
 	
 	$self->_set_done(1);

@@ -67,7 +67,7 @@ sub import
 	}
 }
 
-sub _at_runtime
+sub at_runtime
 {
 	my $class = shift;
 	my ($pkg) = @_;

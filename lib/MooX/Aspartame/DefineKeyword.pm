@@ -23,7 +23,7 @@ sub import
 	}
 	Keyword::Simple::define 'define' => sub {
 		my $line = shift;
-		my ($whitespace1, $name, $whitespace2, $equals) = 
+		my ($whitespace1, $name, $whitespace2, $equals) =
 			( $$line =~ m{\A([\n\s]*)(\w+)([\n\s]*)(=\>?)}s )
 			or Carp::croak("Syntax error near 'define'");
 		my $len = length($whitespace1. $name. $whitespace2. $equals);

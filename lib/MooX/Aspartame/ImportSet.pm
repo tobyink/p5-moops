@@ -22,7 +22,7 @@ sub BUILD {
 	$SAVED{ $self->ident } = $self->imports;
 }
 
-sub _do_imports {
+sub do_imports {
 	shift;
 	my ($package, $ident) = @_;
 	
@@ -38,12 +38,12 @@ sub _do_imports {
 	}
 }
 
-sub _generate_code {
+sub generate_code {
 	my $self = shift;
 	my ($pkg) = @_;
 	my $class = ref $self;
 	my $ident = $self->ident;
-	return "BEGIN { '$class'->_do_imports(q[$pkg], $ident) };";
+	return "BEGIN { '$class'->do_imports(q[$pkg], $ident) };";
 }
 
 1;

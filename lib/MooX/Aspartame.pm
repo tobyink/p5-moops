@@ -98,6 +98,7 @@ sub import
 			$inject .= "BEGIN { \$INC{${\ perlstring module_notional_filename $package }} = __FILE__ };";
 			$inject .= $class->_package_preamble($kw, $package, $empty, %relationships);
 			$inject .= "BEGIN { '$class'->_do_imports('$package', $id) };" if @$imports && !$empty;
+			$inject .= "'$class'->_at_runtime('$package');";
 			$inject .= "}" if $empty;
 			
 			# Inject it!
@@ -136,14 +137,14 @@ sub _qualify
 sub _function_parameters_args
 {
 	my $class = shift;
-	my ($pkg) = @_;
+	my ($kw, $pkg) = @_;
 	
 	my $reify = sub {
 		require Type::Utils;
 		Type::Utils::dwim_type($_[0], for => $_[1]);
 	};
 	
-	return +{
+	my %keywords = (
 		fun => {
 			name                 => 'optional',
 			default_arguments    => 1,
@@ -163,18 +164,24 @@ sub _function_parameters_args
 			shift                => '$self',
 			invocant             => 1,
 		},
-		classmethod => {
-			name                 => 'optional',
+	);
+	
+	if ($kw eq 'class' or $kw eq 'role')
+	{
+		$keywords{ lc($_) } = {
+			name                 => 'required',
 			default_arguments    => 1,
 			check_argument_count => 1,
 			named_parameters     => 1,
 			types                => 1,
 			reify_type           => $reify,
-			attributes           => ':method',
-			shift                => '$class',
+			attrs                => ":$_",
+			shift                => '$self',
 			invocant             => 1,
-		},
-	};
+		} for qw( Before After Around );
+	}
+	
+	return \%keywords;
 }
 
 sub _package_preamble_always
@@ -186,7 +193,7 @@ sub _package_preamble_always
 	
 	return (
 		'use Carp qw(confess);',
-		"use Function::Parameters $class\->_function_parameters_args(q[$package]);",
+		"use Function::Parameters $class\->_function_parameters_args(q[$kw], q[$package]);",
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',
@@ -306,6 +313,72 @@ sub _do_imports
 		);
 	}
 }
+
+sub _at_runtime
+{
+	my $class = shift;
+	my ($pkg) = @_;
+	for my $task (@{ $MooX::Aspartame::AT_RUNTIME })
+	{
+		my ($code, @args) = @$task;
+		eval "package $pkg; \$code->(\@args)";
+	}
+}
+
+package MooX::Aspartame::MethodModifiers
+{
+	use Attribute::Handlers;
+	
+	sub handle
+	{
+		my ($pkg, $glob, $code, $modifier) = @_;
+		my ($subname) = ("${\*$glob}" =~ /(\w+)$/);
+		sweep($pkg, $subname);
+		my $installer = find_installer($pkg, $subname, $code, $modifier)
+			or Carp::croak("No '$modifier' method modifier for package '$pkg'; stopped");
+		my @at_runtime = ($installer, $subname, wrap_method($pkg, $subname, $code, $modifier));
+		push @{ $MooX::Aspartame::AT_RUNTIME }, \@at_runtime;
+	}
+	
+	# stolen from namespace::sweep,
+	# which stole it from namespace::clean.
+	sub sweep
+	{
+		my $package = shift;
+		my $ps      = 'Package::Stash'->new($package);
+		my @symbols = map {
+			 my $name = $_ . $_[0];
+			 my $def = $ps->get_symbol( $name );
+			 defined($def) ? [$name, $def] : ()
+		} '$', '@', '%', '';
+		$ps->remove_glob( $_[0] );
+		$ps->add_symbol( @$_ ) for @symbols;
+	}
+	
+	sub find_installer
+	{
+		my ($pkg, undef, undef, $modifier) = @_;
+		no strict 'refs';
+		\&{$pkg.'::'.lc($modifier)};
+	}
+	
+	sub wrap_method
+	{
+		my ($pkg, undef, $code, $modifier) = @_;
+		return eval qq{
+			sub {
+				package $pkg;
+				local \${^NEXT} = shift(\@_);
+				\$code->(\@_);
+			}
+		} if lc($modifier) eq 'around';
+		return $code;
+	}
+	
+	sub UNIVERSAL::Before :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
+	sub UNIVERSAL::After  :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
+	sub UNIVERSAL::Around :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
+};
 
 1;
 
@@ -432,12 +505,21 @@ Perl 5.14 features. (MooX::Aspartame requires Perl 5.14.)
 
 =item *
 
-Strictures, including C<FATAL> warnings, but not C<uninitialized>, C<void>,
-C<once> or C<numeric> warnings.
+Strictures, including C<FATAL> warnings. 
+
+But not C<uninitialized>, C<void>, C<once> or C<numeric> warnings,
+because those are irritating.
 
 =item *
 
-L<Function::Parameters> (in strict mode)
+L<Function::Parameters> (in strict mode).
+
+This provides C<fun> and C<method> keywords.
+
+Within roles and classes, it also provides C<before>, C<after>
+and C<around> modifiers. Unlike Moo/Moose, within around modifiers
+the coderef being wrapped is I<not> available in C<< $_[0] >>, but
+is instead in the magic global variable C<< ${^NEXT} >>.
 
 =item *
 

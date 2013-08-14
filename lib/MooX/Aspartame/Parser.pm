@@ -53,6 +53,10 @@ sub _eat_space
 	while ($$ref =~ m{\A( \s+ )}x)
 	{
 		$self->_eat($1);
+		if ($$ref =~ m{\A\#})
+		{
+			$self->_eat(qr{\A\#.+?\n}sm);
+		}
 	}
 	return;
 }

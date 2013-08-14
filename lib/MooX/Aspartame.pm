@@ -435,8 +435,10 @@ MooX::Aspartame - it seems sweet, but it probably has long-term adverse health e
 
 =head1 DESCRIPTION
 
-This is something like a lightweight L<MooseX::Declare>. It gives you
-three keywords:
+This is something like a lightweight L<MooseX::Declare>. (Only 40% as
+many dependencies; and loads in about 25% of the time.)
+
+It gives you three keywords:
 
 =over
 

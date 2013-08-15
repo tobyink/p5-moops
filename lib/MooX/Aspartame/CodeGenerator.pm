@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::CodeGenerator;
+package Moops::CodeGenerator;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
@@ -39,7 +39,7 @@ sub generate
 	$inject .= $self->imports->generate_code if $self->has_imports;
 	
 	# Stuff that must happen at runtime rather than compile time
-	$inject .= "'MooX::Aspartame'->at_runtime('$package');";
+	$inject .= "'Moops'->at_runtime('$package');";
 	
 	return $inject;
 }
@@ -57,7 +57,7 @@ sub generate_package_setup
 	return (
 		'use Carp qw(confess);',
 		"use Function::Parameters '$class'->arguments_for_function_parameters(q[$package]);",
-		'use MooX::Aspartame::DefineKeyword;',
+		'use Moops::DefineKeyword;',
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',

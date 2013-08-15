@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::MethodModifiers;
+package Moops::MethodModifiers;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
@@ -18,7 +18,7 @@ sub handle
 	my $installer = find_installer($pkg, $subname, $code, $modifier)
 		or Carp::croak("No '$modifier' method modifier for package '$pkg'; stopped");
 	my @at_runtime = ($installer, $subname, wrap_method($pkg, $subname, $code, $modifier));
-	push @{ $MooX::Aspartame::AT_RUNTIME }, \@at_runtime;
+	push @{ $Moops::AT_RUNTIME }, \@at_runtime;
 }
 
 # stolen from namespace::sweep,
@@ -56,8 +56,8 @@ sub wrap_method
 	return $code;
 }
 
-sub UNIVERSAL::Before :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
-sub UNIVERSAL::After  :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
-sub UNIVERSAL::Around :ATTR(BEGIN) { goto \&MooX::Aspartame::MethodModifiers::handle; }
+sub UNIVERSAL::Before :ATTR(BEGIN) { goto \&Moops::MethodModifiers::handle; }
+sub UNIVERSAL::After  :ATTR(BEGIN) { goto \&Moops::MethodModifiers::handle; }
+sub UNIVERSAL::Around :ATTR(BEGIN) { goto \&Moops::MethodModifiers::handle; }
 
 1;

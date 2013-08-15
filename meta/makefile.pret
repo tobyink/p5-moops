@@ -2,7 +2,7 @@
 
 @prefix : <http://ontologi.es/doap-deps#> .
 
-`MooX-Aspartame`
+`Moops`
 	:runtime-requirement [ :on "Devel::Pragma 0.54"^^:CpanId ];
 	:runtime-requirement [ :on "Exporter::TypeTiny 0.022"^^:CpanId ];
 	:runtime-requirement [ :on "Function::Parameters 1.0201"^^:CpanId ];

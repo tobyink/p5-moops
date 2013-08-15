@@ -4,7 +4,7 @@
 
 =head1 PURPOSE
 
-Test that MooX::Aspartame compiles and check some basic functionality.
+Test that Moops compiles and check some basic functionality.
 
 =head1 AUTHOR
 
@@ -25,7 +25,7 @@ use warnings;
 use Test::More;
 use Test::Fatal;
 
-use MooX::Aspartame;
+use Moops;
 use Try::Tiny;
 
 role Foo {

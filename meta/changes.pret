@@ -1,10 +1,10 @@
 # This file acts as the project's changelog.
 
-`MooX-Aspartame 0.001 cpan:TOBYINK`
+`Moops 0.001 cpan:TOBYINK`
 	issued  2013-07-01;
 	label   "Initial release".
 
-`MooX-Aspartame 0.002 cpan:TOBYINK`
+`Moops 0.002 cpan:TOBYINK`
 	issued  2013-07-17;
 	changeset [
 		item "Misc internal refactoring."^^Change;
@@ -12,7 +12,7 @@
 		item "use Moo 1.003000."^^Update;
 	].
 
-`MooX-Aspartame 0.003 cpan:TOBYINK`
+`Moops 0.003 cpan:TOBYINK`
 	issued  2013-08-13;
 	changeset [
 		item "Misc internal refactoring."^^Change;
@@ -23,7 +23,7 @@
 		item "Don't export Try::Tiny to the outer scope, as it's not lexical."^^Change;
 	].
 
-`MooX-Aspartame 0.004 cpan:TOBYINK`
+`Moops 0.004 cpan:TOBYINK`
 	issued  2013-08-14;
 	changeset [
 		item "Implement `before`, `after` and `around` method modifiers."^^Addition;
@@ -33,7 +33,7 @@
 		item "The `method` keyword is only available in classes and roles; not plain namespaces."^^Change;
 	].
 
-`MooX-Aspartame 0.005 cpan:TOBYINK`
+`Moops 0.005 cpan:TOBYINK`
 	issued  2013-08-14;
 	changeset [
 		item "Massive amounts of refactoring to simplify maintenance and make subclassing easier."^^Change;

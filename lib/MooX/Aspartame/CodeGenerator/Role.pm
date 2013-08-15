@@ -3,18 +3,18 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::CodeGenerator::Role;
+package Moops::CodeGenerator::Role;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
 
 use Moo;
 use B qw(perlstring);
-extends qw( MooX::Aspartame::CodeGenerator );
+extends qw( Moops::CodeGenerator );
 
 around arguments_for_function_parameters => sub
 {
-	require MooX::Aspartame::MethodModifiers;
+	require Moops::MethodModifiers;
 	
 	my $orig     = shift;
 	my $class    = shift;

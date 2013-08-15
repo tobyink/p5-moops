@@ -1,4 +1,4 @@
-use MooX::Aspartame;
+use Moops;
 
 class Calculator {
 	define PI = 3.2;

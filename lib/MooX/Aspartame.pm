@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame;
+package Moops;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
@@ -16,14 +16,14 @@ use true qw();
 
 sub class_for_import_set
 {
-	require MooX::Aspartame::ImportSet;
-	'MooX::Aspartame::ImportSet';
+	require Moops::ImportSet;
+	'Moops::ImportSet';
 }
 
 sub class_for_parser
 {
-	require MooX::Aspartame::Parser;
-	'MooX::Aspartame::Parser';
+	require Moops::Parser;
+	'Moops::Parser';
 }
 
 sub unimport
@@ -71,7 +71,7 @@ sub at_runtime
 {
 	my $class = shift;
 	my ($pkg) = @_;
-	for my $task (@{ $MooX::Aspartame::AT_RUNTIME })
+	for my $task (@{ $Moops::AT_RUNTIME })
 	{
 		my ($code, @args) = @$task;
 		eval "package $pkg; \$code->(\@args)";
@@ -88,11 +88,11 @@ __END__
 
 =head1 NAME
 
-MooX::Aspartame - it seems sweet, but it probably has long-term adverse health effects
+Moops - it seems sweet, but it probably has long-term adverse health effects
 
 =head1 SYNOPSIS
 
-   use MooX::Aspartame;
+   use Moops;
    
    role NamedThing {
       has name => (is => "ro", isa => Str);
@@ -155,7 +155,7 @@ Declares a package without giving it any special semantics.
 Note that the names of the declared things get qualified like subs. So:
 
    package Foo;
-   use MooX::Aspartame;
+   use Moops;
    
    class Bar {     # declares Foo::Bar
       role Baz {   # declares Foo::Bar::Baz
@@ -168,7 +168,7 @@ Note that the names of the declared things get qualified like subs. So:
    }
    
    package main;
-   use MooX::Aspartame;
+   use Moops;
    
    class Bar {     # declares Bar
       ...;
@@ -181,7 +181,7 @@ always available:
 
 =item *
 
-Perl 5.14 features. (MooX::Aspartame requires Perl 5.14.)
+Perl 5.14 features. (Moops requires Perl 5.14.)
 
 =item *
 
@@ -206,7 +206,7 @@ C<< ${^NEXT} >>.
 
 A C<define> keyword to declare constants:
 
-   use MooX::Aspartame;
+   use Moops;
    
    class Calculator {
       define PI = 3.2;
@@ -246,18 +246,18 @@ L<namespace::sweep> (only for classes and roles).
 
 It is possible to inject other functions into all packages using:
 
-   use MooX::Aspartame [
+   use Moops [
       'List::Util'      => [qw( first reduce )],
       'List::MoreUtils' => [qw( any all none )],
    ];
 
-In the "outer" package (where MooX::Aspartame is used), strictures and
+In the "outer" package (where Moops is used), strictures and
 L<true> are provided.
 
 =head1 BUGS
 
 Please report any bugs to
-L<http://rt.cpan.org/Dist/Display.html?Queue=MooX-Aspartame>.
+L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
 
 =head1 SEE ALSO
 

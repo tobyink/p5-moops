@@ -3,13 +3,13 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::CodeGenerator::Class;
+package Moops::CodeGenerator::Class;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
 
 use Moo;
-extends qw( MooX::Aspartame::CodeGenerator::Role );
+extends qw( Moops::CodeGenerator::Role );
 
 my %using = (
 	Moo   => 'use Moo; use MooX::late;',

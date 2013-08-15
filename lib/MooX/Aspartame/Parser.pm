@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::Parser;
+package Moops::Parser;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
@@ -176,16 +176,16 @@ sub class_for_code_generator
 	my $kw = $self->keyword;
 	
 	if ($kw eq 'class') {
-		require MooX::Aspartame::CodeGenerator::Class;
-		return 'MooX::Aspartame::CodeGenerator::Class';
+		require Moops::CodeGenerator::Class;
+		return 'Moops::CodeGenerator::Class';
 	}
 	elsif ($kw eq 'role') {
-		require MooX::Aspartame::CodeGenerator::Role;
-		return 'MooX::Aspartame::CodeGenerator::Role';
+		require Moops::CodeGenerator::Role;
+		return 'Moops::CodeGenerator::Role';
 	}
 	else {
-		require MooX::Aspartame::CodeGenerator;
-		return 'MooX::Aspartame::CodeGenerator';
+		require Moops::CodeGenerator;
+		return 'Moops::CodeGenerator';
 	}
 }
 

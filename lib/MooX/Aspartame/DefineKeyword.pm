@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package MooX::Aspartame::DefineKeyword;
+package Moops::DefineKeyword;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
@@ -27,7 +27,7 @@ sub import
 			( $$line =~ m{\A([\n\s]*)(\w+)([\n\s]*)(=\>?)}s )
 			or Carp::croak("Syntax error near 'define'");
 		my $len = length($whitespace1. $name. $whitespace2. $equals);
-		substr($$line, 0, $len) = "; use MooX::Aspartame::DefineKeyword $name => ";
+		substr($$line, 0, $len) = "; use Moops::DefineKeyword $name => ";
 	}
 }
 

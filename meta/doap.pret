@@ -8,7 +8,7 @@
 	:homepage             <https://metacpan.org/release/MooX-Aspartame>;
 	:download-page        <https://metacpan.org/release/MooX-Aspartame>;
 	:bug-database         <http://rt.cpan.org/Dist/Display.html?Queue=MooX-Aspartame>;
-	:repository           [ a :GitRepository; :browse <https://github.com/tobyink/p5-moox-aspartame> ];
+	:repository           [ a :GitRepository; :browse <https://github.com/tobyink/p5-moops> ];
 	:created              2013-06-30;
 	:license              <http://dev.perl.org/licenses/>;
 	:maintainer           cpan:TOBYINK;

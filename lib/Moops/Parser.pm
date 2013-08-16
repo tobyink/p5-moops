@@ -29,7 +29,8 @@ sub _eat
 	my ($bite) = @_;
 	my $ref = $self->ref;
 	
-	if (ref($bite) and $$ref =~ /\A($bite)/sm) {
+	if (ref($bite) and $$ref =~ /\A($bite)/sm)
+	{
 		my $r = $1;
 		substr($$ref, 0, length($r)) = '';
 		return $r;

@@ -69,10 +69,15 @@ my %using = (
 	),
 );
 
+sub default_oo_implementation
+{
+	'Moo';
+}
+
 sub generate_package_setup_oo
 {
 	my $self  = shift;
-	my $using = $self->relations->{using}[0] // 'Moo';
+	my $using = $self->relations->{using}[0] // $self->default_oo_implementation;
 	
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");

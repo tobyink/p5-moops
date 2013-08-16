@@ -21,14 +21,14 @@ my %using = (
 sub generate_package_setup_oo
 {
 	my $self  = shift;
-	my $using = $self->relations->{using}[0] // 'Moo';
+	my $using = $self->relations->{using}[0] // $self->default_oo_implementation;
 	
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
 	my @guard;
-	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::CodeGenerator::Class::__GUARD__");', int rand 2000)
-		unless $using eq 'Moo';
+	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::CodeGenerator::Class::__GUARD__");', 100_000 + int(rand 899_000))
+		if $using eq 'Moose' || $using eq 'Mouse';
 	
 	return (
 		$using{$using},

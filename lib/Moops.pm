@@ -350,13 +350,101 @@ file:
 
 It is possible to inject other functions into all inner packages using:
 
-   use Moops [
-      'List::Util'      => [qw( first reduce )],
-      'List::MoreUtils' => [qw( any all none )],
-   ];
+	use Moops [
+		'List::Util'      => [qw( first reduce )],
+		'List::MoreUtils' => [qw( any all none )],
+	];
 
 This is by far the easiest way to extend Moops with project-specific
 extras.
+
+=head1 EXTENDING
+
+Moops is written to hopefully be fairly extensible.
+
+=head2 The Easy Way
+
+The easiest way to extend Moops is to inject additional imports into
+the inner packages using the technique outlined in L</Custom Sugar>
+above. You can wrap all that up in a module:
+
+	package MoopsX::Lists;
+	use Moops ();
+	use List::Util ();
+	use List::MoreUtils ();
+	sub import {
+		push @{ $_[1] ||= [] }, (
+			'List::Util'      => [qw( first reduce )],
+			'List::MoreUtils' => [qw( any all none )],
+		);
+		goto \&Moops::import;
+	}
+	1;
+
+Now people can do C<< use MoopsX::Lists >> instead of C<< use Moops >>.
+
+=head2 The Hard Way
+
+For more complex needs, you should create a subclass of Moops, and
+override the C<class_for_parser> method to inject your own custom
+keyword parser, which should be a subclass of Moops::Parser.
+
+The parser subclass might want to override:
+
+=over
+
+=item *
+
+The C<keywords> class method, which returns the list of keywords
+the parser can handle.
+
+=item *
+
+The C<relationships> object method, which returns a list of valid
+inter-package relationships such as C<extends> and C<using> for the
+current keyword (C<< $self->keyword >>).
+
+=item *
+
+The C<module_name_should_be_qualified> object method, which, when
+given an inter-package relationship, indicates whether it should
+be subjected to package qualification.
+
+=item *
+
+The C<class_for_code_generator> object method, which returns the name of
+a subclass of Moops::CodeGenerator which will be used for translating
+the result of parsing the keyword into a string using Perl's built-in
+syntax.
+
+=back
+
+Hopefully you'll be able to avoid overriding the C<parse>
+method itself, as it has a slightly messy API.
+
+Your code generator subclass can either be a direct subclass of
+Moops::CodeGenerator, or of Moops::CodeGenerator::Class or
+Moops::CodeGenerator::Role.
+
+The code generator subclass might want to override:
+
+=over
+
+=item *
+
+The C<generate_package_setup> object method which returns a list of
+strings to inject into the package.
+
+=item *
+
+The C<arguments_for_function_parameters> object method which is used
+by the default C<generate_package_setup> method to set up the arguments
+to be passed to L<Function::Parameters>.
+
+=back
+
+Hopefully you'll be able to avoid overriding the C<generate>
+method.
 
 =head1 BUGS
 
@@ -376,6 +464,8 @@ L<Types::Standard>, L<namespace::sweep>, L<true>.
 Internals fueled by:
 L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>, L<Devel::Pragma>,
 L<Attribute::Handlers>.
+
+L<http://en.wikipedia.org/wiki/The_Bubble_Boy_(Seinfeld)>.
 
 =head1 AUTHOR
 

@@ -9,6 +9,7 @@ our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.005';
 
 use Moo;
+use Devel::GlobalDestruction;
 extends qw( Moops::CodeGenerator::Role );
 
 my %using = (
@@ -25,10 +26,15 @@ sub generate_package_setup_oo
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
+	my @guard;
+	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::CodeGenerator::Class::__GUARD__");', int rand 2000)
+		unless $using eq 'Moo';
+	
 	return (
 		$using{$using},
 		$self->generate_package_setup_relationships,
 		'use namespace::sweep;',
+		@guard,
 	);
 }
 
@@ -43,5 +49,12 @@ around generate_package_setup_relationships => sub
 		$self->$orig(@_),
 	);
 };
+
+sub Moops::CodeGenerator::Class::__GUARD__::DESTROY
+{
+	my $pkg = $_[0][0];
+	$pkg->meta->make_immutable
+		unless in_global_destruction;
+}
 
 1;

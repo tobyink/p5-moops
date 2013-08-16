@@ -12,8 +12,8 @@ accessor calls, method calls and type constraint checks.
 Typical results (run on a fairly underpowered netbook) are:
 
 	        Rate   MXD Moops
-	MXD   8.91/s    --  -97%
-	Moops  333/s 3637%    --
+	MXD   8.82/s    --  -98%
+	Moops  389/s 4307%    --
 
 =head1 AUTHOR
 
@@ -117,6 +117,6 @@ ok 4 - Class 'Foo::MXD' throws error on incorrect constructor call
 ok 5 - Objects of class 'Foo::MXD' throw error on incorrect method call
 ok 6 - Objects of class 'Foo::MXD' function correctly
 #         Rate   MXD Moops
-# MXD   8.91/s    --  -97%
-# Moops  333/s 3637%    --
+# MXD   8.82/s    --  -98%
+# Moops  389/s 4307%    --
 1..6

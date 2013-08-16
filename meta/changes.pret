@@ -45,4 +45,5 @@
 	changeset [
 		item "Rename MooX::Aspartame -> Moops."^^Change;
 		item "Call __PACKAGE__->meta->make_immutable on Moose/Mouse classes."^^Change;
+		item "Much improved documentation."^^Documentation;
 	].

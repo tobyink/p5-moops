@@ -86,6 +86,8 @@ __END__
 
 =encoding utf-8
 
+=for stopwords featureful
+
 =head1 NAME
 
 Moops - it seems sweet, but it probably has long-term adverse health effects
@@ -174,7 +176,7 @@ the declaration:
 		# ...
 	}
 
-(The C<using> option is excempt from the package qualification rules
+(The C<using> option is exempt from the package qualification rules
 mentioned earlier.)
 
 Note that it is possible to declare a class with an empty body;

@@ -10,6 +10,7 @@ our $VERSION   = '0.006';
 
 use Moo;
 use Devel::GlobalDestruction;
+use B 'perlstring';
 extends qw( Moops::CodeGenerator::Role );
 
 my %using = (

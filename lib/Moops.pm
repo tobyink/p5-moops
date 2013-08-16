@@ -118,141 +118,243 @@ Moops - it seems sweet, but it probably has long-term adverse health effects
 
 =head1 DESCRIPTION
 
-This is something like a lightweight L<MooseX::Declare>. (Only 40% as
-many dependencies; and loads in about 25% of the time.)
+Moops is sugar for declaring and using roles and classes in Perl.
 
-It gives you three keywords:
+The syntax is inspired by L<MooseX::Declare>, and Stevan Little's
+p5-mop-redux project (which is in turn partly inspired by Perl 6).
 
-=over
+Moops has roughly only 40% as many dependencies as MooseX::Declare,
+loads in about 25% of the time, and runs significantly faster.
+Moops does not use Devel::Declare, instead using Perl's pluggable
+keyword API; this requires Perl 5.14 or above.
 
-=item C<class>
+Moops uses L<Moo> to build classes and roles by default, but allows
+you to use L<Moose> if you desire. (And L<Mouse> experimentally.)
 
-Declares a class. By default this uses L<Moo>. But it's possible to
-promote a class to L<Moose> with the C<using> option:
+=head2 Classes
 
-   class Employee using Moose { ... }
+The C<class> keyword declares a class:
 
-Other options for classes are C<extends> for setting a parent class,
-and C<with> for composing roles.
+	class Foo {
+		# ...
+	}
 
-   class Employee extends Person with Employment;
+A version number can optionally be provided:
 
-Note that if you're not directly defining any methods for a class,
-you can use a trailing semicolon (as above) rather than an empty
-C<< { } >> pair.
+	class Foo 1.2 {
+		# ...
+	}
 
-=item C<role>
+If your class extends an existing class through inheritance, or
+consumes one or more roles, these can also be provided when declaring
+the class.
 
-Declares a role using L<Moo::Role>. This also supports C<< using Moose >>,
-and C<with>.
+	class Foo::Bar 1.2 extends Foo with Magic::Monkeys {
+		# ...
+	}
 
-=item C<namespace>
+If you use Moops within a package other than C<main>, then package
+names used within the declaration are "qualified" by that outer
+package, unless they contain "::". So for example:
 
-Declares a package without giving it any special semantics.
+	package Quux;
+	use Moops;
+	
+	class Foo { }       # declares Quux::Foo
+	
+	class Xyzzy::Foo    # declares Xyzzy::Foo
+		extends Foo { }  # ... extending Quux::Foo
+	
+	class ::Baz { }     # declares Baz
 
-=back
+If you wish to use Moose or Mouse instead of Moo; include that in
+the declaration:
 
-Note that the names of the declared things get qualified like subs. So:
+	class Foo using Moose {
+		# ...
+	}
 
-   package Foo;
-   use Moops;
-   
-   class Bar {     # declares Foo::Bar
-      role Baz {   # declares Foo::Bar::Baz
-         ...;
-      }
-      class Xyzzy with Baz;
-   }
-   class ::Quux {  # declares Quux
-      ...;
-   }
-   
-   package main;
-   use Moops;
-   
-   class Bar {     # declares Bar
-      ...;
-   }
+(The C<using> option is excempt from the package qualification rules
+mentioned earlier.)
 
-Within the packages declared by these keywords, the following features are
-always available:
+Note that it is possible to declare a class with an empty body;
+use a trailing semicolon.
 
-=over
+	class Employee extends Person with Employment;
 
-=item *
+If using Moose or Mouse, classes are automatically made immutable. If
+using Moo, the L<MooX::late> extension is enabled.
 
-Perl 5.14 features. (Moops requires Perl 5.14.)
+L<namespace::sweep> is automatically used in all classes.
 
-=item *
+=head2 Roles
 
-Strictures, including C<FATAL> warnings. 
+Roles can be declared similarly to classes, but using the C<role> keyword.
 
-But not C<uninitialized>, C<void>, C<once> or C<numeric> warnings,
-because those are irritating.
+	role Stringable
+		using Moose     # we know you meant Moose::Role
+	{
+		# ...
+	}
 
-=item *
+Roles do not support the C<extends> option.
 
-L<Function::Parameters> (in strict mode).
+Roles can be declared to be C<< using Role::Tiny >>.
 
-This provides the C<fun> keyword.
+If roles use Moo, the L<MooX::late> extension is enabled.
 
-Within roles and classes, it also provides C<method>, and the
-C<before>, C<after> and C<around> method modifiers. Unlike Moo/Moose,
-within C<around> modifiers the coderef being wrapped is I<not> available
-in C<< $_[0] >>, but is instead found in the magic global variable
-C<< ${^NEXT} >>.
+L<namespace::sweep> is automatically used in all roles.
 
-=item *
+=head2 Namespaces
 
-A C<define> keyword to declare constants:
+The C<namespace> keyword works as above, but declares a package without
+any class-specific or role-specific semantics.
 
-   use Moops;
-   
-   class Calculator {
-      define PI = 3.2;
-      method circular_area (Num $r) {
-         return PI * ($r ** 2);
-      }
-   }
-   
-   my $calc = Calculator->new;
-   say "The circle's area is ", $calc->circular_area(r => 1.0);
+	namespace Utils {
+		# ...
+	}
 
-=item *
+L<namespace::sweep> is not automatically used in namespaces.
 
-L<Try::Tiny>
+=head2 Functions and Methods
 
-=item *
+Moops uses L<Function::Parameters> to declare functions and methods within
+classes and roles, which is perhaps not as featureful as L<Method::Signatures>,
+but it does the job.
 
-L<Types::Standard> type constraints
+	class Person {
+		use Scalar::Util 'refaddr';
+		
+		has name => (is => 'rwp');    # Moo attribute
+		
+		method change_name ( Str $newname ) {
+			$self->_set_name( $newname )
+				unless $newname eq 'Princess Consuela Banana-Hammock';
+		}
+		
+		fun is_same_as ( Object $x, Object $y ) {
+			refaddr($x) == refaddr($y)
+		}
+	}
+	
+	my $phoebe = Person->new(name => 'Phoebe');
+	my $ursula = Person->new(name => 'Ursula');
+	
+	Person::is_same_as($phoebe, $ursula);   # false
 
-=item *
+Note function signatures use type constraints from L<Types::Standard>;
+L<MooseX::Types> and L<MouseX::Types> type constraints should also
+work, I<< provided you use their full names, including their package >>.
 
-L<Carp>'s C<confess>
+The C<is_same_as> function above could have been written as a class
+method like this:
 
-=item *
+	class Person {
+		# ...
+		method is_same_as ( $class: Object $x, Object $y ) {
+			refaddr($x) == refaddr($y)
+		}
+	}
+	
+	# ...
+	Person->is_same_as($phoebe, $ursula);   # false
 
-L<Scalar::Util>'s C<blessed>
+The C<method> keyword is not provided within packages declared using
+C<namespace>; it is only available within classes and roles.
 
-=item *
+=head2 Method Modifiers
 
-Constants for C<true> and C<false>.
+Within classes and roles, C<before>, C<after> and C<around> keywords
+are provided for declaring method modifiers. These use the same syntax
+as C<method>.
 
-=item *
+Unlike Moo/Mouse/Moose, for C<around> modifiers, the coderef being
+wrapped is I<not> passed as C<< $_[0] >>. Instead, it's available in
+the global variable C<< ${^NEXT} >>.
 
-L<namespace::sweep> (only for classes and roles).
+=head2 Type Constraints
 
-=back
+The L<Types::Standard> type constraints are exported to each package
+declared using Moops. This allows the standard type constraints to be
+used as barewords.
 
-It is possible to inject other functions into all packages using:
+If using type constraints from other type constraint libraries, they
+should generally be usable by package-qualifying them:
+
+	use MooseX::Types::Numeric qw();
+	
+	method foo ( MooseX::Types::Numeric::SingleDigit $d ) {
+		# ...
+	}
+
+Alternatively:
+
+	use MooseX::Types::Numeric qw(SingleDigit);
+	
+	method foo ( (SingleDigit) $d ) {
+		# ...
+	}
+
+Note the parentheses around the type constraint in the method
+signature; this is required for Function::Parameters to realise
+that C<SingleDigit> is an imported symbol, and not a string to
+be looked up.
+
+=head2 Constants
+
+The useful constants C<true> and C<false> are imported into all declared
+packages. (Within classes and roles, namespace::sweep will later remove
+them from the symbol table, so they don't form part of your package's API.)
+These constants can help make attribute declarations more readable.
+
+	has name => (is => 'ro', isa => Str, required => true);
+
+Further constants can be declared using the C<define> keyword:
+
+	namespace Maths {
+		define PI = 3.2;
+	}
+
+Constants declared this way will I<not> be swept away by namespace::sweep,
+and are considered part of your package's API.
+
+=head2 More Sugar
+
+Strictures, including fatal warnings, but excluding the 
+C<uninitialized>, C<void>, C<once> and C<numeric> warning categories
+is imported into all declared packages.
+
+Perl 5.14 features, including the C<state> and C<say> keywords,
+and sane Unicode string handling are imported into all declared
+packages.
+
+L<Try::Tiny> is imported into all declared packages.
+
+L<Scalar::Util>'s C<blessed> and L<Carp>'s C<confess> are imported
+into all declared packages.
+
+=head2 Outer Sugar
+
+The "outer" package, where the C<< use Moops >> statement appears also
+gets a little sugar: strictures, the same warnings as "inner" packages,
+and Perl 5.14 features are all switched on.
+
+L<true> is loaded, so you don't need to do this at the end of your
+file:
+
+	1;
+
+=head2 Custom Sugar
+
+It is possible to inject other functions into all inner packages using:
 
    use Moops [
       'List::Util'      => [qw( first reduce )],
       'List::MoreUtils' => [qw( any all none )],
    ];
 
-In the "outer" package (where Moops is used), strictures and
-L<true> are provided.
+This is by far the easiest way to extend Moops with project-specific
+extras.
 
 =head1 BUGS
 

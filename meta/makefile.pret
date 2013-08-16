@@ -16,6 +16,7 @@
 	:runtime-requirement [ :on "Try::Tiny 0.12"^^:CpanId ];
 	:runtime-requirement [ :on "namespace::sweep 0.006"^^:CpanId ];
 	:runtime-requirement [ :on "true 0.18"^^:CpanId ];
+	:runtime-suggestion  [ :on "MooX::HandlesVia"^^:CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
 	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
 	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];

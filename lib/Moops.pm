@@ -90,7 +90,7 @@ __END__
 
 =head1 NAME
 
-Moops - it seems sweet, but it probably has long-term adverse health effects
+Moops - Moops Object-Oriented Programming Sugar
 
 =head1 SYNOPSIS
 

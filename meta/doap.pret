@@ -4,7 +4,7 @@
 
 `Moops`
 	:programming-language "Perl" ;
-	:shortdesc            "it seems sweet, but it probably has long-term adverse health effects";
+	:shortdesc            "Moops Object-Oriented Programming Sugar";
 	:homepage             <https://metacpan.org/release/Moops>;
 	:download-page        <https://metacpan.org/release/Moops>;
 	:bug-database         <http://rt.cpan.org/Dist/Display.html?Queue=Moops>;

@@ -17,5 +17,7 @@
 	:runtime-requirement [ :on "namespace::sweep 0.006"^^:CpanId ];
 	:runtime-requirement [ :on "true 0.18"^^:CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
-	:test-requirement    [ :on "Test::Fatal"^^:CpanId ].
-
+	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
+	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];
+	:test-recommendation [ :on "Moose 2.0600"^^:CpanId ];
+	:test-recommendation [ :on "Mouse 1.00"^^:CpanId ].

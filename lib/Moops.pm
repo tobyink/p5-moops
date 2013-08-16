@@ -118,6 +118,12 @@ Moops - Moops Object-Oriented Programming Sugar
       }
    }
 
+=head1 STATUS
+
+Experimental.
+
+I'll have more confidence in it once the test suite is complete.
+
 =head1 DESCRIPTION
 
 Moops is sugar for declaring and using roles and classes in Perl.

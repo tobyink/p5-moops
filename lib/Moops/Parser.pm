@@ -129,7 +129,7 @@ sub parse
 	
 	$self->_set_relations(
 		$self->_eat_relations
-	);
+	) if $self->relationships;
 	
 	$self->_eat_space;
 	

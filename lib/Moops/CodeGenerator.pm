@@ -29,7 +29,11 @@ sub generate
 	
 	# Create the package declaration and version
 	my $inject = "package $package;";
-	$inject .= "BEGIN { our \$VERSION = '${\ $self->version }' };" if $self->has_version;
+	$inject .= (
+		$self->has_version
+			? "BEGIN { our \$VERSION = '${\ $self->version }' };"
+			: "BEGIN { our \$VERSION = '' };"
+	);
 	$inject .= "BEGIN { \$INC{${\ perlstring module_notional_filename $package }} = __FILE__ };";
 	
 	# Standard imports

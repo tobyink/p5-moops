@@ -147,11 +147,14 @@ The C<class> keyword declares a class:
 		# ...
 	}
 
-A version number can optionally be provided:
+A version number can be provided:
 
 	class Foo 1.2 {
 		# ...
 	}
+
+If no version is provided, your class' C<< $VERSION >> variable is set
+to the empty string; this helps the package be seen by L<Class::Load>. 
 
 If your class extends an existing class through inheritance, or
 consumes one or more roles, these can also be provided when declaring

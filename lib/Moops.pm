@@ -80,6 +80,9 @@ sub at_runtime
 	}
 }
 
+sub _true  { !!1 };
+sub _false { !!0 };
+
 1;
 
 __END__

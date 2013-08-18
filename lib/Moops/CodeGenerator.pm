@@ -65,10 +65,10 @@ sub generate_package_setup
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
 		'use Types::Standard qw(-types);',
-		'use constant { true => !!1, false => !!0 };',
 		'use v5.14;',
 		'use strict;',
 		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
+		'BEGIN { (*true, *false) = (\&Moops::_true, \&Moops::_false) };',
 	);
 }
 

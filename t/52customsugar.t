@@ -23,6 +23,26 @@ the same terms as the Perl 5 programming language system itself.
 
 use strict;
 use warnings;
-use Test::More skip_all => 'TODO';
+use Test::More;
+
+use Moops [
+	'List::Util' => ['sum'],
+];
+
+class Calculator {
+	method add (@numbers) {
+		return sum @numbers;
+	}
+	method double ($x) {
+		return sum($x, $x);
+	}
+}
+
+my $calc = Calculator->new;
+
+is(
+	$calc->double($calc->add(1..6)),
+	42,
+);
 
 done_testing;

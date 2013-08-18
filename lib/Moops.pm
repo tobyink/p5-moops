@@ -143,15 +143,15 @@ you to use L<Moose> if you desire. (And L<Mouse> experimentally.)
 
 The C<class> keyword declares a class:
 
-	class Foo {
-		# ...
-	}
+   class Foo {
+      # ...
+   }
 
 A version number can be provided:
 
-	class Foo 1.2 {
-		# ...
-	}
+   class Foo 1.2 {
+      # ...
+   }
 
 If no version is provided, your class' C<< $VERSION >> variable is set
 to the empty string; this helps the package be seen by L<Class::Load>. 
@@ -160,30 +160,30 @@ If your class extends an existing class through inheritance, or
 consumes one or more roles, these can also be provided when declaring
 the class.
 
-	class Foo::Bar 1.2 extends Foo with Magic::Monkeys {
-		# ...
-	}
+   class Foo::Bar 1.2 extends Foo with Magic::Monkeys {
+      # ...
+   }
 
 If you use Moops within a package other than C<main>, then package
 names used within the declaration are "qualified" by that outer
 package, unless they contain "::". So for example:
 
-	package Quux;
-	use Moops;
-	
-	class Foo { }       # declares Quux::Foo
-	
-	class Xyzzy::Foo    # declares Xyzzy::Foo
-		extends Foo { }  # ... extending Quux::Foo
-	
-	class ::Baz { }     # declares Baz
+   package Quux;
+   use Moops;
+   
+   class Foo { }       # declares Quux::Foo
+   
+   class Xyzzy::Foo    # declares Xyzzy::Foo
+      extends Foo { }  # ... extending Quux::Foo
+   
+   class ::Baz { }     # declares Baz
 
 If you wish to use Moose or Mouse instead of Moo; include that in
 the declaration:
 
-	class Foo using Moose {
-		# ...
-	}
+   class Foo using Moose {
+      # ...
+   }
 
 (The C<using> option is exempt from the package qualification rules
 mentioned earlier.)
@@ -191,7 +191,7 @@ mentioned earlier.)
 Note that it is possible to declare a class with an empty body;
 use a trailing semicolon.
 
-	class Employee extends Person with Employment;
+   class Employee extends Person with Employment;
 
 If using Moose or Mouse, classes are automatically made immutable. If
 using Moo, the L<MooX::late> extension is enabled.
@@ -202,11 +202,11 @@ L<namespace::sweep> is automatically used in all classes.
 
 Roles can be declared similarly to classes, but using the C<role> keyword.
 
-	role Stringable
-		using Moose     # we know you meant Moose::Role
-	{
-		# ...
-	}
+   role Stringable
+      using Moose     # we know you meant Moose::Role
+   {
+      # ...
+   }
 
 Roles do not support the C<extends> option.
 
@@ -221,9 +221,9 @@ L<namespace::sweep> is automatically used in all roles.
 The C<namespace> keyword works as above, but declares a package without
 any class-specific or role-specific semantics.
 
-	namespace Utils {
-		# ...
-	}
+   namespace Utils {
+      # ...
+   }
 
 L<namespace::sweep> is not automatically used in namespaces.
 
@@ -233,25 +233,25 @@ Moops uses L<Function::Parameters> to declare functions and methods within
 classes and roles, which is perhaps not as featureful as L<Method::Signatures>,
 but it does the job.
 
-	class Person {
-		use Scalar::Util 'refaddr';
-		
-		has name => (is => 'rwp');    # Moo attribute
-		
-		method change_name ( Str $newname ) {
-			$self->_set_name( $newname )
-				unless $newname eq 'Princess Consuela Banana-Hammock';
-		}
-		
-		fun is_same_as ( Object $x, Object $y ) {
-			refaddr($x) == refaddr($y)
-		}
-	}
-	
-	my $phoebe = Person->new(name => 'Phoebe');
-	my $ursula = Person->new(name => 'Ursula');
-	
-	Person::is_same_as($phoebe, $ursula);   # false
+   class Person {
+      use Scalar::Util 'refaddr';
+      
+      has name => (is => 'rwp');    # Moo attribute
+      
+      method change_name ( Str $newname ) {
+         $self->_set_name( $newname )
+            unless $newname eq 'Princess Consuela Banana-Hammock';
+      }
+      
+      fun is_same_as ( Object $x, Object $y ) {
+         refaddr($x) == refaddr($y)
+      }
+   }
+   
+   my $phoebe = Person->new(name => 'Phoebe');
+   my $ursula = Person->new(name => 'Ursula');
+   
+   Person::is_same_as($phoebe, $ursula);   # false
 
 Note function signatures use type constraints from L<Types::Standard>;
 L<MooseX::Types> and L<MouseX::Types> type constraints should also
@@ -260,15 +260,15 @@ work, I<< provided you use their full names, including their package >>.
 The C<is_same_as> function above could have been written as a class
 method like this:
 
-	class Person {
-		# ...
-		method is_same_as ( $class: Object $x, Object $y ) {
-			refaddr($x) == refaddr($y)
-		}
-	}
-	
-	# ...
-	Person->is_same_as($phoebe, $ursula);   # false
+   class Person {
+      # ...
+      method is_same_as ( $class: Object $x, Object $y ) {
+         refaddr($x) == refaddr($y)
+      }
+   }
+   
+   # ...
+   Person->is_same_as($phoebe, $ursula);   # false
 
 The C<method> keyword is not provided within packages declared using
 C<namespace>; it is only available within classes and roles.
@@ -292,19 +292,19 @@ used as barewords.
 If using type constraints from other type constraint libraries, they
 should generally be usable by package-qualifying them:
 
-	use MooseX::Types::Numeric qw();
-	
-	method foo ( MooseX::Types::Numeric::SingleDigit $d ) {
-		# ...
-	}
+   use MooseX::Types::Numeric qw();
+   
+   method foo ( MooseX::Types::Numeric::SingleDigit $d ) {
+      # ...
+   }
 
 Alternatively:
 
-	use MooseX::Types::Numeric qw(SingleDigit);
-	
-	method foo ( (SingleDigit) $d ) {
-		# ...
-	}
+   use MooseX::Types::Numeric qw(SingleDigit);
+   
+   method foo ( (SingleDigit) $d ) {
+      # ...
+   }
 
 Note the parentheses around the type constraint in the method
 signature; this is required for Function::Parameters to realise
@@ -318,13 +318,13 @@ packages. (Within classes and roles, namespace::sweep will later remove
 them from the symbol table, so they don't form part of your package's API.)
 These constants can help make attribute declarations more readable.
 
-	has name => (is => 'ro', isa => Str, required => true);
+   has name => (is => 'ro', isa => Str, required => true);
 
 Further constants can be declared using the C<define> keyword:
 
-	namespace Maths {
-		define PI = 3.2;
-	}
+   namespace Maths {
+      define PI = 3.2;
+   }
 
 Constants declared this way will I<not> be swept away by namespace::sweep,
 and are considered part of your package's API.
@@ -353,16 +353,16 @@ and Perl 5.14 features are all switched on.
 L<true> is loaded, so you don't need to do this at the end of your
 file:
 
-	1;
+   1;
 
 =head2 Custom Sugar
 
 It is possible to inject other functions into all inner packages using:
 
-	use Moops [
-		'List::Util'      => [qw( first reduce )],
-		'List::MoreUtils' => [qw( any all none )],
-	];
+   use Moops [
+      'List::Util'      => [qw( first reduce )],
+      'List::MoreUtils' => [qw( any all none )],
+   ];
 
 This is by far the easiest way to extend Moops with project-specific
 extras.
@@ -377,18 +377,18 @@ The easiest way to extend Moops is to inject additional imports into
 the inner packages using the technique outlined in L</Custom Sugar>
 above. You can wrap all that up in a module:
 
-	package MoopsX::Lists;
-	use Moops ();
-	use List::Util ();
-	use List::MoreUtils ();
-	sub import {
-		push @{ $_[1] ||= [] }, (
-			'List::Util'      => [qw( first reduce )],
-			'List::MoreUtils' => [qw( any all none )],
-		);
-		goto \&Moops::import;
-	}
-	1;
+   package MoopsX::Lists;
+   use Moops ();
+   use List::Util ();
+   use List::MoreUtils ();
+   sub import {
+      push @{ $_[1] ||= [] }, (
+         'List::Util'      => [qw( first reduce )],
+         'List::MoreUtils' => [qw( any all none )],
+      );
+      goto \&Moops::import;
+   }
+   1;
 
 Now people can do C<< use MoopsX::Lists >> instead of C<< use Moops >>.
 

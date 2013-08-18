@@ -48,13 +48,15 @@ sub import
 	'feature'->import(':5.14');
 	'true'->import();
 	
-	for my $kw (qw/class role namespace/)
+	my $parser_class = $class->class_for_parser;
+	
+	for my $kw ($parser_class->keywords)
 	{
 		Keyword::Simple::define $kw => sub
 		{
 			my $ref = $_[0];
 			
-			my $parser = $class->class_for_parser->new(
+			my $parser = $parser_class->new(
 				keyword   => $kw,
 				ref       => $ref,
 				ccstash   => scalar(ccstash),

@@ -17,6 +17,8 @@
 	:runtime-requirement [ :on "namespace::sweep 0.006"^^:CpanId ];
 	:runtime-requirement [ :on "true 0.18"^^:CpanId ];
 	:runtime-suggestion  [ :on "MooX::HandlesVia"^^:CpanId ];
+	:runtime-suggestion  [ :on "Moose 2.0600"^^:CpanId ];
+	:runtime-suggestion  [ :on "Mouse 1.00"^^:CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
 	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
 	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];

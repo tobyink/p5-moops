@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::DefineKeyword;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.007';
+our $VERSION   = '0.008';
 
 sub import
 {

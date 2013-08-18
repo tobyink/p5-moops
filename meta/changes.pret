@@ -58,3 +58,15 @@
 		item "Help Class::Load (and thus Moose) notice that empty roles are loaded by setting $VERSION to an empty string when no version is specified."^^Change;
 		item "Fix parsing for the `namespace` keyword that was broken in 0.005."^^Bugfix;
 	].
+
+`Moops 0.008 cpan:TOBYINK`
+	issued  2013-08-18;
+	changeset [
+		item "Add Mouse and Moose as 'runtime suggests' dependencies."^^Packaging;
+		item "Add Perl 5.14 as an explicit dependency."^^Packaging;
+		item "Found a remaining hard-coded list of keywords that was breaking extensibility mechanism."^^Bugfix;
+		item "Bundle an example showing how to extend Moops."^^Documentation;
+		item "Fix custom imports feature."^^Bugfix;
+		item "Stop using constant.pm (though it's still required via Moo); this allows `true` and `false` to be correcting swept by namespace::sweep."^^Bugfix;
+		item "More test suite improvements; still more to do."^^Packaging;
+	].

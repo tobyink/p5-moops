@@ -16,6 +16,13 @@ MoopsX::Ception::CodeGenerator::Exception is a simple subclass
 of L<Moops::CodeGenerator::Class> and simply adds L<Throwable> to
 the list of roles that the class does.
 
+A more practical application of this would be something like an
+MVC framework, where you might want to define C<model>, C<view>
+and C<controller> keywords, which set up classes with particular
+inheritance patterns, and import commonly used functions into
+each (e.g. URI manipulation functions into controllers, and HTML
+escaping functions into views).
+
 =head1 DEPENDENCIES
 
 Requires the L<Throwable> role which is available from CPAN.

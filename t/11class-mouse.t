@@ -33,7 +33,9 @@ class Foo using Mouse {
 	class Bar {
 		has bbb => (is => 'ro');
 	}
-	class Baz extends Bar using Mouse {
+	class Baz #comment!
+	extends Bar #comment!
+	using Mouse {
 		has ccc => (is => 'ro');
 	}
 	class ::Quux {

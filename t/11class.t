@@ -32,7 +32,8 @@ class Foo {
 	class Bar {
 		has bbb => (is => 'ro');
 	}
-	class Baz extends Bar {
+	class Baz #comment!
+	extends Bar {
 		has ccc => (is => 'ro');
 	}
 	class ::Quux {

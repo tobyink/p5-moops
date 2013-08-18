@@ -33,7 +33,9 @@ class Foo using Moose {
 	class Bar {
 		has bbb => (is => 'ro');
 	}
-	class Baz extends Bar using Moose {
+	class Baz #comment!
+	extends Bar #comment!
+	using Moose {
 		has ccc => (is => 'ro');
 	}
 	class ::Quux {

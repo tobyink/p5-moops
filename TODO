@@ -1,0 +1,31 @@
+- Complete test suite
+
+- Some sort of trait-like support possibly as an extensibility hook
+
+	class Foo is dirty {
+		# no namespace::sweep
+	}
+	
+	class Bar is mutable {
+		# no __PACKAGE__->meta->make_immutable
+	}
+	
+Simplest mechanism seems to be, when `is XXX` is encountered, we compose
+the role Moops::Trait::XXX to the code generator.
+
+- Make the code generator (not the parser) decide which relationships a
+keyword can handle. (This would require constructing the code generator
+a little earlier.)
+
+- An assertion mechanism for use within methods/functions.
+
+	assert { ... };
+
+Normally, this keyword would be rewritten to:
+
+	if (0) { ... };    # should be optimized away
+
+Under EXTENDED_TESTING/AUTHOR_TESTING/RELEASE_TESTING/AUTOMATED_TESTING,
+it would be rewritten to:
+
+	die "Assertion failed" unless do { ... };

@@ -22,6 +22,27 @@ the same terms as the Perl 5 programming language system itself.
 
 use strict;
 use warnings;
-use Test::More skip_all => 'TODO';
+use Test::More;
+
+use Moops;
+
+class MyClass {
+	define PI => 3.2;
+	method get_true () { true; }
+	method get_false () { false; }
+}
+
+ok not 'MyClass'->can('true');
+ok not 'MyClass'->can('false');
+ok     'MyClass'->can('get_true');
+ok     'MyClass'->can('get_false');
+ok     'MyClass'->can('PI');
+
+ok(    'MyClass'->get_true);
+ok(not 'MyClass'->get_false);
+
+is(MyClass::PI,   3.2);
+is(MyClass::PI(), 3.2);
+is('MyClass'->PI, 3.2);
 
 done_testing;

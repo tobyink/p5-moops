@@ -45,4 +45,6 @@ is(
 	42,
 );
 
+ok not $calc->can('sum');
+
 done_testing;

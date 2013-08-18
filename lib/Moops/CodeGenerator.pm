@@ -40,7 +40,7 @@ sub generate
 	$inject .= join qq[\n], $self->generate_package_setup;
 	
 	# Additional imports
-	$inject .= $self->imports->generate_code if $self->has_imports;
+	$inject .= $self->imports->generate_code($package) if $self->has_imports;
 	
 	# Stuff that must happen at runtime rather than compile time
 	$inject .= "'Moops'->at_runtime('$package');";

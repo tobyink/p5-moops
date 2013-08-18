@@ -28,6 +28,7 @@ sub do_imports {
 	
 	my $imports = $SAVED{$ident};
 	
+	require Import::Into;
 	for my $import (@$imports)
 	{
 		my ($module, $params) = @$import;

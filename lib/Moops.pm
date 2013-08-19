@@ -299,13 +299,13 @@ should generally be usable by package-qualifying them:
 
    use MooseX::Types::Numeric qw();
    
-   method foo ( MooseX::Types::Numeric::SingleDigit $d ) {
+   method foo ( MooseX::Types::Common::Numeric::PositiveInt $d ) {
       # ...
    }
 
 Alternatively:
 
-   use MooseX::Types::Numeric qw(SingleDigit);
+   use MooseX::Types::Common::Numeric qw(PositiveInt);
    
    method foo ( (SingleDigit) $d ) {
       # ...
@@ -315,6 +315,10 @@ Note the parentheses around the type constraint in the method
 signature; this is required for Function::Parameters to realise
 that C<SingleDigit> is an imported symbol, and not a string to
 be looked up.
+
+(The version using the fully-qualified name should even work in
+L<Moo> and L<Mouse> classes, because it forces the type constraint
+to be loaded via (and wrapped by) Type::Tiny.)
 
 =head2 Constants
 

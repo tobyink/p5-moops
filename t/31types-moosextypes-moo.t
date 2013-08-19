@@ -38,6 +38,7 @@ class Foo using Moo {
 }
 
 my $foo = 'Foo'->new(num => 20);
+ok(not $foo->isa('Moose::Object'));
 is($foo->num, 20);
 is($foo->num(40), 40);
 is($foo->num, 40);

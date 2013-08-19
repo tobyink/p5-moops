@@ -1,5 +1,3 @@
-- Complete test suite
-
 - Some sort of trait-like support possibly as an extensibility hook
 
 	class Foo is dirty {

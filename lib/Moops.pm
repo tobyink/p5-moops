@@ -63,7 +63,11 @@ sub import
 			);
 			$parser->parse;
 			
-			my $code = $parser->code_generator($imports)->generate;
+			my %attrs;
+			$attrs{imports} = $imports if defined $imports;
+			my $gen = $parser->code_generator(%attrs);
+			
+			my $code = $gen->generate;
 			substr($$ref, 0, 0) = ($parser->is_empty ? "{ $code }" : "{ $code ");
 		};
 	}

@@ -237,16 +237,34 @@ sub class_for_code_generator
 sub code_generator
 {
 	my $self = shift;
-	my ($imports) = @_;
+	my (%attrs) = @_;
 	
-	$self->class_for_code_generator->new(
+	my $class = $self->class_for_code_generator;
+	
+	if (my %traits = %{$self->traits || {}})
+	{
+		require Moo::Role;
+		$class = 'Moo::Role'->create_class_with_roles(
+			$self->class_for_code_generator,
+			map("Moops::Trait::Package::$_", keys %traits),
+		);
+		
+		for my $trait (keys %traits)
+		{
+			next unless defined $traits{$trait};
+			$attrs{sprintf('%s_%s', lc($trait), $_)} = $traits{$trait}{$_}
+				for keys %{$traits{$trait}};
+		}
+	}
+	
+	$class->new(
 		package   => $self->package,
 		(version  => $self->version) x!!($self->has_version),
 		relations => $self->relations,
 		is_empty  => $self->is_empty,
 		keyword   => $self->keyword,
 		ccstash   => $self->ccstash,
-		(imports  => $imports) x!!(defined $imports),
+		%attrs,
 	);
 }
 

@@ -19,6 +19,13 @@ my %using = (
 	Mouse => 'use Mouse;',
 );
 
+sub Moops::CodeGenerator::Class::__GUARD__::DESTROY
+{
+	my $pkg = $_[0][0];
+	$pkg->meta->make_immutable
+		unless in_global_destruction;
+}
+
 sub generate_package_setup_oo
 {
 	my $self  = shift;
@@ -51,11 +58,11 @@ around generate_package_setup_relationships => sub
 	);
 };
 
-sub Moops::CodeGenerator::Class::__GUARD__::DESTROY
+around known_relationships => sub
 {
-	my $pkg = $_[0][0];
-	$pkg->meta->make_immutable
-		unless in_global_destruction;
-}
+	my $next = shift;
+	my $self = shift;
+	return($self->$next(@_), qw/ extends /);
+};
 
 1;

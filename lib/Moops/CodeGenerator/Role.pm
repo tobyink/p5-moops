@@ -98,4 +98,18 @@ sub generate_package_setup_relationships
 	return sprintf "with(%s);", join ",", map perlstring($_), @roles;
 }
 
+around known_relationships => sub
+{
+	my $next = shift;
+	my $self = shift;
+	return($self->$next(@_), qw/ with using /);
+};
+
+around qualify_relationship => sub
+{
+	my $next = shift;
+	my $self = shift;
+	$_[0] eq 'using' ? !!0 : $self->$next(@_);
+};
+
 1;

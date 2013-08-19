@@ -11,10 +11,6 @@
 Simplest mechanism seems to be, when `:XXX` is encountered, we compose
 the role Moops::Trait::XXX to the code generator.
 
-- Make the code generator (not the parser) decide which relationships a
-keyword can handle. (This would require constructing the code generator
-a little earlier.)
-
 - An assertion mechanism for use within methods/functions.
 
 	assert { ... };

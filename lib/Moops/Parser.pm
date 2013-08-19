@@ -24,6 +24,15 @@ has 'traits'     => (is => 'rwp', init_arg => undef, default => sub { +{} });
 has 'is_empty'   => (is => 'rwp', init_arg => undef, default => sub { 0 });
 has 'done'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
 
+has 'class_for_code_generator' => (
+	is      => 'lazy',
+	builder => 1,
+	handles => {
+		known_relationships  => 'known_relationships',
+		qualify_relationship => 'qualify_relationship',
+	},
+);
+
 sub _eat
 {
 	my $self = shift;
@@ -84,7 +93,7 @@ sub _eat_relations
 {
 	my $self = shift;
 	
-	my $RELS = join '|', map quotemeta, $self->relationships;
+	my $RELS = join '|', map quotemeta, $self->known_relationships;
 	$RELS = qr/\A($RELS)/sm;
 	
 	my %relationships;
@@ -152,7 +161,7 @@ sub parse
 	$self->_eat_space;
 	
 	$self->_set_package(
-		$self->_eat_package('package')
+		$self->_eat_package
 	);
 	
 	$self->_eat_space;
@@ -165,7 +174,7 @@ sub parse
 	
 	$self->_set_relations(
 		$self->_eat_relations
-	) if $self->relationships;
+	) if $self->known_relationships;
 	
 	$self->_eat_space;
 	
@@ -187,21 +196,6 @@ sub keywords
 	qw/ class role namespace /;
 }
 
-sub relationships
-{
-	my $self = shift;
-	my $kw   = $self->keyword;
-	return qw(with using)          if $kw eq q(role);
-	return qw(with extends using)  if $kw eq q(class);
-	return qw();
-}
-
-sub module_name_should_be_qualified
-{
-	shift;
-	return 1 if $_[0] =~ /^(package|with|extends)$/;
-}
-
 sub qualify_module_name
 {
 	my $self = shift;
@@ -211,27 +205,28 @@ sub qualify_module_name
 	return $1                    if $bareword =~ /^::(.+)$/;
 	return $bareword             if $caller eq 'main';
 	return $bareword             if $bareword =~ /::/;
-	return "$caller\::$bareword" if $self->module_name_should_be_qualified($rel);
+	return "$caller\::$bareword" if !defined($rel) || $self->qualify_relationship($rel);
 	return $bareword;
 }
 
-sub class_for_code_generator
+sub _build_class_for_code_generator
 {
 	my $self = shift;
 	my $kw = $self->keyword;
 	
-	if ($kw eq 'class') {
+	if ($kw eq 'class')
+	{
 		require Moops::CodeGenerator::Class;
 		return 'Moops::CodeGenerator::Class';
 	}
-	elsif ($kw eq 'role') {
+	elsif ($kw eq 'role')
+	{
 		require Moops::CodeGenerator::Role;
 		return 'Moops::CodeGenerator::Role';
 	}
-	else {
-		require Moops::CodeGenerator;
-		return 'Moops::CodeGenerator';
-	}
+	
+	require Moops::CodeGenerator;
+	return 'Moops::CodeGenerator';
 }
 
 sub code_generator

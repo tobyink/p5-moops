@@ -94,4 +94,14 @@ sub arguments_for_function_parameters
 	};
 }
 
+sub known_relationships
+{
+	return;
+}
+
+sub qualify_relationship
+{
+	return 1;
+}
+
 1;

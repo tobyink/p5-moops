@@ -1,14 +1,14 @@
 - Some sort of trait-like support possibly as an extensibility hook
 
-	class Foo is dirty {
+	class Foo :Dirty {
 		# no namespace::sweep
 	}
 	
-	class Bar is mutable {
+	class Bar :Mutable {
 		# no __PACKAGE__->meta->make_immutable
 	}
 	
-Simplest mechanism seems to be, when `is XXX` is encountered, we compose
+Simplest mechanism seems to be, when `:XXX` is encountered, we compose
 the role Moops::Trait::XXX to the code generator.
 
 - Make the code generator (not the parser) decide which relationships a

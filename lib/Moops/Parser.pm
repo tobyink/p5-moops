@@ -20,6 +20,7 @@ has 'ref'        => (is => 'ro');
 has 'package'    => (is => 'rwp', init_arg => undef);
 has 'version'    => (is => 'rwp', init_arg => undef, predicate => 'has_version');
 has 'relations'  => (is => 'rwp', init_arg => undef, default => sub { +{} });
+has 'traits'     => (is => 'rwp', init_arg => undef, default => sub { +{} });
 has 'is_empty'   => (is => 'rwp', init_arg => undef, default => sub { 0 });
 has 'done'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
 
@@ -108,6 +109,41 @@ sub _eat_relations
 	return \%relationships
 }
 
+sub _eat_traits
+{
+	my $self = shift;
+	
+	my %traits;
+	while ($self->_peek(qr/[A-Za-z]\w+/))
+	{
+		my $trait = $self->_eat(qr/[A-Za-z]\w+/);
+		$self->_eat_space;
+		
+		if ($self->_peek(qr/\(/))
+		{
+			require Text::Balanced;
+			my $code = Text::Balanced::extract_codeblock(${$self->ref}, '()');
+			my $ccstash = $self->ccstash;
+			# stolen from Attribute::Handlers
+			my $evaled = eval("package $ccstash; no warnings; no strict; local \$SIG{__WARN__}=sub{die}; +{ $code }");
+			$traits{$trait} = $evaled;
+			$self->_eat_space;
+		}
+		else
+		{
+			$traits{$trait} = undef;
+		}
+		
+		if ($self->_peek(qr/:/))
+		{
+			$self->_eat(':');
+			$self->_eat_space;
+		}
+	}
+	
+	\%traits;
+}
+
 sub parse
 {
 	my $self = shift;
@@ -133,7 +169,15 @@ sub parse
 	
 	$self->_eat_space;
 	
-	$self->_peek(qr/\A;/) ? $self->_set_is_empty(1) : $self->_eat('{');
+	if ($self->_peek(qr/:/))
+	{
+		$self->_eat(':');
+		$self->_eat_space;
+		$self->_set_traits($self->_eat_traits);
+		$self->_eat_space;
+	}
+	
+	$self->_peek(qr/;/) ? $self->_set_is_empty(1) : $self->_eat('{');
 	
 	$self->_set_done(1);
 }

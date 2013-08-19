@@ -24,4 +24,5 @@
 	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
 	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];
 	:test-recommendation [ :on "Moose 2.0600"^^:CpanId ];
-	:test-recommendation [ :on "Mouse 1.00"^^:CpanId ].
+	:test-recommendation [ :on "Mouse 1.00"^^:CpanId ];
+	:test-suggestion     [ :on "MooseX::Types::Common::Numeric"^^:CpanId ].

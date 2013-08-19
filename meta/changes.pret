@@ -70,3 +70,10 @@
 		item "Stop using constant.pm (though it's still required via Moo); this allows `true` and `false` to be correcting swept by namespace::sweep."^^Bugfix;
 		item "More test suite improvements; still more to do."^^Packaging;
 	].
+
+`Moops 0.009 cpan:TOBYINK`
+	issued  2013-08-19;
+	changeset [
+		item "The test suite is now in a reasonable state."^^Packaging;
+		item "Fix at-runtime hook (used for method modifiers)."^^Bugfix;
+	].

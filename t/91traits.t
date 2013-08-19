@@ -27,7 +27,7 @@ use Test::More;
 use Moops;
 
 BEGIN {
-	role Moops::Trait::Package::Quux {
+	role Moops::TraitFor::Keyword::Quux {
 		has quux_n => (is => 'ro', default => 0);
 		around generate_package_setup {
 			my $n = $self->quux_n + 0;

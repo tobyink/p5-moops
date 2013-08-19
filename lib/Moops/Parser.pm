@@ -241,7 +241,7 @@ sub keyword_object
 		require Moo::Role;
 		$class = 'Moo::Role'->create_class_with_roles(
 			$self->class_for_keyword,
-			map("Moops::Trait::Package::$_", keys %traits),
+			map("Moops::TraitFor::Keyword::$_", keys %traits),
 		);
 		
 		for my $trait (keys %traits)

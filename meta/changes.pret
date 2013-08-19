@@ -77,3 +77,11 @@
 		item "The test suite is now in a reasonable state."^^Packaging;
 		item "Fix at-runtime hook (used for method modifiers)."^^Bugfix;
 	].
+
+`Moops 0.010 cpan:TOBYINK`
+	issued  2013-08-19;
+	changeset [
+		item "Parse Attribute::Handlers-style attributes attached to package declarations; treat these as traits for the code generator."^^Addition;
+		item "Rename Moops::CodeGenerator -> Moops::Keyword."^^Change;
+		item "Much refactoring."^^Change;
+	].

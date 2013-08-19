@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::MethodModifiers;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.009';
+our $VERSION   = '0.010';
 
 use Attribute::Handlers;
 

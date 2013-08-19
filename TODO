@@ -1,15 +1,8 @@
-- Some sort of trait-like support possibly as an extensibility hook
+- Create a trait Moops::TraitFor::Keyword::dirty
 
-	class Foo :Dirty {
-		# no namespace::sweep
-	}
-	
-	class Bar :Mutable {
-		# no __PACKAGE__->meta->make_immutable
-	}
-	
-Simplest mechanism seems to be, when `:XXX` is encountered, we compose
-the role Moops::Trait::XXX to the code generator.
+- Create a trait Moops::TraitFor::Keyword::mutable
+
+- Document the Moops::TraitFor::Keyword mechanism
 
 - An assertion mechanism for use within methods/functions.
 

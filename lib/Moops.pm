@@ -422,19 +422,7 @@ the parser can handle.
 
 =item *
 
-The C<relationships> object method, which returns a list of valid
-inter-package relationships such as C<extends> and C<using> for the
-current keyword (C<< $self->keyword >>).
-
-=item *
-
-The C<module_name_should_be_qualified> object method, which, when
-given an inter-package relationship, indicates whether it should
-be subjected to package qualification.
-
-=item *
-
-The C<class_for_code_generator> object method, which returns the name of
+The C<class_for_keyword> object method, which returns the name of
 a subclass of Moops::Keyword which will be used for translating
 the result of parsing the keyword into a string using Perl's built-in
 syntax.
@@ -444,13 +432,25 @@ syntax.
 Hopefully you'll be able to avoid overriding the C<parse>
 method itself, as it has a slightly messy API.
 
-Your code generator subclass can either be a direct subclass of
-Moops::Keyword, or of Moops::CodeGenerator::Class or
-Moops::Keyword::Role.
+Your C<class_for_keyword> subclass can either be a direct subclass of
+Moops::Keyword, or of Moops::Keyword::Class or Moops::Keyword::Role.
 
-The code generator subclass might want to override:
+The keyword subclass might want to override:
 
 =over
+
+=item *
+
+The C<known_relationships> class method, which returns a list of valid
+inter-package relationships such as C<extends> and C<using> for the
+current keyword.
+
+=item *
+
+The C<qualify_relationship> object method, which, when given the name of
+an inter-package relationship, indicates whether it should be subjected
+to package qualification rules (like C<extends> and C<with> are, but
+C<using> is not).
 
 =item *
 
@@ -465,7 +465,7 @@ to be passed to L<Function::Parameters>.
 
 =back
 
-Hopefully you'll be able to avoid overriding the C<generate>
+Hopefully you'll be able to avoid overriding the C<generate_code>
 method.
 
 =head1 BUGS

@@ -9,11 +9,11 @@ MoopsX::Ception::Parser module.
 
 MoopsX::Ception::Parser uses L<Moops::Parser>'s hooks to add support
 for parsing the C<exception> keyword, and injects the
-MoopsX::Ception::CodeGenerator::Exception code generator when
+MoopsX::Ception::Keyword::Exception code generator when
 it is encountered.
 
-MoopsX::Ception::CodeGenerator::Exception is a simple subclass
-of L<Moops::CodeGenerator::Class> and simply adds L<Throwable> to
+MoopsX::Ception::Keyword::Exception is a simple subclass
+of L<Moops::Keyword::Class> and simply adds L<Throwable> to
 the list of roles that the class does.
 
 A more practical application of this would be something like an

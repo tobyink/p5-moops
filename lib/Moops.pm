@@ -65,9 +65,9 @@ sub import
 			
 			my %attrs;
 			$attrs{imports} = $imports if defined $imports;
-			my $gen = $parser->code_generator(%attrs);
+			my $kw = $parser->keyword_object(%attrs);
 			
-			my $code = $gen->generate;
+			my $code = $kw->generate_code;
 			substr($$ref, 0, 0) = ($parser->is_empty ? "{ $code }" : "{ $code ");
 		};
 	}
@@ -435,7 +435,7 @@ be subjected to package qualification.
 =item *
 
 The C<class_for_code_generator> object method, which returns the name of
-a subclass of Moops::CodeGenerator which will be used for translating
+a subclass of Moops::Keyword which will be used for translating
 the result of parsing the keyword into a string using Perl's built-in
 syntax.
 
@@ -445,8 +445,8 @@ Hopefully you'll be able to avoid overriding the C<parse>
 method itself, as it has a slightly messy API.
 
 Your code generator subclass can either be a direct subclass of
-Moops::CodeGenerator, or of Moops::CodeGenerator::Class or
-Moops::CodeGenerator::Role.
+Moops::Keyword, or of Moops::CodeGenerator::Class or
+Moops::Keyword::Role.
 
 The code generator subclass might want to override:
 

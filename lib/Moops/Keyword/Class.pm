@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package Moops::CodeGenerator::Class;
+package Moops::Keyword::Class;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.009';
@@ -11,7 +11,7 @@ our $VERSION   = '0.009';
 use Moo;
 use Devel::GlobalDestruction;
 use B 'perlstring';
-extends qw( Moops::CodeGenerator::Role );
+extends qw( Moops::Keyword::Role );
 
 my %using = (
 	Moo   => 'use Moo; use MooX::late;',
@@ -19,7 +19,7 @@ my %using = (
 	Mouse => 'use Mouse;',
 );
 
-sub Moops::CodeGenerator::Class::__GUARD__::DESTROY
+sub Moops::Keyword::Class::__GUARD__::DESTROY
 {
 	my $pkg = $_[0][0];
 	$pkg->meta->make_immutable
@@ -35,7 +35,7 @@ sub generate_package_setup_oo
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
 	my @guard;
-	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::CodeGenerator::Class::__GUARD__");', 100_000 + int(rand 899_000))
+	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::Keyword::Class::__GUARD__");', 100_000 + int(rand 899_000))
 		if $using eq 'Moose' || $using eq 'Mouse';
 	
 	return (

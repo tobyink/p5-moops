@@ -12,23 +12,13 @@ around keywords => sub {
 	return @kw;
 };
 
-around relationships => sub {
-	my $next = shift;
-	my $self = shift;
-	
-	return qw(extends with using)
-		if $self->keyword eq 'exception';
-	
-	return $self->$next;
-};
-
-around class_for_code_generator => sub {
+around class_for_keyword => sub {
 	my $next = shift;
 	my $self = shift;
 	
 	if ($self->keyword eq 'exception') {
-		require MoopsX::Ception::CodeGenerator::Exception;
-		return 'MoopsX::Ception::CodeGenerator::Exception';
+		require MoopsX::Ception::Keyword::Exception;
+		return 'MoopsX::Ception::Keyword::Exception';
 	}
 	
 	return $self->$next;

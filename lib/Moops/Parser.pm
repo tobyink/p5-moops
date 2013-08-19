@@ -24,7 +24,7 @@ has 'traits'     => (is => 'rwp', init_arg => undef, default => sub { +{} });
 has 'is_empty'   => (is => 'rwp', init_arg => undef, default => sub { 0 });
 has 'done'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
 
-has 'class_for_code_generator' => (
+has 'class_for_keyword' => (
 	is      => 'lazy',
 	builder => 1,
 	handles => {
@@ -209,38 +209,38 @@ sub qualify_module_name
 	return $bareword;
 }
 
-sub _build_class_for_code_generator
+sub _build_class_for_keyword
 {
 	my $self = shift;
 	my $kw = $self->keyword;
 	
 	if ($kw eq 'class')
 	{
-		require Moops::CodeGenerator::Class;
-		return 'Moops::CodeGenerator::Class';
+		require Moops::Keyword::Class;
+		return 'Moops::Keyword::Class';
 	}
 	elsif ($kw eq 'role')
 	{
-		require Moops::CodeGenerator::Role;
-		return 'Moops::CodeGenerator::Role';
+		require Moops::Keyword::Role;
+		return 'Moops::Keyword::Role';
 	}
 	
-	require Moops::CodeGenerator;
-	return 'Moops::CodeGenerator';
+	require Moops::Keyword;
+	return 'Moops::Keyword';
 }
 
-sub code_generator
+sub keyword_object
 {
 	my $self = shift;
 	my (%attrs) = @_;
 	
-	my $class = $self->class_for_code_generator;
+	my $class = $self->class_for_keyword;
 	
 	if (my %traits = %{$self->traits || {}})
 	{
 		require Moo::Role;
 		$class = 'Moo::Role'->create_class_with_roles(
-			$self->class_for_code_generator,
+			$self->class_for_keyword,
 			map("Moops::Trait::Package::$_", keys %traits),
 		);
 		

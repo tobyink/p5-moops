@@ -3,14 +3,14 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package Moops::CodeGenerator::Role;
+package Moops::Keyword::Role;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.009';
 
 use Moo;
 use B qw(perlstring);
-extends qw( Moops::CodeGenerator );
+extends qw( Moops::Keyword );
 
 around arguments_for_function_parameters => sub
 {

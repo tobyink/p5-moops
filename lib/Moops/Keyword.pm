@@ -3,7 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package Moops::CodeGenerator;
+package Moops::Keyword;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.009';
@@ -21,7 +21,7 @@ has 'relations'  => (is => 'ro');
 has 'is_empty'   => (is => 'ro');
 has 'imports'    => (is => 'ro', predicate => 'has_imports');
 
-sub generate
+sub generate_code
 {
 	my $self = shift;
 	my $class = ref $self;

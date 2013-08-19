@@ -4,7 +4,7 @@
 
 =head1 PURPOSE
 
-Check that type constraints work.
+Check that type constraints work with L<Moose>.
 
 =head1 AUTHOR
 
@@ -23,11 +23,12 @@ the same terms as the Perl 5 programming language system itself.
 use strict;
 use warnings;
 use Test::More;
+use Test::Requires { 'Moose' => '2.0600' };
 use Test::Fatal;
 
 use Moops;
 
-class Foo {
+class Foo using Moose {
 	has num => (is => 'rw', isa => Num);
 	method add ( Num $addition ) {
 		$self->num( $self->num + $addition );
@@ -35,6 +36,7 @@ class Foo {
 }
 
 my $foo = 'Foo'->new(num => 20);
+isa_ok($foo, 'Moose::Object');
 is($foo->num, 20);
 is($foo->num(40), 40);
 is($foo->num, 40);

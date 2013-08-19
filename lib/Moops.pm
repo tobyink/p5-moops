@@ -73,7 +73,7 @@ sub at_runtime
 {
 	my $class = shift;
 	my ($pkg) = @_;
-	for my $task (@{ $Moops::AT_RUNTIME })
+	for my $task (@{ $Moops::AT_RUNTIME{$pkg} })
 	{
 		my ($code, @args) = @$task;
 		eval "package $pkg; \$code->(\@args)";

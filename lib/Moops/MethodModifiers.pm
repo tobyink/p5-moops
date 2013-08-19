@@ -18,7 +18,7 @@ sub handle
 	my $installer = find_installer($pkg, $subname, $code, $modifier)
 		or Carp::croak("No '$modifier' method modifier for package '$pkg'; stopped");
 	my @at_runtime = ($installer, $subname, wrap_method($pkg, $subname, $code, $modifier));
-	push @{ $Moops::AT_RUNTIME }, \@at_runtime;
+	push @{ $Moops::AT_RUNTIME{$pkg} }, \@at_runtime;
 }
 
 # stolen from namespace::sweep,

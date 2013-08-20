@@ -131,7 +131,8 @@ Moops - Moops Object-Oriented Programming Sugar
 
 Unstable.
 
-
+Until version 1.000, stuff might change, but not without good
+reason.
 
 =head1 DESCRIPTION
 

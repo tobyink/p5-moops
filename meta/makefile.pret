@@ -22,9 +22,14 @@
 	:runtime-suggestion  [ :on "Moose 2.0600"^^:CpanId ];
 	:runtime-suggestion  [ :on "MooseX::XSAccessor"^^:CpanId ];
 	:runtime-suggestion  [ :on "Mouse 1.00"^^:CpanId ];
+	:runtime-suggestion  [ :on "Role::Tiny 1.000000"^^:CpanId ];
+	:runtime-suggestion  [ :on "Class::Tiny 0.003"^^:CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
 	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
 	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];
 	:test-recommendation [ :on "Moose 2.0600"^^:CpanId ];
 	:test-recommendation [ :on "Mouse 1.00"^^:CpanId ];
+	:test-recommendation [ :on "Class::Tiny 0.003"^^:CpanId ];
+	:test-recommendation [ :on "Role::Tiny 1.000000"^^:CpanId ];
+	:test-suggestion     [ :on "MooseX::XSAccessor"^^:CpanId ];
 	:test-suggestion     [ :on "MooseX::Types::Common::Numeric"^^:CpanId ].

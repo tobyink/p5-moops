@@ -214,6 +214,41 @@ using Moo, the L<MooX::late> extension is enabled.
 
 L<namespace::sweep> is automatically used in all classes.
 
+Between the class declaration and its body, L<Attribute::Handlers>-style
+attributes may be provided:
+
+   class Person :mutable {
+      # ...
+   }
+   
+   class Employee extends Person with Employment :mutable;
+
+The following attributes are defined for classes:
+
+=over
+
+=item *
+
+C<< :dirty >> - suppresses namespace::sweep
+
+=item *
+
+C<< :mutable >> - suppresses making Moose classes immutable
+
+=item *
+
+C<< :ro >> - make attributes declared with C<has> default to 'ro'
+
+=item *
+
+C<< :rw >> - make attributes declared with C<has> default to 'rw'
+
+=item *
+
+C<< :rwp >> - make attributes declared with C<has> default to 'rwp'
+
+=back
+
 =head2 Roles
 
 Roles can be declared similarly to classes, but using the C<role> keyword.
@@ -237,6 +272,9 @@ If roles use Moo, the L<MooX::late> extension is enabled.
 
 L<namespace::sweep> is automatically used in all roles.
 
+Roles take similar L<Attribute::Handlers>-style attributes to
+classes, but don't support C<< :mutable >>.
+
 =head2 Namespaces
 
 The C<namespace> keyword works as above, but declares a package without
@@ -247,6 +285,10 @@ any class-specific or role-specific semantics.
    }
 
 L<namespace::sweep> is not automatically used in namespaces.
+
+L<Attribute::Handlers>-style attributes are supported for namespaces,
+but none of the built-in attributes make any sense without class/role
+semantics. Traits written as Moops extensions may support namespaces.
 
 =head2 Functions and Methods
 
@@ -396,7 +438,7 @@ extras.
 
 Moops is written to hopefully be fairly extensible.
 
-=head2 The Easy Way
+=head2 Extending Moops via imports
 
 The easiest way to extend Moops is to inject additional imports into
 the inner packages using the technique outlined in L</Custom Sugar>
@@ -417,7 +459,7 @@ above. You can wrap all that up in a module:
 
 Now people can do C<< use MoopsX::Lists >> instead of C<< use Moops >>.
 
-=head2 The Hard Way
+=head2 Extending Moops via subclassing
 
 For more complex needs, you should create a subclass of Moops, and
 override the C<class_for_parser> method to inject your own custom
@@ -479,6 +521,19 @@ to be passed to L<Function::Parameters>.
 
 Hopefully you'll be able to avoid overriding the C<generate_code>
 method.
+
+=head2 Extending Moops via traits
+
+Roles in the C<Moops::TraitFor::Keyword> namespace are automatically
+loaded and applied to keyword objects when a corresponding
+Attribute::Handlers-style attribute is seen.
+
+For examples extending Moops this way, see the
+L<Moops::TraitFor::Keyword::dirty>,
+L<Moops::TraitFor::Keyword::mutable>,
+L<Moops::TraitFor::Keyword::ro>,
+L<Moops::TraitFor::Keyword::rw> and
+L<Moops::TraitFor::Keyword::rwp> traits.
 
 =head1 BUGS
 

@@ -1,5 +1,3 @@
-- Create a trait Moops::TraitFor::Keyword::mutable
-
 - Document the Moops::TraitFor::Keyword mechanism
 
 - An assertion mechanism for use within methods/functions.

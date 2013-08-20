@@ -224,6 +224,11 @@ Roles can be declared similarly to classes, but using the C<role> keyword.
 Roles do not support the C<extends> option.
 
 Roles can be declared to be C<< using >> Moo, Moose, Mouse or Tiny.
+(Note that if you're mixing and matching role frameworks, there are
+limitations to which class builders can consume which roles. Mouse
+is generally the least compatible; Moo and Moose classes should be
+able to consume each others' roles; Moo can also consume Role::Tiny
+roles.)
 
 If roles use Moo, the L<MooX::late> extension is enabled.
 

@@ -3,27 +3,39 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package Moops::DefineKeyword;
+package PerlX::Define;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.011';
+
+use B ();
+use Keyword::Simple ();
 
 sub import
 {
 	shift;
 	
-	if (@_) {
+	if (@_)
+	{
 		my ($name, $value) = @_;
 		my $caller = caller;
-		eval qq[
-			package $caller;
-			sub $name () { \$value };
-			1;
-		] or die "ARGH: $@";
-		return;
+		
+		local $@;
+		ref($value)
+			? eval qq[
+				package $caller;
+				sub $name () { \$value };
+				1;
+			]
+			: eval qq[
+				package $caller;
+				sub $name () { ${\ B::perlstring($value) } };
+				1;
+			];
+		
+		$@ ? die($@) : return;
 	}
 	
-	require Keyword::Simple;
 	Keyword::Simple::define('define' => sub
 	{
 		my $line = shift;
@@ -36,4 +48,3 @@ sub import
 }
 
 1;
-	

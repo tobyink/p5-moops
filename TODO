@@ -1,3 +1,2 @@
 - document the assert keyword
-- rename Moops::AssertKeyword
-- rename Moops::DefineKeyword
+- tests for assert keyword

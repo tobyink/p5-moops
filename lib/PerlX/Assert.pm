@@ -3,10 +3,12 @@ use strict;
 use warnings FATAL => 'all';
 no warnings qw(void once uninitialized numeric);
 
-package Moops::AssertKeyword;
+package PerlX::Assert;
 
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.011';
+
+use Keyword::Simple ();
 
 sub import
 {
@@ -20,7 +22,6 @@ sub import
 		RELEASE_TESTING
 	/;
 	
-	require Keyword::Simple;
 	Keyword::Simple::define('assert' => sub
 	{
 		my $ref = shift;
@@ -58,7 +59,7 @@ sub import
 		{
 			substr($$ref, 0, 0) = "0 and do ";
 		}
-	})
+	});
 }
 
 sub _eat_space
@@ -77,4 +78,3 @@ sub _eat_space
 }
 
 1;
-	

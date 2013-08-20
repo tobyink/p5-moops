@@ -14,7 +14,7 @@ around generate_package_setup => sub {
 	my $next = shift;
 	my $self = shift;
 	return map {
-		s/use Moops::AssertKeyword;/use Moops::AssertKeyword -check;/; $_
+		s/use PerlX::Assert;/use PerlX::Assert -check;/; $_
 	} $self->$next(@_);
 };
 

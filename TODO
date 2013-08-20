@@ -1,12 +1,3 @@
-- An assertion mechanism for use within methods/functions.
-
-	assert { ... };
-
-Normally, this keyword would be rewritten to:
-
-	if (0) { ... };    # should be optimized away
-
-Under EXTENDED_TESTING/AUTHOR_TESTING/RELEASE_TESTING/AUTOMATED_TESTING,
-it would be rewritten to:
-
-	die "Assertion failed" unless do { ... };
+- document the assert keyword
+- rename Moops::AssertKeyword
+- rename Moops::DefineKeyword

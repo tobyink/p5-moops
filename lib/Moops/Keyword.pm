@@ -61,6 +61,7 @@ sub generate_package_setup
 	return (
 		'use Carp qw(confess);',
 		"use Function::Parameters '$class'->arguments_for_function_parameters(q[$package]);",
+		'use Moops::AssertKeyword;',
 		'use Moops::DefineKeyword;',
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',

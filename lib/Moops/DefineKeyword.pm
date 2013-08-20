@@ -11,6 +11,7 @@ our $VERSION   = '0.011';
 sub import
 {
 	shift;
+	
 	if (@_) {
 		my ($name, $value) = @_;
 		my $caller = caller;
@@ -21,14 +22,17 @@ sub import
 		] or die "ARGH: $@";
 		return;
 	}
-	Keyword::Simple::define 'define' => sub {
+	
+	require Keyword::Simple;
+	Keyword::Simple::define('define' => sub
+	{
 		my $line = shift;
 		my ($whitespace1, $name, $whitespace2, $equals) =
 			( $$line =~ m{\A([\n\s]*)(\w+)([\n\s]*)(=\>?)}s )
 			or Carp::croak("Syntax error near 'define'");
 		my $len = length($whitespace1. $name. $whitespace2. $equals);
 		substr($$line, 0, $len) = "; use Moops::DefineKeyword $name => ";
-	}
+	});
 }
 
 1;

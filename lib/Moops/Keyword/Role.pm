@@ -47,6 +47,12 @@ around arguments_for_function_parameters => sub
 	return $keywords;
 };
 
+sub arguments_for_moosex_mungehas
+{
+	shift;
+	return qw(eq_1);
+}
+
 around generate_package_setup => sub
 {
 	my $orig = shift;
@@ -82,10 +88,14 @@ sub generate_package_setup_oo
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
+	my @lines = 'use namespace::sweep;';
+	push @lines, "use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});"
+		if $using{$using} =~ /^Mo/;
+	
 	return (
 		$using{$using},
 		$self->generate_package_setup_relationships,
-		'use namespace::sweep;',
+		@lines,
 	);
 }
 

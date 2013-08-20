@@ -35,8 +35,11 @@ sub generate_package_setup_oo
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
-	my @lines;
-	
+	my @lines = (
+		'use namespace::sweep;',
+		"use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});",
+	);
+
 	if ($using eq 'Moose' || $using eq 'Mouse')
 	{
 		push @lines, sprintf(
@@ -50,11 +53,10 @@ sub generate_package_setup_oo
 		state $has_xs = !!eval('require MooseX::XSAccessor');
 		push @lines, 'use MooseX::XSAccessor;' if $has_xs;
 	}
-	
+
 	return (
 		$using{$using},
 		$self->generate_package_setup_relationships,
-		'use namespace::sweep;',
 		@lines,
 	);
 }

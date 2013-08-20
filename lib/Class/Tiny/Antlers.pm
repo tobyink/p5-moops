@@ -3,10 +3,14 @@ use warnings;
 
 package Class::Tiny::Antlers;
 
-use base 'Exporter';
-our @EXPORT = qw( has extends with );
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.010';
 
 use Class::Tiny 0.003 ();
+use Exporter ();
+
+our @ISA    = qw( Exporter );
+our @EXPORT = qw( has extends with );
 
 sub croak
 {

@@ -194,6 +194,10 @@ the declaration:
       # ...
    }
 
+It's also possible to create classes C<< using Tiny >> (L<Class::Tiny>),
+but there's probably little point in it, because Moops uses Moo
+internally, so the more capable Moo is already loaded and in memory.
+
 (The C<using> option is exempt from the package qualification rules
 mentioned earlier.)
 
@@ -219,7 +223,7 @@ Roles can be declared similarly to classes, but using the C<role> keyword.
 
 Roles do not support the C<extends> option.
 
-Roles can be declared to be C<< using Role::Tiny >>.
+Roles can be declared to be C<< using >> Moo, Moose, Mouse or Tiny.
 
 If roles use Moo, the L<MooX::late> extension is enabled.
 

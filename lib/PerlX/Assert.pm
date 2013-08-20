@@ -45,7 +45,7 @@ sub import
 			}
 		}
 		
-		$$ref =~ s/ \A (.+?) (;|\z) / { $1; }; /xsm unless $$ref =~ /\A\{/;
+		$$ref =~ s/ \A (.+?) (;|\}|\z) / { $1; }$2 /xsm unless $$ref =~ /\A\{/;
 		
 		if ($active and defined $name)
 		{

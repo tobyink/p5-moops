@@ -95,7 +95,7 @@ __END__
 
 =encoding utf-8
 
-=for stopwords featureful
+=for stopwords featureful ro rw rwp
 
 =head1 NAME
 
@@ -198,7 +198,7 @@ It's also possible to create classes C<< using Tiny >> (L<Class::Tiny>),
 but there's probably little point in it, because Moops uses Moo
 internally, so the more capable Moo is already loaded and in memory.
 
-Moose classes are automatically accellerated using L<MooseX::XSAccessor>
+Moose classes are automatically accelerated using L<MooseX::XSAccessor>
 if it's installed.
 
 (The C<using> option is exempt from the package qualification rules

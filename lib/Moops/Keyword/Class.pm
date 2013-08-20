@@ -17,6 +17,7 @@ my %using = (
 	Moo   => 'use Moo; use MooX::late;',
 	Moose => 'use Moose;',
 	Mouse => 'use Mouse;',
+	Tiny  => 'use Class::Tiny; use Class::Tiny::Antlers;',
 );
 
 sub Moops::Keyword::Class::__GUARD__::DESTROY

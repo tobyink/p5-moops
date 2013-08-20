@@ -239,6 +239,10 @@ The following attributes are defined for classes:
 
 =item *
 
+C<< :assertions >> - enables assertion checking (see below)
+
+=item *
+
 C<< :dirty >> - suppresses namespace::sweep
 
 =item *
@@ -297,8 +301,9 @@ any class-specific or role-specific semantics.
 L<namespace::sweep> is not automatically used in namespaces.
 
 L<Attribute::Handlers>-style attributes are supported for namespaces,
-but none of the built-in attributes make any sense without class/role
-semantics. Traits written as Moops extensions may support namespaces.
+but most of the built-in attributes make any sense without class/role
+semantics. (C<< :assertions >> does.) Traits written as Moops extensions
+may support namespaces.
 
 =head2 Functions and Methods
 
@@ -397,7 +402,8 @@ These constants can help make attribute declarations more readable.
 
    has name => (is => 'ro', isa => Str, required => true);
 
-Further constants can be declared using the C<define> keyword:
+Further constants can be declared using the C<define> keyword (see
+L<PerlX::Define>):
 
    namespace Maths {
       define PI = 3.2;
@@ -405,6 +411,20 @@ Further constants can be declared using the C<define> keyword:
 
 Constants declared this way will I<not> be swept away by namespace::sweep,
 and are considered part of your package's API.
+
+=head2 Assertions
+
+Declared packages can contain assertions (see L<PerlX::Assert>). These
+are normally optimized away at compile time, but you can force them to
+be checked using the C<< :assertions >> attribute.
+
+   class Foo {
+      assert(false);    # not checked; optimized away
+   }
+   
+   class Bar :assertions {
+      assert(false);    # checked; fails; throws exception
+   }
 
 =head2 More Sugar
 

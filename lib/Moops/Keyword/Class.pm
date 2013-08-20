@@ -38,9 +38,10 @@ sub generate_package_setup_oo
 	my @lines = (
 		'use namespace::sweep;',
 		"use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});",
+#		'BEGIN { no warnings "redefine"; my $orig = \&has; *has = sub { warn __PACKAGE__." has @_"; goto $orig; } };',
 	);
 
-	if ($using eq 'Moose' || $using eq 'Mouse')
+	if ($using eq 'Moose' or $using eq 'Mouse')
 	{
 		push @lines, sprintf(
 			'my $__GUARD__%d = bless([__PACKAGE__], "Moops::Keyword::Class::__GUARD__");',

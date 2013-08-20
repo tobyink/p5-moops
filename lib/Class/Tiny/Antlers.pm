@@ -7,10 +7,16 @@ our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.010';
 
 use Class::Tiny 0.003 ();
-use Exporter ();
 
-our @ISA    = qw( Exporter );
-our @EXPORT = qw( has extends with );
+sub import
+{
+	shift;
+	my $caller = caller;
+	no strict 'refs';
+	*{"$caller\::has"}     = sub { unshift @_, $caller; goto \&has };
+	*{"$caller\::extends"} = sub { unshift @_, $caller; goto \&extends };
+	*{"$caller\::with"}    = sub { unshift @_, $caller; goto \&with };
+}
 
 sub croak
 {
@@ -21,8 +27,8 @@ sub croak
 
 sub has
 {
+	my $caller = shift;
 	my ($attr, %spec) = @_;
-	my $caller = caller;
 	
 	if (!defined($attr) or ref($attr) or $attr !~ /^[^\W\d]\w*$/s)
 	{
@@ -78,8 +84,8 @@ sub has
 
 sub extends
 {
+	my $caller = shift;
 	my (@parents) = @_;
-	my $caller = caller;
 	
 	for my $parent (@parents)
 	{
@@ -92,6 +98,7 @@ sub extends
 
 sub with
 {
+	my $caller = shift;
 	require Role::Tiny::With;
 	goto \&Role::Tiny::With::with;
 }

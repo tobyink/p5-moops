@@ -35,15 +35,27 @@ sub generate_package_setup_oo
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
-	my @guard;
-	push @guard, sprintf('my $__GUARD__%d = bless([__PACKAGE__], "Moops::Keyword::Class::__GUARD__");', 100_000 + int(rand 899_000))
-		if $using eq 'Moose' || $using eq 'Mouse';
+	my @lines;
+	
+	if ($using eq 'Moose' || $using eq 'Mouse')
+	{
+		push @lines, sprintf(
+			'my $__GUARD__%d = bless([__PACKAGE__], "Moops::Keyword::Class::__GUARD__");',
+			100_000 + int(rand 899_000),
+		);
+	}
+	
+	if ($using eq 'Moose')
+	{
+		state $has_xs = !!eval('require MooseX::XSAccessor');
+		push @lines, 'use MooseX::XSAccessor;' if $has_xs;
+	}
 	
 	return (
 		$using{$using},
 		$self->generate_package_setup_relationships,
 		'use namespace::sweep;',
-		@guard,
+		@lines,
 	);
 }
 

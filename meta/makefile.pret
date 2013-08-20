@@ -19,6 +19,7 @@
 	:runtime-requirement [ :on "perl 5.014"^^:CpanId ];
 	:runtime-suggestion  [ :on "MooX::HandlesVia"^^:CpanId ];
 	:runtime-suggestion  [ :on "Moose 2.0600"^^:CpanId ];
+	:runtime-suggestion  [ :on "MooseX::XSAccessor"^^:CpanId ];
 	:runtime-suggestion  [ :on "Mouse 1.00"^^:CpanId ];
 	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
 	:test-requirement    [ :on "Test::Requires"^^:CpanId ];

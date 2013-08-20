@@ -15,6 +15,12 @@ Typical results (run on a fairly underpowered netbook) are:
 	MXD   8.82/s    --  -98%
 	Moops  389/s 4307%    --
 
+If L<MooseX::XSAccessor> is available, Moops becomes yet faster:
+
+	        Rate   MXD Moops
+	MXD   8.65/s    --  -98%
+	Moops  449/s 5084%    --
+
 =head1 AUTHOR
 
 Toby Inkster E<lt>tobyink@cpan.orgE<gt>.

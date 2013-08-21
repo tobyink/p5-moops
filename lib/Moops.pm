@@ -372,10 +372,38 @@ The L<Types::Standard> type constraints are exported to each package
 declared using Moops. This allows the standard type constraints to be
 used as barewords.
 
-If using type constraints from other type constraint libraries, they
+Type constraints can be used in attribute definitions (C<isa>) and
+method signatures. Because Types::Standard is based on L<Type::Tiny>,
+the same type constraints may be used whether you build your classes
+and roles with Moo, Moose our Mouse.
+
+=head3 Using other Type::Library-based type constraint libraries
+
+Alternative L<Type::Library>-based libraries can be imported using
+the C<types> option; a la:
+
+   class Document types Types::XSD::Lite {
+      has title => (is => 'rw', isa => NormalizedString);
+   }
+
+Note that if an alternative type constraint library is imported, then
+L<Types::Standard> is I<not> automatically loaded, and needs to be
+listed explicitly:
+
+   class Document types Types::Standard, Types::XSD::Lite {
+      # ...
+   }
+
+=head3 Using non-Type::Library type constraint libraries
+
+Type constraint libraries that do not use Type::Tiny and Type::Library
+cannot be loaded via the C<types> option (though a future version of
+Moops may enable this).
+
+For type constraints from other type constraint libraries, they
 should generally be usable by package-qualifying them:
 
-   use MooseX::Types::Numeric qw();
+   use MooseX::Types::Common::Numeric qw();
    
    method foo ( MooseX::Types::Common::Numeric::PositiveInt $d ) {
       # ...
@@ -394,9 +422,16 @@ signature; this is required for Function::Parameters to realise
 that C<SingleDigit> is an imported symbol, and not a string to
 be looked up.
 
-(The version using the fully-qualified name should even work in
-L<Moo> and L<Mouse> classes, because it forces the type constraint
-to be loaded via (and wrapped by) Type::Tiny.)
+Bear in mind that type constraints from, say, a L<MooseX::Types>
+library won't be usable in, say, Moo attribute definitions. However,
+it's possible to wrap them with Type::Tiny, and make them usable:
+
+   class Foo using Moo :ro {
+      use MooseX::Types::Common::Numeric qw(PositiveInt);
+      use Types::TypeTiny qw( to_TypeTiny );
+      
+      has favourite_number => (isa => to_TypeTiny(PositiveInt));
+   }
 
 =head2 Constants
 

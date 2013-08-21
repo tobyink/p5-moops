@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::Parser;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.015';
+our $VERSION   = '0.016';
 
 use Moo;
 use Module::Runtime qw($module_name_rx);

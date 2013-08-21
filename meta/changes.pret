@@ -129,3 +129,9 @@
 		item "Load feature.pm so that it's consistently exported to the outer scope."^^Bugfix;
 		item "Fix a reference to Moops::DefineKeyword which will only work if you happen to have installed Moops over the top of a pre-0.012 version of Moops."^^Bugfix;
 	].
+
+`Moops 0.016 cpan:TOBYINK`
+	issued  2013-08-21;
+	changeset [
+		item "Provide a `types` option for loading type constraint libraries into classes, roles and namespaces."^^Addition;
+	].

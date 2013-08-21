@@ -19,7 +19,7 @@ my $dummy = 'Function::Parameters::Info'->new(
 {
 	package MooseX::FunctionParametersInfo;
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.015';
+	our $VERSION   = '0.016';
 	
 	sub _unwrap
 	{
@@ -46,7 +46,7 @@ my $dummy = 'Function::Parameters::Info'->new(
 {
 	package MooseX::FunctionParametersInfo::Trait::Method;
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.015';
+	our $VERSION   = '0.016';
 	
 	use Moose::Role;
 	
@@ -91,7 +91,7 @@ my $dummy = 'Function::Parameters::Info'->new(
 {
 	package MooseX::FunctionParametersInfo::Trait::WrappedMethod;
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.015';
+	our $VERSION   = '0.016';
 	
 	use Moose::Role;
 	with 'MooseX::FunctionParametersInfo::Trait::Method';

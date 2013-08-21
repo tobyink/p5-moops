@@ -122,3 +122,10 @@
 		item "Document Class::Tiny::Antlers."^^Documentation;
 		item "Class::Tiny::Antlers now supports has \@attrs like Moose."^^Change;
 	].
+
+`Moops 0.015 cpan:TOBYINK`
+	issued  2013-08-21;
+	changeset [
+		item "Load feature.pm so that it's consistently exported to the outer scope."^^Bugfix;
+		item "Fix a reference to Moops::DefineKeyword which will only work if you happen to have installed Moops over the top of a pre-0.012 version of Moops."^^Bugfix;
+	].

@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package PerlX::Assert;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.014';
+our $VERSION   = '0.015';
 
 use Keyword::Simple ();
 

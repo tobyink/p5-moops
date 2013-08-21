@@ -114,3 +114,9 @@
 	changeset [
 		item "Fix test that uses Role::Tiny and Class::Tiny without declaring them (Test::Requires)."^^Bugfix;
 	].
+
+`Moops 0.014 cpan:TOBYINK`
+	issued  2013-08-21;
+	changeset [
+		item "MooseX::FunctionParametersInfo"^^Addition;
+	].

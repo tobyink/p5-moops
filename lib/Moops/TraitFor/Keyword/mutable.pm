@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::TraitFor::Keyword::mutable;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.013';
+our $VERSION   = '0.014';
 
 use Moo::Role;
 

@@ -24,7 +24,7 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Fatal;
-use Test::Requires { 'Class::Tiny' => '0.003' };
+use Test::Requires { 'Class::Tiny' => '0.004' };
 
 use Moops;
 
@@ -65,6 +65,6 @@ ok('Quux'->can('ddd'), "Quux->can('ddd')");
 ok('Quux::Quux'->can('eee'), "Quux::Quux->can('eee')");
 ok('Quux::Quux::Quux'->can('fff'), "Quux::Quux::Quux->can('fff')");
 
-isa_ok('Foo'->new, 'Class::Tiny');
+isa_ok('Foo'->new, 'Class::Tiny::Object');
 
 done_testing;

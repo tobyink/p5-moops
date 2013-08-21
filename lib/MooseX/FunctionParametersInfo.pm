@@ -18,6 +18,8 @@ my $dummy = 'Function::Parameters::Info'->new(
 
 {
 	package MooseX::FunctionParametersInfo;
+	our $AUTHORITY = 'cpan:TOBYINK';
+	our $VERSION   = '0.014';
 	
 	sub _unwrap
 	{
@@ -43,6 +45,9 @@ my $dummy = 'Function::Parameters::Info'->new(
 
 {
 	package MooseX::FunctionParametersInfo::Trait::Method;
+	our $AUTHORITY = 'cpan:TOBYINK';
+	our $VERSION   = '0.014';
+	
 	use Moose::Role;
 	
 	has _info => (
@@ -85,6 +90,9 @@ my $dummy = 'Function::Parameters::Info'->new(
 
 {
 	package MooseX::FunctionParametersInfo::Trait::WrappedMethod;
+	our $AUTHORITY = 'cpan:TOBYINK';
+	our $VERSION   = '0.014';
+	
 	use Moose::Role;
 	with 'MooseX::FunctionParametersInfo::Trait::Method';
 	
@@ -105,6 +113,8 @@ __END__
 =pod
 
 =encoding utf-8
+
+=for stopwords invocant
 
 =head1 NAME
 

@@ -32,4 +32,5 @@
 	:test-recommendation [ :on "Class::Tiny 0.003"^^:CpanId ];
 	:test-recommendation [ :on "Role::Tiny 1.000000"^^:CpanId ];
 	:test-suggestion     [ :on "MooseX::XSAccessor"^^:CpanId ];
+	:test-suggestion     [ :on "Types::XSD::Lite 0.003"^^:CpanId ];
 	:test-suggestion     [ :on "MooseX::Types::Common::Numeric"^^:CpanId ].

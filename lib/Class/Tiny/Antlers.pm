@@ -29,7 +29,13 @@ sub has
 {
 	my $caller = shift;
 	my ($attr, %spec) = @_;
-	
+
+	if (defined($attr) and ref($attr) eq q(ARRAY))
+	{
+		has($caller, $_, %spec) for @$attr;
+		return;
+	}
+
 	if (!defined($attr) or ref($attr) or $attr !~ /^[^\W\d]\w*$/s)
 	{
 		croak("Invalid accessor name '%s'", $attr);

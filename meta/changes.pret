@@ -120,4 +120,5 @@
 	changeset [
 		item "MooseX::FunctionParametersInfo"^^Addition;
 		item "Document Class::Tiny::Antlers."^^Documentation;
+		item "Class::Tiny::Antlers now supports has \@attrs like Moose."^^Change;
 	].

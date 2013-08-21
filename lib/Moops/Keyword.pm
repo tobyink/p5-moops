@@ -21,6 +21,13 @@ has 'relations'  => (is => 'ro');
 has 'is_empty'   => (is => 'ro');
 has 'imports'    => (is => 'ro', predicate => 'has_imports');
 
+sub BUILD
+{
+	my $self = shift;
+	@{ $self->relations->{types} ||= [] }
+		or push @{$self->relations->{types}}, 'Types::Standard';
+}
+
 sub generate_code
 {
 	my $self = shift;
@@ -65,12 +72,21 @@ sub generate_package_setup
 		'use PerlX::Define;',
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
-		'use Types::Standard qw(-types);',
 		'use v5.14;',
 		'use strict;',
 		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 		'BEGIN { (*true, *false) = (\&Moops::_true, \&Moops::_false) };',
+		$self->generate_type_constraint_setup,
 	);
+}
+
+sub generate_type_constraint_setup
+{
+	my $self = shift;
+	require Type::Registry;
+	return map {
+		"use $_ -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$_]) };";
+	} @{ $self->relations->{types} || [] };
 }
 
 sub arguments_for_function_parameters
@@ -97,12 +113,12 @@ sub arguments_for_function_parameters
 
 sub known_relationships
 {
-	return;
+	return qw/ types /;
 }
 
 sub qualify_relationship
 {
-	return 1;
+	1;
 }
 
 1;

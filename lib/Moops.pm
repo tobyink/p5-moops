@@ -12,6 +12,7 @@ use Devel::Pragma qw(ccstash);
 use Exporter::TypeTiny qw(mkopt);
 use Keyword::Simple qw();
 use Module::Runtime qw(use_package_optimistically);
+use feature qw();
 use true qw();
 
 sub class_for_import_set

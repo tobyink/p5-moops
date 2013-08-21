@@ -135,3 +135,9 @@
 	changeset [
 		item "Provide a `types` option for loading type constraint libraries into classes, roles and namespaces."^^Addition;
 	].
+
+`Moops 0.017 cpan:TOBYINK`
+	issued  2013-08-21;
+	changeset [
+		item "Support Class::Tiny 0.004."^^Update;
+	].

@@ -119,4 +119,5 @@
 	issued  2013-08-21;
 	changeset [
 		item "MooseX::FunctionParametersInfo"^^Addition;
+		item "Document Class::Tiny::Antlers."^^Documentation;
 	].

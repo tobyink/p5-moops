@@ -104,3 +104,76 @@ sub with
 }
 
 1;
+
+
+__END__
+
+=pod
+
+=encoding utf-8
+
+=head1 NAME
+
+Class::Tiny::Antlers - Moose-like syntax for Class::Tiny
+
+=head1 SYNOPSIS
+
+   {
+      package Point;
+      use Class::Tiny;
+      use Class::Tiny::Antlers;
+      has x => (is => 'ro');
+      has y => (is => 'ro');
+   }
+   
+   {
+      package Point3D;
+      use Class::Tiny;
+      use Class::Tiny::Antlers;
+      extends 'Point';
+      has z => (is => 'ro');
+   }
+
+=head1 DESCRIPTION
+
+Class::Tiny::Antlers provides L<Moose>-like C<has>, C<extends> and C<with>
+keywords for L<Class::Tiny>. (The C<with> keyword requires L<Role::Tiny>.)
+
+Class::Tiny doesn't support all Moose's attribute options; C<has> should
+throw you an error if you try to do something it doesn't support (like
+builders, triggers or type constraints).
+
+Class::Tiny::Antlers does however hack in support for C<< is => 'ro' >>
+and Moo-style C<< is => 'rwp' >>.
+
+Class::Tiny::Antlers is currently distributed as part of L<Moops>, but
+is fairly independent of the rest of it, and may be spun off as a
+separate release in the future.
+
+=head1 BUGS
+
+Please report any bugs to
+L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
+
+=head1 SEE ALSO
+
+L<Class::Tiny>, L<Moose>, L<Moo>.
+
+L<Moops>.
+
+=head1 AUTHOR
+
+Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
+
+=head1 COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2013 by Toby Inkster.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=head1 DISCLAIMER OF WARRANTIES
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.

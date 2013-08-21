@@ -66,7 +66,7 @@ around generate_package_setup => sub
 
 my %using = (
 	Moo   => 'use Moo::Role; use MooX::late;',
-	Moose => 'use Moose::Role;',
+	Moose => 'use Moose::Role; use MooseX::FunctionParametersInfo;',
 	Mouse => 'use Mouse::Role;',
 	Tiny  => 'use Role::Tiny;',
 	(

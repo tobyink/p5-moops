@@ -351,6 +351,10 @@ method like this:
 The C<method> keyword is not provided within packages declared using
 C<namespace>; it is only available within classes and roles.
 
+Within Moose classes and roles, the L<MooseX::FunctionParametersInfo>
+module is loaded, to allow access to method signatures via the meta
+object protocol. (This is currently broken for C<around> method modifiers.)
+
 =head2 Method Modifiers
 
 Within classes and roles, C<before>, C<after> and C<around> keywords

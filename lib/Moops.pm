@@ -69,7 +69,7 @@ sub import
 			my $kw = $parser->keyword_object(%attrs);
 			
 			my $code = $kw->generate_code;
-			substr($$ref, 0, 0) = ($parser->is_empty ? "{ $code }" : "{ $code ");
+			substr($$ref, 0, 0) = ($parser->is_empty ? "BEGIN { $code }" : "BEGIN { $code ");
 		};
 	}
 }

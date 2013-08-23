@@ -377,10 +377,7 @@ method signatures. Because Types::Standard is based on L<Type::Tiny>,
 the same type constraints may be used whether you build your classes
 and roles with Moo, Moose our Mouse.
 
-=head3 Using other Type::Library-based type constraint libraries
-
-Alternative L<Type::Library>-based libraries can be imported using
-the C<types> option; a la:
+Alternative libraries can be imported using the C<types> option; a la:
 
    class Document types Types::XSD::Lite {
       has title => (is => 'rw', isa => NormalizedString);
@@ -394,43 +391,20 @@ listed explicitly:
       # ...
    }
 
-=head3 Using non-Type::Library type constraint libraries
-
-Type constraint libraries that do not use Type::Tiny and Type::Library
-cannot be loaded via the C<types> option (though a future version of
-Moops may enable this).
-
-For type constraints from other type constraint libraries, they
-should generally be usable by package-qualifying them:
-
-   use MooseX::Types::Common::Numeric qw();
-   
-   method foo ( MooseX::Types::Common::Numeric::PositiveInt $d ) {
-      # ...
-   }
-
-Alternatively:
-
-   use MooseX::Types::Common::Numeric qw(PositiveInt);
-   
-   method foo ( (SingleDigit) $d ) {
-      # ...
-   }
-
-Note the parentheses around the type constraint in the method
-signature; this is required for Function::Parameters to realise
-that C<SingleDigit> is an imported symbol, and not a string to
-be looked up.
+Type libraries built with L<Type::Library>, L<MooseX::Types> and
+L<MouseX::Types> should all work.
 
 Bear in mind that type constraints from, say, a L<MooseX::Types>
 library won't be usable in, say, Moo attribute definitions. However,
 it's possible to wrap them with Type::Tiny, and make them usable:
 
-   class Foo using Moo :ro {
-      use MooseX::Types::Common::Numeric qw(PositiveInt);
+   class Foo types MooseX::Types::Common::Numeric using Moo {
       use Types::TypeTiny qw( to_TypeTiny );
       
-      has favourite_number => (isa => to_TypeTiny(PositiveInt));
+      has favourite_number => (
+			is  => 'rwp',
+			isa => to_TypeTiny(PositiveInt)
+		);
    }
 
 =head2 Constants

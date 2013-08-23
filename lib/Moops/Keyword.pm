@@ -10,7 +10,7 @@ our $VERSION   = '0.017';
 
 use Moo;
 use B qw(perlstring);
-use Module::Runtime qw(module_notional_filename);
+use Module::Runtime qw(module_notional_filename use_package_optimistically);
 use namespace::sweep;
 
 has 'keyword'    => (is => 'ro');
@@ -85,7 +85,12 @@ sub generate_type_constraint_setup
 	my $self = shift;
 	require Type::Registry;
 	return map {
-		"use $_ -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$_]) };";
+		my $lib = use_package_optimistically($_);
+		$lib->isa('Type::Library')
+			? "use $lib -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" : 
+		$lib->can('type_names')
+			? "use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" :
+		do { require Carp; Carp::croak("'$lib' is not a type constraint library") };
 	} @{ $self->relations->{types} || [] };
 }
 

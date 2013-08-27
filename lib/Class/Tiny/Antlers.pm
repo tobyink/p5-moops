@@ -4,7 +4,7 @@ use warnings;
 package Class::Tiny::Antlers;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.017';
+our $VERSION   = '0.018';
 
 use Class::Tiny 0.004 ();
 

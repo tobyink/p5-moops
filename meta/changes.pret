@@ -141,3 +141,10 @@
 	changeset [
 		item "Support Class::Tiny 0.004."^^Update;
 	].
+
+`Moops 0.018 cpan:TOBYINK`
+	issued  2013-08-27;
+	changeset [
+		item "Add a `library` keyword for declaring type libraries."^^Addition;
+		item "Declared packages now get an implied BEGIN {...} block around themselves."^^Change;
+	].

@@ -193,7 +193,7 @@ sub parse
 
 sub keywords
 {
-	qw/ class role namespace /;
+	qw/ class role namespace library /;
 }
 
 sub qualify_module_name
@@ -223,6 +223,11 @@ sub _build_class_for_keyword
 	{
 		require Moops::Keyword::Role;
 		return 'Moops::Keyword::Role';
+	}
+	elsif ($kw eq 'library')
+	{
+		require Moops::Keyword::Library;
+		return 'Moops::Keyword::Library';
 	}
 	
 	require Moops::Keyword;

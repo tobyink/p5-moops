@@ -402,9 +402,50 @@ it's possible to wrap them with Type::Tiny, and make them usable:
       use Types::TypeTiny qw( to_TypeTiny );
       
       has favourite_number => (
-			is  => 'rwp',
-			isa => to_TypeTiny(PositiveInt)
-		);
+         is  => 'rwp',
+         isa => to_TypeTiny(PositiveInt)
+      );
+   }
+
+=head2 Type Libraries
+
+You can use the C<library> keyword to declare a new type library:
+
+   library MyTypes
+      extends Types::Standard
+      declares EmptyString, NonEmptyString {
+      
+      declare EmptyString,
+         as Str,
+         where { length($_) == 0 };
+      
+      declare NonEmptyString,
+         as Str,
+         where { length($_) > 0 };
+   }
+   
+   class StringChecker types MyTypes {
+      method check ( Str $foo ) {
+         return "empty" if EmptyString->check($foo);
+         return "non-empty" if NonEmptyString->check($foo);
+         return "impossible?!";
+      }
+   }
+
+Libraries declared this way can extend existing type libraries
+written with L<Type::Library>, L<MooseX::Types> or L<MouseX::Types>.
+
+Note that this also provides a solution to the previously mentioned
+problem of using L<MooseX::Types> type libraries in L<Moo> classes:
+
+   library MyWrapper
+      extends MooseX::Types::Common::Numeric;
+   
+   class Foo types MyWrapper using Moo {
+      has favourite_number => (
+         is  => 'rwp',
+         isa => PositiveInt,
+      );
    }
 
 =head2 Constants

@@ -13,7 +13,7 @@
 	:runtime-requirement [ :on "MooX::late 0.014"^^:CpanId ];
 	:runtime-requirement [ :on "MooseX::MungeHas 0.002"^^:CpanId ];
 	:runtime-requirement [ :on "Scalar::Util 1.24"^^:CpanId ];
-	:runtime-requirement [ :on "Type::Utils 0.02302"^^:CpanId ];
+	:runtime-requirement [ :on "Type::Utils 0.024"^^:CpanId ];
 	:runtime-requirement [ :on "Try::Tiny 0.12"^^:CpanId ];
 	:runtime-requirement [ :on "namespace::sweep 0.006"^^:CpanId ];
 	:runtime-requirement [ :on "true 0.18"^^:CpanId ];

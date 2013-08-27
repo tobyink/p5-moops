@@ -12,7 +12,7 @@ use Moo;
 extends 'Moops::Keyword';
 use namespace::sweep;
 
-around generate_package_setup => sub 
+around generate_package_setup => sub
 {
 	my $orig = shift;
 	my $self = shift;

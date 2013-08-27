@@ -87,7 +87,7 @@ sub generate_type_constraint_setup
 	return map {
 		my $lib = use_package_optimistically($_);
 		$lib->isa('Type::Library')
-			? "use $lib -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" : 
+			? "use $lib -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" :
 		$lib->can('type_names')
 			? "use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" :
 		do { require Carp; Carp::croak("'$lib' is not a type constraint library") };

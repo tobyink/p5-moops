@@ -24,7 +24,8 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Fatal;
-use Test::Requires { 'Class::Tiny' => '0.004' };
+use Test::Requires { 'Class::Tiny' => '0.005' };
+use Test::Requires { 'Class::Tiny::Antlers' => '0' };
 
 use Moops;
 

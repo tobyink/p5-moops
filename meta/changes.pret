@@ -148,3 +148,9 @@
 		item "Add a `library` keyword for declaring type libraries."^^Addition;
 		item "Declared packages now get an implied BEGIN {...} block around themselves."^^Change;
 	].
+
+`Moops 0.019 cpan:TOBYINK`
+	issued  2013-08-30;
+	changeset [
+		item "Removed Class::Tiny::Antlers; this is now a separate CPAN distribution."^^Removal;
+	].

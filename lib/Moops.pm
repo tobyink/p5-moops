@@ -36,11 +36,11 @@ sub unimport
 
 sub import
 {
-	my $caller  = caller;
 	my $class   = shift;
+	my %opts    = ref($_[0]) eq 'ARRAY' ? ( imports => $_[0] ) : @_;
 	
-	my $imports = ref($_[0]) eq 'ARRAY'
-		? $class->class_for_import_set->new(imports => mkopt(shift))
+	my $imports = ref($opts{imports}) eq 'ARRAY'
+		? $class->class_for_import_set->new(imports => mkopt($opts{imports}))
 		: undef;
 	
 	'strict'->import();
@@ -49,7 +49,9 @@ sub import
 	'feature'->import(':5.14');
 	'true'->import();
 	
-	my $parser_class = $class->class_for_parser;
+	my $parser_class = $opts{traits}
+		? 'Moo::Role'->create_class_with_roles($class->class_for_parser, @{$opts{traits}})
+		: $class->class_for_parser;
 	
 	for my $kw ($parser_class->keywords)
 	{
@@ -511,7 +513,7 @@ file:
 
 It is possible to inject other functions into all inner packages using:
 
-   use Moops [
+   use Moops imports => [
       'List::Util'      => [qw( first reduce )],
       'List::MoreUtils' => [qw( any all none )],
    ];
@@ -530,27 +532,31 @@ the inner packages using the technique outlined in L</Custom Sugar>
 above. You can wrap all that up in a module:
 
    package MoopsX::Lists;
-   use Moops ();
+   use base 'Moops';
    use List::Util ();
    use List::MoreUtils ();
+   
    sub import {
-      push @{ $_[1] ||= [] }, (
+      my ($class, %opts) = @_;
+      
+      push @{ $opts{imports} ||= [] }, (
          'List::Util'      => [qw( first reduce )],
          'List::MoreUtils' => [qw( any all none )],
       );
-      goto \&Moops::import;
+      
+      $class->SUPER::import(%opts);
    }
+   
    1;
 
 Now people can do C<< use MoopsX::Lists >> instead of C<< use Moops >>.
 
-=head2 Extending Moops via subclassing
+=head2 Extending Moops via parser traits
 
-For more complex needs, you should create a subclass of Moops, and
-override the C<class_for_parser> method to inject your own custom
-keyword parser, which should be a subclass of Moops::Parser.
+For more complex needs, you can create a trait which will be applied to
+Moops::Parser.
 
-The parser subclass might want to override:
+Parser traits might want to override:
 
 =over
 
@@ -607,7 +613,14 @@ to be passed to L<Function::Parameters>.
 Hopefully you'll be able to avoid overriding the C<generate_code>
 method.
 
-=head2 Extending Moops via traits
+You can apply your trait using:
+
+   use Moops traits => [
+      'Moops::TraitFor::Parser::FooKeyword',
+      'Moops::TraitFor::Parser::BarKeyword',
+   ];
+
+=head2 Extending Moops via keyword traits
 
 Roles in the C<Moops::TraitFor::Keyword> namespace are automatically
 loaded and applied to keyword objects when a corresponding

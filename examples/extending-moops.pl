@@ -4,16 +4,13 @@
 
 An example of extending Moops to add an C<exception> keyword.
 
-The MoopsX::Ception module itself does little, except injects the
-MoopsX::Ception::Parser module. 
-
-MoopsX::Ception::Parser uses L<Moops::Parser>'s hooks to add support
-for parsing the C<exception> keyword, and injects the
-MoopsX::Ception::Keyword::Exception code generator when
+MoopsX::TraitFor::Parser::ExceptionKeyword is a trait for
+L<Moops::Parser>, adding support for parsing the C<exception>
+keyword, and injects the MoopsX::Keyword::Exception class when
 it is encountered.
 
-MoopsX::Ception::Keyword::Exception is a simple subclass
-of L<Moops::Keyword::Class> and simply adds L<Throwable> to
+MoopsX::Keyword::Exception is a simple subclass of
+L<Moops::Keyword::Class> and simply adds L<Throwable> to
 the list of roles that the class does.
 
 A more practical application of this would be something like an
@@ -43,7 +40,9 @@ the same terms as the Perl 5 programming language system itself.
 use FindBin qw($Bin);
 use lib "$Bin/lib";
 
-use MoopsX::Ception;
+use Moops traits => [
+	'MoopsX::TraitFor::Parser::ExceptionKeyword',
+];
 
 exception FileError {
 	has filename => (is => 'ro', isa => Str);

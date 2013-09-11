@@ -1,4 +1,4 @@
-package MoopsX::Ception::Keyword::Exception;
+package MoopsX::Keyword::Exception;
 
 use Moo;
 extends 'Moops::Keyword::Class';

@@ -551,6 +551,19 @@ above. You can wrap all that up in a module:
 
 Now people can do C<< use MoopsX::Lists >> instead of C<< use Moops >>.
 
+=head2 Extending Moops via keyword traits
+
+Roles in the C<Moops::TraitFor::Keyword> namespace are automatically
+loaded and applied to keyword objects when a corresponding
+Attribute::Handlers-style attribute is seen.
+
+For examples extending Moops this way, see the
+L<Moops::TraitFor::Keyword::dirty>,
+L<Moops::TraitFor::Keyword::mutable>,
+L<Moops::TraitFor::Keyword::ro>,
+L<Moops::TraitFor::Keyword::rw> and
+L<Moops::TraitFor::Keyword::rwp> traits.
+
 =head2 Extending Moops via parser traits
 
 For more complex needs, you can create a trait which will be applied to
@@ -619,19 +632,6 @@ You can apply your trait using:
       'Moops::TraitFor::Parser::FooKeyword',
       'Moops::TraitFor::Parser::BarKeyword',
    ];
-
-=head2 Extending Moops via keyword traits
-
-Roles in the C<Moops::TraitFor::Keyword> namespace are automatically
-loaded and applied to keyword objects when a corresponding
-Attribute::Handlers-style attribute is seen.
-
-For examples extending Moops this way, see the
-L<Moops::TraitFor::Keyword::dirty>,
-L<Moops::TraitFor::Keyword::mutable>,
-L<Moops::TraitFor::Keyword::ro>,
-L<Moops::TraitFor::Keyword::rw> and
-L<Moops::TraitFor::Keyword::rwp> traits.
 
 =head1 BUGS
 

@@ -50,7 +50,10 @@ sub import
 	'true'->import();
 	
 	my $parser_class = $opts{traits}
-		? 'Moo::Role'->create_class_with_roles($class->class_for_parser, @{$opts{traits}})
+		? do {
+			require Moo::Role;
+			'Moo::Role'->create_class_with_roles($class->class_for_parser, @{$opts{traits}})
+		}
 		: $class->class_for_parser;
 	
 	for my $kw ($parser_class->keywords)

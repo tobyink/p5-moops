@@ -154,3 +154,11 @@
 	changeset [
 		item "Removed Class::Tiny::Antlers; this is now a separate CPAN distribution."^^Removal;
 	].
+
+`Moops 0.020 cpan:TOBYINK`
+	issued  2013-09-11;
+	changeset [
+		item "List Moose/Mouse/Moo/Class::Tiny dependencies as optional_features in META.json."^^Packaging;
+		item "Improve Moops' extensibility via parser traits."^^Change;
+		item "Moops->import now takes a hash of options (including the `imports` option) rather than an arrayref of modules to import."^^BackCompat;
+	].

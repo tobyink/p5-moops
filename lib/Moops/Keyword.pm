@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::Keyword;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.019';
+our $VERSION   = '0.020';
 
 use Moo;
 use B qw(perlstring);

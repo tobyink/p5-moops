@@ -4,33 +4,48 @@
 
 `Moops`
 	:develop-recommendation [ :on "Dist::Inkt"^^:CpanId ];
-	:runtime-requirement [ :on "Devel::Pragma 0.54"^^:CpanId ];
-	:runtime-requirement [ :on "Function::Parameters 1.0201"^^:CpanId ];
-	:runtime-requirement [ :on "Import::Into 1.000000"^^:CpanId ];
-	:runtime-requirement [ :on "Keyword::Simple 0.01"^^:CpanId ];
-	:runtime-requirement [ :on "Module::Runtime 0.013"^^:CpanId ];
-	:runtime-requirement [ :on "Moo 1.003000"^^:CpanId ];
-	:runtime-requirement [ :on "MooX::late 0.014"^^:CpanId ];
-	:runtime-requirement [ :on "MooseX::MungeHas 0.002"^^:CpanId ];
-	:runtime-requirement [ :on "Scalar::Util 1.24"^^:CpanId ];
-	:runtime-requirement [ :on "Type::Utils 0.024"^^:CpanId ];
-	:runtime-requirement [ :on "Try::Tiny 0.12"^^:CpanId ];
-	:runtime-requirement [ :on "namespace::sweep 0.006"^^:CpanId ];
-	:runtime-requirement [ :on "true 0.18"^^:CpanId ];
-	:runtime-requirement [ :on "perl 5.014"^^:CpanId ];
-	:runtime-suggestion  [ :on "MooX::HandlesVia"^^:CpanId ];
-	:runtime-suggestion  [ :on "Moose 2.0600"^^:CpanId ];
-	:runtime-suggestion  [ :on "MooseX::XSAccessor"^^:CpanId ];
-	:runtime-suggestion  [ :on "Mouse 1.00"^^:CpanId ];
-	:runtime-suggestion  [ :on "Role::Tiny 1.000000"^^:CpanId ];
-	:runtime-suggestion  [ :on "Class::Tiny::Antlers"^^:CpanId ];
-	:test-requirement    [ :on "Test::More 0.96"^^:CpanId ];
-	:test-requirement    [ :on "Test::Requires"^^:CpanId ];
-	:test-requirement    [ :on "Test::Fatal"^^:CpanId ];
-	:test-recommendation [ :on "Moose 2.0600"^^:CpanId ];
-	:test-recommendation [ :on "Mouse 1.00"^^:CpanId ];
-	:test-recommendation [ :on "Class::Tiny::Antlers"^^:CpanId ];
-	:test-recommendation [ :on "Role::Tiny 1.000000"^^:CpanId ];
-	:test-suggestion     [ :on "MooseX::XSAccessor"^^:CpanId ];
-	:test-suggestion     [ :on "Types::XSD::Lite 0.003"^^:CpanId ];
-	:test-suggestion     [ :on "MooseX::Types::Common::Numeric"^^:CpanId ].
+	:runtime-requirement    [ :on "Devel::Pragma 0.54"^^:CpanId ];
+	:runtime-requirement    [ :on "Function::Parameters 1.0201"^^:CpanId ];
+	:runtime-requirement    [ :on "Import::Into 1.000000"^^:CpanId ];
+	:runtime-requirement    [ :on "Keyword::Simple 0.01"^^:CpanId ];
+	:runtime-requirement    [ :on "Module::Runtime 0.013"^^:CpanId ];
+	:runtime-requirement    [ :on "Moo 1.003000"^^:CpanId ];
+	:runtime-requirement    [ :on "MooX::late 0.014"^^:CpanId ];
+	:runtime-requirement    [ :on "MooseX::MungeHas 0.002"^^:CpanId ];
+	:runtime-requirement    [ :on "Scalar::Util 1.24"^^:CpanId ];
+	:runtime-requirement    [ :on "Type::Utils 0.024"^^:CpanId ];
+	:runtime-requirement    [ :on "Try::Tiny 0.12"^^:CpanId ];
+	:runtime-requirement    [ :on "namespace::sweep 0.006"^^:CpanId ];
+	:runtime-requirement    [ :on "true 0.18"^^:CpanId ];
+	:runtime-requirement    [ :on "perl 5.014"^^:CpanId ];
+	:feature [
+		doap:name               "Moo";
+		doap:shortdesc          "allow classes and roles to be built with Moo";
+		:runtime-suggestion     [ :on "MooX::HandlesVia"^^:CpanId ];
+		:x_default              true;
+	];
+	:feature [
+		doap:name               "Moose";
+		doap:shortdesc          "allow classes and roles to be built with Moose";
+		:runtime-requirement    [ :on "Moose 2.0600"^^:CpanId ];
+		:runtime-recommendation [ :on "MooseX::XSAccessor"^^:CpanId ];
+		:test-suggestion        [ :on "MooseX::Types::Common::Numeric"^^:CpanId ];
+		:x_default              false;
+	];
+	:feature [
+		doap:name               "Mouse";
+		doap:shortdesc          "allow classes and roles to be built with Mouse";
+		:runtime-requirement    [ :on "Mouse 1.00"^^:CpanId ];
+		:x_default              false;
+	];
+	:feature [
+		doap:name               "Tiny";
+		doap:shortdesc          "allow classes and roles to be built with Class::Tiny/Role::Tiny";
+		:runtime-requirement    [ :on "Role::Tiny 1.000000"^^:CpanId ];
+		:runtime-requirement    [ :on "Class::Tiny::Antlers"^^:CpanId ];
+		:x_default              false;
+	];
+	:test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
+	:test-requirement       [ :on "Test::Requires"^^:CpanId ];
+	:test-requirement       [ :on "Test::Fatal"^^:CpanId ];
+	:test-suggestion        [ :on "Types::XSD::Lite 0.003"^^:CpanId ].

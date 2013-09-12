@@ -88,7 +88,7 @@ sub _eat_package
 {
 	my $self = shift;
 	my ($rel) = @_;
-	my $pkg = $self->_eat(qr{(?:::)?$module_name_rx});	
+	my $pkg = $self->_eat(qr{(?:::)?$module_name_rx});
 	return $self->qualify_module_name($pkg, $rel);
 }
 

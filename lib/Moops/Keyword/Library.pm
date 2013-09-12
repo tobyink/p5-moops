@@ -73,4 +73,9 @@ sub qualify_relationship
 	$_[1] eq 'extends';
 }
 
+sub version_relationship
+{
+	$_[1] eq 'extends' or $_[1] eq 'types';
+}
+
 1;

@@ -17,12 +17,13 @@ has 'ccstash'    => (is => 'ro');
 has 'ref'        => (is => 'ro');
 
 # Not set in constructor; set by parse method.
-has 'package'    => (is => 'rwp', init_arg => undef);
-has 'version'    => (is => 'rwp', init_arg => undef, predicate => 'has_version');
-has 'relations'  => (is => 'rwp', init_arg => undef, default => sub { +{} });
-has 'traits'     => (is => 'rwp', init_arg => undef, default => sub { +{} });
-has 'is_empty'   => (is => 'rwp', init_arg => undef, default => sub { 0 });
-has 'done'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
+has 'package'        => (is => 'rwp', init_arg => undef);
+has 'version'        => (is => 'rwp', init_arg => undef, predicate => 'has_version');
+has 'relations'      => (is => 'rwp', init_arg => undef, default => sub { +{} });
+has 'version_checks' => (is => 'rwp', init_arg => undef, default => sub { [] });
+has 'traits'         => (is => 'rwp', init_arg => undef, default => sub { +{} });
+has 'is_empty'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
+has 'done'           => (is => 'rwp', init_arg => undef, default => sub { 0 });
 
 has 'class_for_keyword' => (
 	is      => 'lazy',
@@ -30,6 +31,7 @@ has 'class_for_keyword' => (
 	handles => {
 		known_relationships  => 'known_relationships',
 		qualify_relationship => 'qualify_relationship',
+		version_relationship => 'version_relationship',
 	},
 );
 
@@ -85,8 +87,31 @@ sub _peek
 sub _eat_package
 {
 	my $self = shift;
-	my $pkg  = $self->_eat(qr{(?:::)?$module_name_rx});
-	return $self->qualify_module_name($pkg, @_);
+	my ($rel) = @_;
+	my $pkg = $self->_eat(qr{(?:::)?$module_name_rx});	
+	return $self->qualify_module_name($pkg, $rel);
+}
+
+sub _eat_package_and_version
+{
+	my $self = shift;
+	my ($rel) = @_;
+	
+	my $pkg = $self->_eat(qr{(?:::)?$module_name_rx});
+	$self->_eat_space;
+	
+	my $ver = $self->_peek_version ? $self->_eat_version : undef;
+	
+	return (
+		$self->qualify_module_name($pkg, $rel),
+		$ver,
+	);
+}
+
+{
+	my $v_re = qr{v?[0-9._]+};
+	sub _peek_version { shift->_peek($v_re) }
+	sub _eat_version  { shift->_eat($v_re) }
 }
 
 sub _eat_relations
@@ -96,26 +121,32 @@ sub _eat_relations
 	my $RELS = join '|', map quotemeta, $self->known_relationships;
 	$RELS = qr/\A($RELS)/sm;
 	
-	my %relationships;
+	my (%relationships, @vchecks);
 	while ($self->_peek($RELS))
 	{
 		my $rel = $self->_eat($RELS);
 		$self->_eat_space;
 		
-		my @modules = $self->_eat_package($rel);
+		my $with_version = $self->version_relationship($rel);
+		
+		my ($pkg, $ver) = $with_version ? $self->_eat_package_and_version($rel) : $self->_eat_package($rel);
+		my @modules = $pkg;
+		push @vchecks, [$pkg, $ver] if $ver;
 		$self->_eat_space;
 		while ($self->_peek(qr/\A,/))
 		{
 			$self->_eat(',');
 			$self->_eat_space;
-			push @modules, $self->_eat_package($rel);
+			my ($pkg, $ver) = $with_version ? $self->_eat_package_and_version($rel) : $self->_eat_package($rel);
+			push @modules, $pkg;
+			push @vchecks, [$pkg, $ver] if $ver;
 			$self->_eat_space;
 		}
 		
 		push @{ $relationships{$rel}||=[] }, @modules;
 	}
 	
-	return \%relationships
+	wantarray ? (\%relationships, \@vchecks) : \%relationships;
 }
 
 sub _eat_traits
@@ -167,14 +198,17 @@ sub parse
 	$self->_eat_space;
 	
 	$self->_set_version(
-		$self->_eat(qr{v?[0-9._]+})
-	) if $self->_peek(qr{v?[0-9._]+});
+		$self->_eat_version
+	) if $self->_peek_version;
 	
 	$self->_eat_space;
 	
-	$self->_set_relations(
-		$self->_eat_relations
-	) if $self->known_relationships;
+	if ($self->known_relationships)
+	{
+		my ($rels, $vchecks) = $self->_eat_relations;
+		$self->_set_relations( $rels );
+		$self->_set_version_checks( $vchecks );
+	}
 	
 	$self->_eat_space;
 	
@@ -258,12 +292,13 @@ sub keyword_object
 	}
 	
 	$class->new(
-		package   => $self->package,
-		(version  => $self->version) x!!($self->has_version),
-		relations => $self->relations,
-		is_empty  => $self->is_empty,
-		keyword   => $self->keyword,
-		ccstash   => $self->ccstash,
+		package        => $self->package,
+		(version       => $self->version) x!!($self->has_version),
+		relations      => $self->relations,
+		is_empty       => $self->is_empty,
+		keyword        => $self->keyword,
+		ccstash        => $self->ccstash,
+		version_checks => $self->version_checks,
 		%attrs,
 	);
 }

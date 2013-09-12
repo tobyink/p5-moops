@@ -73,6 +73,8 @@ sub import
 			$attrs{imports} = $imports if defined $imports;
 			my $kw = $parser->keyword_object(%attrs);
 			
+			$kw->check_prerequisites;
+			
 			my $code = $kw->generate_code;
 			substr($$ref, 0, 0) = ($parser->is_empty ? "BEGIN { $code }" : "BEGIN { $code ");
 		};
@@ -177,7 +179,7 @@ If your class extends an existing class through inheritance, or
 consumes one or more roles, these can also be provided when declaring
 the class.
 
-   class Foo::Bar 1.2 extends Foo with Magic::Monkeys {
+   class Foo::Bar 1.2 extends Foo 1.1 with Magic::Monkeys {
       # ...
    }
 
@@ -608,10 +610,16 @@ current keyword.
 
 =item *
 
-The C<qualify_relationship> object method, which, when given the name of
+The C<qualify_relationship> class method, which, when given the name of
 an inter-package relationship, indicates whether it should be subjected
 to package qualification rules (like C<extends> and C<with> are, but
 C<using> is not).
+
+=item *
+
+The C<version_relationship> class method, which, when given the name of
+an inter-package relationship, indicates whether it should accept a version
+number.
 
 =item *
 
@@ -623,6 +631,11 @@ strings to inject into the package.
 The C<arguments_for_function_parameters> object method which is used
 by the default C<generate_package_setup> method to set up the arguments
 to be passed to L<Function::Parameters>.
+
+=item *
+
+The C<check_prerequisites> method which performs certain pre-flight checks
+and may throw an exception.
 
 =back
 

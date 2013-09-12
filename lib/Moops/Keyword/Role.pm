@@ -122,4 +122,11 @@ around qualify_relationship => sub
 	$_[0] eq 'using' ? !!0 : $self->$next(@_);
 };
 
+around version_relationship => sub
+{
+	my $next = shift;
+	my $self = shift;
+	$_[0] eq 'using' ? !!0 : $self->$next(@_);
+};
+
 1;

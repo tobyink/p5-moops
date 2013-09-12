@@ -13,13 +13,14 @@ use B qw(perlstring);
 use Module::Runtime qw(module_notional_filename use_package_optimistically);
 use namespace::sweep;
 
-has 'keyword'    => (is => 'ro');
-has 'ccstash'    => (is => 'ro');
-has 'package'    => (is => 'ro');
-has 'version'    => (is => 'ro', predicate => 'has_version');
-has 'relations'  => (is => 'ro');
-has 'is_empty'   => (is => 'ro');
-has 'imports'    => (is => 'ro', predicate => 'has_imports');
+has 'keyword'        => (is => 'ro');
+has 'ccstash'        => (is => 'ro');
+has 'package'        => (is => 'ro');
+has 'version'        => (is => 'ro', predicate => 'has_version');
+has 'relations'      => (is => 'ro');
+has 'is_empty'       => (is => 'ro');
+has 'imports'        => (is => 'ro', predicate => 'has_imports');
+has 'version_checks' => (is => 'ro');
 
 sub BUILD
 {
@@ -124,6 +125,20 @@ sub known_relationships
 sub qualify_relationship
 {
 	1;
+}
+
+sub version_relationship
+{
+	1;
+}
+
+sub check_prerequisites
+{
+	my $self = shift;
+	for my $prereq (@{$self->version_checks})
+	{
+		&use_package_optimistically(@$prereq) if defined $prereq->[1];
+	}
 }
 
 1;

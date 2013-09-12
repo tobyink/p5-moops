@@ -160,5 +160,14 @@
 	changeset [
 		item "List Moose/Mouse/Moo/Class::Tiny dependencies as optional_features in META.json."^^Packaging;
 		item "Improve Moops' extensibility via parser traits."^^Change;
-		item "Moops->import now takes a hash of options (including the `imports` option) rather than an arrayref of modules to import."^^BackCompat;
+		item [
+			a dcs:BackCompat;
+			label "Moops->import now takes a hash of options (including the `imports` option) rather than an arrayref of modules to import.";
+		];
+	].
+
+`Moops 0.021 cpan:TOBYINK`
+	issued  2013-09-12;
+	changeset [
+		item "Allow version numbers to be specified for the `with`, `extends` and `types` options."^^Change;
 	].

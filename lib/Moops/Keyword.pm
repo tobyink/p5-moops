@@ -110,6 +110,7 @@ sub arguments_for_function_parameters
 			name                 => 'optional',
 			default_arguments    => 1,
 			check_argument_count => 1,
+			check_argument_types => 1,
 			named_parameters     => 1,
 			types                => 1,
 			reify_type           => $reify,

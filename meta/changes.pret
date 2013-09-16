@@ -171,3 +171,9 @@
 	changeset [
 		item "Allow version numbers to be specified for the `with`, `extends` and `types` options."^^Change;
 	].
+
+`Moops 0.022 cpan:TOBYINK`
+	issued  2013-09-16;
+	changeset [
+		item "Minor updates to work with Function::Parameters 1.0301."^^Change;
+	].

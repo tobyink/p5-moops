@@ -25,6 +25,8 @@ has 'traits'         => (is => 'rwp', init_arg => undef, default => sub { +{} })
 has 'is_empty'       => (is => 'rwp', init_arg => undef, default => sub { 0 });
 has 'done'           => (is => 'rwp', init_arg => undef, default => sub { 0 });
 
+has 'lines'          => (is => 'rw',  init_arg => undef, default => sub { 0 });
+
 has 'class_for_keyword' => (
 	is      => 'lazy',
 	builder => 1,
@@ -39,7 +41,7 @@ sub _eat
 {
 	my $self = shift;
 	my ($bite) = @_;
-	my $ref = $self->ref;
+	my $ref = $self->{ref};
 	
 	if (ref($bite) and $$ref =~ /\A($bite)/sm)
 	{
@@ -61,7 +63,7 @@ sub _eat
 sub _eat_space
 {
 	my $self = shift;
-	my $ref = $self->ref;
+	my $ref = $self->{ref};
 	
 	my $X;
 	while (
@@ -71,6 +73,9 @@ sub _eat_space
 		$X==2
 			? $self->_eat(qr{\A\#.+?\n}sm)
 			: $self->_eat($1);
+		$self->{lines} += $X==2
+			? 1
+			: (my @tmp = split /\n/, $1, -1)-1;
 	}
 	return;
 }
@@ -79,7 +84,7 @@ sub _peek
 {
 	my $self = shift;
 	my $re   = $_[0];
-	my $ref  = $self->ref;
+	my $ref  = $self->{ref};
 	
 	return scalar($$ref =~ m{\A$re});
 }
@@ -221,6 +226,8 @@ sub parse
 	}
 	
 	$self->_peek(qr/;/) ? $self->_set_is_empty(1) : $self->_eat('{');
+	
+	substr(${$self->{ref}}, 0, 0, ("\n" x $self->{lines}));
 	
 	$self->_set_done(1);
 }

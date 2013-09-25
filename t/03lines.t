@@ -6,6 +6,9 @@
 
 Test that Moops does not make line numbers insane!
 
+This test is currently skipped because
+L<RT#88970|https://rt.cpan.org/Ticket/Display.html?id=88970>.
+
 =head1 AUTHOR
 
 Toby Inkster E<lt>tobyink@cpan.orgE<gt>.

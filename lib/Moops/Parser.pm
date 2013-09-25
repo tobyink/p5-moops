@@ -12,6 +12,10 @@ use Moo;
 use Module::Runtime qw($module_name_rx);
 use namespace::sweep;
 
+# I'm just going to assume that 0.01 is the only version that is ever going
+# to have that problem...
+use PerlX::Define _RT88970 => ($Keyword::Simple::VERSION == 0.01) ? 1 : 0;
+
 has 'keyword'    => (is => 'ro');
 has 'ccstash'    => (is => 'ro');
 has 'ref'        => (is => 'ro');
@@ -227,7 +231,12 @@ sub parse
 	
 	$self->_peek(qr/;/) ? $self->_set_is_empty(1) : $self->_eat('{');
 	
-	substr(${$self->{ref}}, 0, 0, ("\n" x $self->{lines}));
+	# We subtract 1 to work around RT#88970 when possible.
+	# This obviously won't solve anything if lines == 0
+	substr(${$self->{ref}}, 0, 0, ("\n" x ($self->{lines} - _RT88970)));
+	
+	# But we can try.
+	${$self->{ref}} =~ s/\A[\t\r\x20]*\n//ms if _RT88970 && !$self->{lines};
 	
 	$self->_set_done(1);
 }

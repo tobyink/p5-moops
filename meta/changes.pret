@@ -177,3 +177,10 @@
 	changeset [
 		item "Minor updates to work with Function::Parameters 1.0301."^^Change;
 	].
+
+`Moops 0.023 cpan:TOBYINK`
+	issued  2013-09-26;
+	changeset [
+		item "Bundle an example of using Moops with Method::Signatures."^^Documentation;
+		item "Much improved (though not completely perfect) line number accounting."^^Bugfix;
+	].

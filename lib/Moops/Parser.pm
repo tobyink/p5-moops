@@ -6,15 +6,16 @@ no warnings qw(void once uninitialized numeric);
 package Moops::Parser;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.022';
+our $VERSION   = '0.023';
 
 use Moo;
+use Keyword::Simple ();
 use Module::Runtime qw($module_name_rx);
 use namespace::sweep;
 
 # I'm just going to assume that 0.01 is the only version that is ever going
 # to have that problem...
-use PerlX::Define _RT88970 => ($Keyword::Simple::VERSION == 0.01) ? 1 : 0;
+use PerlX::Define _RT88970 => (Keyword::Simple->VERSION == 0.01) ? 1 : 0;
 
 has 'keyword'    => (is => 'ro');
 has 'ccstash'    => (is => 'ro');

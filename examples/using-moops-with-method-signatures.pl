@@ -9,7 +9,7 @@ role Moops::TraitFor::Keyword::MS {
 }
  
 # Now this class uses Method::Signatures!
-class Foo :MS {	
+class Foo :MS {
 	method foo ( Int $score where [0..10] ) {
 		say "Got: $score";
 	}

@@ -184,3 +184,9 @@
 		item "Bundle an example of using Moops with Method::Signatures."^^Documentation;
 		item "Much improved (though not completely perfect) line number accounting."^^Bugfix;
 	].
+
+`Moops 0.024 cpan:TOBYINK`
+	issued  2013-09-27;
+	changeset [
+		item "Keyword::Simple 0.02 has been released; no longer need to skip t/03lines.t."^^Tests;
+	].

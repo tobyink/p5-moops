@@ -6,9 +6,6 @@
 
 Test that Moops does not make line numbers insane!
 
-This test is currently skipped because
-L<RT#88970|https://rt.cpan.org/Ticket/Display.html?id=88970>.
-
 =head1 AUTHOR
 
 Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
@@ -26,11 +23,11 @@ the same terms as the Perl 5 programming language system itself.
 #line 24
 use strict;
 use warnings;
-use Test::More skip_all => 'todo - RT#88970';
+use Test::More;
 
 use Moops;
 
-BEGIN { ::is(__LINE__, 30); }
+BEGIN { require Keyword::Simple; Keyword::Simple->VERSION >= 0.02 or plan skip_all => "need Keyword::Simple 0.02+" };
 
 #line 33
 class Bar;

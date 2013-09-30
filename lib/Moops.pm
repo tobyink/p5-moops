@@ -9,7 +9,7 @@ our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.024';
 
 use Devel::Pragma qw(ccstash);
-use Exporter::TypeTiny qw(mkopt);
+use Exporter::Tiny qw(mkopt);
 use Keyword::Simple qw();
 use Module::Runtime qw(use_package_optimistically);
 use feature qw();

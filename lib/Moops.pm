@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.024';
+our $VERSION   = '0.025';
 
 use Devel::Pragma qw(ccstash);
 use Exporter::Tiny qw(mkopt);

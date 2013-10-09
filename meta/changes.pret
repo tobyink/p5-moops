@@ -190,3 +190,10 @@
 	changeset [
 		item "Keyword::Simple 0.02 has been released; no longer need to skip t/03lines.t."^^Tests;
 	].
+
+`Moops 0.025 cpan:TOBYINK`
+	issued  2013-10-09;
+	changeset [
+		item "Use Exporter::Tiny."^^Update;
+		item "Note that a future version of Moops may replace Function::Parameters with Kavorka."^^Documentation;
+	].

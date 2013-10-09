@@ -103,7 +103,7 @@ __END__
 
 =encoding utf-8
 
-=for stopwords featureful ro rw rwp
+=for stopwords featureful ro rw rwp superset
 
 =head1 NAME
 

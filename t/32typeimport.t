@@ -36,7 +36,7 @@ class BiteyBitey types Types::XSD::Lite :rwp :dirty
 		$self->_set_byte($i);
 	}
 	
-	method set_by_character ( String[length=>1] $c )
+	method set_by_character ( (String[length=>1]) $c )
 	{
 		$self->_set_byte(ord $c);
 	}

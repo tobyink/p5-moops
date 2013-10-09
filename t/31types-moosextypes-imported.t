@@ -32,8 +32,9 @@ use Moops;
 
 class Foo using Moose {
 	use MooseX::Types::Common::Numeric 'PositiveInt';
+	use Types::TypeTiny 'to_TypeTiny';
 	has num => (is => 'rw', isa => PositiveInt);
-	method add ( MooseX::Types::Common::Numeric::PositiveInt $addition ) {
+	method add ( (to_TypeTiny PositiveInt) $addition ) {
 		$self->num( $self->num + $addition );
 	}
 }

@@ -68,7 +68,6 @@ sub generate_package_setup
 	
 	return (
 		'use Carp qw(confess);',
-		"use Function::Parameters '$class'->arguments_for_function_parameters(q[$package]);",
 		'use PerlX::Assert;',
 		'use PerlX::Define;',
 		'use Scalar::Util qw(blessed);',
@@ -78,6 +77,8 @@ sub generate_package_setup
 		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 		'BEGIN { (*true, *false) = (\&Moops::_true, \&Moops::_false) };',
 		$self->generate_type_constraint_setup,
+		$self->generate_package_setup_oo,
+		"use Kavorka '$class'->arguments_for_kavorka(q[$package]);",
 	);
 }
 
@@ -95,28 +96,14 @@ sub generate_type_constraint_setup
 	} @{ $self->relations->{types} || [] };
 }
 
-sub arguments_for_function_parameters
+sub generate_package_setup_oo
 {
-	my $class = shift;
-	my ($pkg) = @_;
-	
-	state $reify = sub {
-		state $guard = do { require Type::Utils };
-		Type::Utils::dwim_type($_[0], for => $_[1]);
-	};
-	
-	return +{
-		fun => {
-			name                 => 'optional',
-			runtime              => 0,
-			default_arguments    => 1,
-			check_argument_count => 1,
-			check_argument_types => 1,
-			named_parameters     => 1,
-			types                => 1,
-			reify_type           => $reify,
-		},
-	};
+	return;
+}
+
+sub arguments_for_kavorka
+{
+	return qw/ fun /;
 }
 
 sub known_relationships

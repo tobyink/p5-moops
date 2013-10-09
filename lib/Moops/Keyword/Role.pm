@@ -12,43 +12,12 @@ use Moo;
 use B qw(perlstring);
 extends qw( Moops::Keyword );
 
-around arguments_for_function_parameters => sub
+around arguments_for_kavorka => sub
 {
-	require Moops::MethodModifiers;
+	my $orig  = shift;
+	my $class = shift;
 	
-	my $orig     = shift;
-	my $class    = shift;
-	my $keywords = $class->$orig(@_);
-	my $reify    = $keywords->{fun}{reify_type};
-	
-	$keywords->{method} = {
-		name                 => 'optional',
-		runtime              => 0,
-		default_arguments    => 1,
-		check_argument_count => 1,
-		check_argument_types => 1,
-		named_parameters     => 1,
-		types                => 1,
-		reify_type           => $reify,
-		attrs                => ':method',
-		shift                => '$self',
-		invocant             => 1,
-	};
-	$keywords->{ lc($_) } = {
-		name                 => 'required',
-		runtime              => 0,
-		default_arguments    => 1,
-		check_argument_count => 1,
-		check_argument_types => 1,
-		named_parameters     => 1,
-		types                => 1,
-		reify_type           => $reify,
-		attrs                => ":$_",
-		shift                => '$self',
-		invocant             => 1,
-	} for qw( Before After Around );
-	
-	return $keywords;
+	return( $class->$orig(@_), qw/ method before after around / );
 };
 
 sub arguments_for_moosex_mungehas
@@ -57,20 +26,9 @@ sub arguments_for_moosex_mungehas
 	return qw(eq_1);
 }
 
-around generate_package_setup => sub
-{
-	my $orig = shift;
-	my $self = shift;
-	
-	return (
-		$self->$orig(@_),
-		$self->generate_package_setup_oo,
-	);
-};
-
 my %using = (
 	Moo   => 'use Moo::Role; use MooX::late;',
-	Moose => 'use Moose::Role; use MooseX::FunctionParametersInfo;',
+	Moose => 'use Moose::Role;',
 	Mouse => 'use Mouse::Role;',
 	Tiny  => 'use Role::Tiny;',
 	(

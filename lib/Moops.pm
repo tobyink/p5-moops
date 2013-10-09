@@ -142,6 +142,10 @@ Unstable.
 Until version 1.000, stuff might change, but not without good
 reason.
 
+In particular, a future version of Moops may replace
+L<Function::Parameters> with L<Kavorka>, which offers a superset
+of Function::Parameters' functionality.
+
 =head1 DESCRIPTION
 
 Moops is sugar for declaring and using roles and classes in Perl.

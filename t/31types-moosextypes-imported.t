@@ -33,7 +33,7 @@ use Moops;
 class Foo using Moose {
 	use MooseX::Types::Common::Numeric 'PositiveInt';
 	has num => (is => 'rw', isa => PositiveInt);
-	method add ( (PositiveInt) $addition ) {
+	method add ( MooseX::Types::Common::Numeric::PositiveInt $addition ) {
 		$self->num( $self->num + $addition );
 	}
 }

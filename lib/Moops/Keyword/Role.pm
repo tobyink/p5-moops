@@ -28,7 +28,7 @@ sub arguments_for_moosex_mungehas
 
 my %using = (
 	Moo   => 'use Moo::Role; use MooX::late;',
-	Moose => 'use Moose::Role;',
+	Moose => 'use Moose::Role; use MooseX::KavorkaInfo;',
 	Mouse => 'use Mouse::Role;',
 	Tiny  => 'use Role::Tiny;',
 	(

@@ -45,7 +45,7 @@ like($_, qr{Undef did not pass type constraint "Int"}) for (
 );
 
 my $method = Class::MOP::class_of('Foo')->get_method('foo');
-my ($parm) = $method->positional_parameters;
+my ($parm) = $method->signature->positional_params;
 
 is($parm->name, '$a');
 isa_ok($parm->type, 'Type::Tiny');

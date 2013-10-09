@@ -60,7 +60,10 @@ sub generate_package_setup
 {
 	my $self = shift;
 	
-	return if $self->is_empty;
+	return (
+		$self->generate_type_constraint_setup,
+		$self->generate_package_setup_oo,
+	) if $self->is_empty;
 	
 	my $kw      = $self->keyword;
 	my $class   = ref($self);

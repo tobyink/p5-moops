@@ -88,7 +88,7 @@ around version_relationship => sub
 around arguments_for_kavorka => sub
 {
 	my $next = shift;
-	my $self = shift;	
+	my $self = shift;
 	return (
 		$self->$next(@_),
 		qw/ method before after around /,

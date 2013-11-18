@@ -197,3 +197,9 @@
 		item "Use Exporter::Tiny."^^Update;
 		item "Note that a future version of Moops may replace Function::Parameters with Kavorka."^^Documentation;
 	].
+
+`Moops 0.026 cpan:TOBYINK`
+	issued  2013-11-18;
+	changeset [
+		item "Replace Function::Parameters with Kavorka."^^Change;
+	].

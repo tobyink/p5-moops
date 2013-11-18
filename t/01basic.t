@@ -26,4 +26,8 @@ use Test::More;
 
 use_ok('Moops');
 
+my $fp = $ENV{MOOPS_FUNCTION_PARAMETERS_EVERYWHERE};
+$fp = '' unless defined $fp;
+diag "MOOPS_FUNCTION_PARAMETERS_EVERYWHERE = '$fp'";
+
 done_testing;

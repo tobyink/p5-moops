@@ -48,23 +48,6 @@ sub generate_type_library_setup
 	);
 }
 
-sub arguments_for_function_parameters
-{
-	my $class = shift;
-	
-	return +{
-		fun => {
-			name                 => 'optional',
-			runtime              => 0,
-			default_arguments    => 1,
-			check_argument_count => 1,
-			check_argument_types => 0,
-			named_parameters     => 1,
-			types                => 0,
-		},
-	};
-}
-
 sub known_relationships
 {
 	return qw/ extends declares /;

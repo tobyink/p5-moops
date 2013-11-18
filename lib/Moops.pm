@@ -73,6 +73,12 @@ sub import
 			$attrs{imports} = $imports if defined $imports;
 			my $kw = $parser->keyword_object(%attrs);
 			
+			if ($opts{function_parameters_everywhere} or $ENV{'MOOPS_FUNCTION_PARAMETERS_EVERYWHERE'})
+			{
+				require Moo::Role;
+				'Moo::Role'->apply_roles_to_object($kw, 'Moops::TraitFor::Keyword::fp');
+			}
+			
 			$kw->check_prerequisites;
 			
 			my $code = $kw->generate_code;
@@ -141,10 +147,6 @@ Unstable.
 
 Until version 1.000, stuff might change, but not without good
 reason.
-
-In particular, a future version of Moops may replace
-L<Function::Parameters> with L<Kavorka>, which offers a superset
-of Function::Parameters' functionality.
 
 =head1 DESCRIPTION
 
@@ -259,6 +261,10 @@ C<< :dirty >> - suppresses namespace::sweep
 
 =item *
 
+C<< :fp >> - use L<Function::Parameters> instead of L<Kavorka>
+
+=item *
+
 C<< :mutable >> - suppresses making Moose classes immutable
 
 =item *
@@ -319,9 +325,8 @@ may support namespaces.
 
 =head2 Functions and Methods
 
-Moops uses L<Function::Parameters> to declare functions and methods within
-classes and roles, which is perhaps not as featureful as L<Method::Signatures>,
-but it does the job.
+Moops uses L<Kavorka> to declare functions and methods within classes
+and roles.
 
    class Person {
       use Scalar::Util 'refaddr';
@@ -363,9 +368,28 @@ method like this:
 The C<method> keyword is not provided within packages declared using
 C<namespace>; it is only available within classes and roles.
 
-Within Moose classes and roles, the L<MooseX::FunctionParametersInfo>
-module is loaded, to allow access to method signatures via the meta
-object protocol. (This is currently broken for C<around> method modifiers.)
+Within Moose classes and roles, the L<MooseX::KavorkaInfo> module is
+loaded, to allow access to method signatures via the meta object
+protocol. (This is currently broken for C<around> method modifiers.)
+
+In Moops prior to 0.025, L<Function::Parameters> was used instead of
+Kavorka. If you wish to continue to use Function::Parameters in a class
+you can use the C<< :fp >> attribute:
+
+   class Person :fp {
+      ...;
+   }
+
+Or to do so for all classes in a lexical scope:
+
+   use Moops function_parameters_everywhere => 1;
+   class Person {
+      ...;
+   }
+
+Or the environment variable C<MOOPS_FUNCTION_PARAMETERS_EVERYWHERE> can
+be set to true to enable it globally, but this feature is likely to be
+removed eventually.
 
 =head2 Method Modifiers
 

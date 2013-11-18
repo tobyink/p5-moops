@@ -22,6 +22,8 @@ has 'is_empty'       => (is => 'ro');
 has 'imports'        => (is => 'ro', predicate => 'has_imports');
 has 'version_checks' => (is => 'ro');
 
+sub should_support_methods { 0 }
+
 sub BUILD
 {
 	my $self = shift;
@@ -60,15 +62,13 @@ sub generate_package_setup
 {
 	my $self = shift;
 	
-	return if $self->is_empty;
-	
-	my $kw      = $self->keyword;
-	my $class   = ref($self);
-	my $package = $self->package;
+	return (
+		$self->generate_type_constraint_setup,
+		$self->generate_package_setup_oo,
+	) if $self->is_empty;
 	
 	return (
 		'use Carp qw(confess);',
-		"use Function::Parameters '$class'->arguments_for_function_parameters(q[$package]);",
 		'use PerlX::Assert;',
 		'use PerlX::Define;',
 		'use Scalar::Util qw(blessed);',
@@ -78,7 +78,20 @@ sub generate_package_setup
 		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 		'BEGIN { (*true, *false) = (\&Moops::_true, \&Moops::_false) };',
 		$self->generate_type_constraint_setup,
+		$self->generate_package_setup_oo,
+		$self->generate_package_setup_methods,
 	);
+}
+
+sub generate_package_setup_oo
+{
+	return;
+}
+
+sub generate_package_setup_methods
+{
+	my $self = shift;
+	return "use Kavorka '${\ ref($self) }'->arguments_for_kavorka(q[${\ $self->package }]);";
 }
 
 sub generate_type_constraint_setup
@@ -95,28 +108,9 @@ sub generate_type_constraint_setup
 	} @{ $self->relations->{types} || [] };
 }
 
-sub arguments_for_function_parameters
+sub arguments_for_kavorka
 {
-	my $class = shift;
-	my ($pkg) = @_;
-	
-	state $reify = sub {
-		state $guard = do { require Type::Utils };
-		Type::Utils::dwim_type($_[0], for => $_[1]);
-	};
-	
-	return +{
-		fun => {
-			name                 => 'optional',
-			runtime              => 0,
-			default_arguments    => 1,
-			check_argument_count => 1,
-			check_argument_types => 1,
-			named_parameters     => 1,
-			types                => 1,
-			reify_type           => $reify,
-		},
-	};
+	return qw/ multi fun /;
 }
 
 sub known_relationships

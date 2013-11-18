@@ -689,8 +689,8 @@ L<MooseX::Declare>,
 L<https://github.com/stevan/p5-mop-redux>.
 
 Main functionality exposed by this module:
-L<Moo>/L<MooX::late>, L<Function::Parameters>, L<Try::Tiny>,
-L<Types::Standard>, L<namespace::sweep>, L<true>.
+L<Moo>/L<MooX::late>, L<Kavorka>, L<Try::Tiny>, L<Types::Standard>,
+L<namespace::sweep>, L<true>.
 
 Internals fueled by:
 L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>, L<Devel::Pragma>,

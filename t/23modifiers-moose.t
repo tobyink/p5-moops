@@ -69,7 +69,9 @@ is($m, '20.2345');
 
 {
 	my $method = Class::MOP::class_of('Child')->get_method('process');
-	my ($parm) = $method->positional_parameters;
+	my ($parm) = $method->can('positional_parameters')
+		? $method->positional_parameters
+		: $method->signature->positional_params;
 
 	is($parm->name, '$n');
 	isa_ok($parm->type, 'Type::Tiny');
@@ -80,7 +82,9 @@ is($m, '20.2345');
 	local $TODO = '`around` method modifier currently breaks metadata';
 	
 	my $method = Class::MOP::class_of('Grandchild')->get_method('process');
-	my ($parm) = $method->positional_parameters;
+	my ($parm) = $method->can('positional_parameters')
+		? $method->positional_parameters
+		: $method->signature->positional_params;
 
 	is($parm && $parm->name, '$n');
 	isa_ok($parm && $parm->type, 'Type::Tiny');

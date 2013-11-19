@@ -12,14 +12,14 @@ accessor calls, method calls and type constraint checks.
 Typical results (run on a fairly underpowered netbook) are:
 
 	        Rate   MXD Moops
-	MXD   8.82/s    --  -98%
-	Moops  389/s 4307%    --
+	MXD   9.26/s    --  -98%
+	Moops  487/s 5157%    --
 
 If L<MooseX::XSAccessor> is available, Moops becomes yet faster:
 
 	        Rate   MXD Moops
-	MXD   8.65/s    --  -98%
-	Moops  449/s 5084%    --
+	MXD   9.26/s    --  -99%
+	Moops  637/s 6779%    --
 
 =head1 AUTHOR
 
@@ -123,6 +123,6 @@ ok 4 - Class 'Foo::MXD' throws error on incorrect constructor call
 ok 5 - Objects of class 'Foo::MXD' throw error on incorrect method call
 ok 6 - Objects of class 'Foo::MXD' function correctly
 #         Rate   MXD Moops
-# MXD   8.82/s    --  -98%
-# Moops  389/s 4307%    --
+# MXD   9.26/s    --  -99%
+# Moops  637/s 6779%    --
 1..6

@@ -44,7 +44,10 @@ sub generate_package_setup_oo
 	exists($using{$using})
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
-	my @lines = 'use namespace::sweep;';
+	my @lines = (
+		'use namespace::sweep;',
+		'use Lexical::Accessor;',
+	);
 	push @lines, "use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});"
 		if $using{$using} =~ /^Mo/;
 	

@@ -41,7 +41,7 @@ to perform actions.
 
 Let's take a look at the following example:
 
-   use Moops imports => ['Lexical::Accessor'];
+   use Moops;
    
    class Car
    {
@@ -96,18 +96,19 @@ it using an object.
 
 =head3 Attributes
 
-These store information about the object. In the example above we store the
-C<fuel>, C<speed>, and C<max_speed>. The attributes are attached to the class,
-and if there are several instances (objects) of the class then each will
-store its own version of these variables.
+These store information about the object. In the example above we store
+the C<fuel>, C<speed>, and C<< $max_speed >>. The attributes are
+attached to the class, and if there are several instances (objects) of
+the class then each will store its own version of these variables.
 
-(C<max_speed> is a lexical accessor, so cannot directly be accessed outside
-the curly braces where it was declared. Lexical accessors are created with
-L<Lexical::Accessor>, and are not currently a Moops built-in feature.)
+Unlike many other programming languages, Perl has no native concept of
+attributes. The C<has> keyword instead sets up some extra methods for
+your class, called "accessors", which allow you to access the data for
+the attributes.
 
-Unlike other programming languages, Perl has no native concept of attributes.
-The C<has> keyword instead sets up some extra methods for your class, called
-"accessors", which allow you to access the data for the attributes.
+C<< $max_speed >> has a lexical accessor, stored in a lexical (C<my>)
+variable, so cannot be directly accessed outside the scope where it was
+declared.
 
 =head3 Methods
 
@@ -272,7 +273,7 @@ classes.
 Rather than having to rewrite the same functionality for similar objects,
 OOP allows you to reuse attributes and methods from parent classes.
 
-=head3 Polymorphsim
+=head3 Polymorphism
 
 When you were young you might have watched the I<< Mighty Morphin' Power
 Rangers >>. These guys could morph from regular people into their power

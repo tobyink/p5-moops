@@ -10,11 +10,13 @@
 	:runtime-requirement    [ :on "Kavorka 0.018"^^:CpanId ];
 	:runtime-requirement    [ :on "Keyword::Simple 0.01"^^:CpanId ];
 	:runtime-recommendation [ :on "Keyword::Simple 0.02"^^:CpanId; comment "Improved line number accounting." ];
+	:runtime-requirement    [ :on "Lexical::Accessor 0.003"^^:CpanId ];
 	:runtime-requirement    [ :on "Module::Runtime 0.013"^^:CpanId ];
 	:runtime-requirement    [ :on "Moo 1.003000"^^:CpanId ];
 	:runtime-requirement    [ :on "MooX::late 0.014"^^:CpanId ];
 	:runtime-requirement    [ :on "MooseX::MungeHas 0.002"^^:CpanId ];
 	:runtime-requirement    [ :on "Scalar::Util 1.24"^^:CpanId ];
+	:runtime-requirement    [ :on "Sub::Name"^^:CpanId ];
 	:runtime-requirement    [ :on "Type::Utils 0.024"^^:CpanId ];
 	:runtime-requirement    [ :on "Try::Tiny 0.12"^^:CpanId ];
 	:runtime-requirement    [ :on "namespace::sweep 0.006"^^:CpanId ];

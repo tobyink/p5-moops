@@ -226,6 +226,29 @@ enabled too, which allows Moose-isms in Moo too. With the combination of
 these features, there should be very little difference between Moo, Mouse
 and Moose C<has> keywords.
 
+Moops uses L<Lexical::Accessor> to provide you with private (lexical)
+attributes - that is, attributes accessed via a coderef method in a
+lexical variable.
+
+   class Foo {
+      lexical_has foo => (
+         isa      => Int,
+         accessor => \(my $_foo),
+         default  => 0,
+      );
+      method increment_foo () {
+         $self->$_foo( 1 + $self->$_foo );
+      }
+      method get_foo () {
+         return $self->$_foo;
+      }
+   }
+   
+   my $x = Foo->new;
+   $x->increment_foo();     # ok
+   say $x->get_foo();       # says "1"
+   $x->$_foo(42);           # dies; $_foo does not exist in this scope
+
 Moose classes are automatically accelerated using L<MooseX::XSAccessor>
 if it's installed.
 

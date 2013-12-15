@@ -1,0 +1,307 @@
+=pod
+
+=encoding utf-8
+
+=head1 NAME
+
+Moops::Manual::Objects101 - an introduction to object oriented programming using Moops
+
+=head1 SYNOPSIS
+
+This tutorial assumes some knowledge of procedural programming in Perl,
+and provides a gentle introduction to the object oriented programming
+paradigm.
+
+=head1 DESCRIPTION
+
+Object oriented programming is a programming paradigm based around
+programming I<classes>, and manipulating instances of those classes
+called I<objects>. These can be objects that appear on the screen
+(e.g., pictures, textboxes, etc.) or are part of the programming (e.g.
+actors, connections, particles, etc.).
+
+=head2 Classes
+
+I<Structures> are very similar to I<classes> in that they collect data
+together. However, classes extend this idea and are made from two
+different things:
+
+=over
+
+=item I<Attributes>
+
+Things that the object stores data in, similar to variables.
+
+=item I<Methods>
+
+Functions and Procedures attached to an Object and allowing the object
+to perform actions.
+
+=back
+
+Let's take a look at the following example:
+
+   use Moops imports => ['Lexical::Accessor'];
+   
+   class Car
+   {
+      lexical_has max_speed => (
+         is       => 'rw',
+         accessor => \(my $max_speed),
+         isa      => Int,
+         default  => 90,
+      );
+      
+      has fuel => (
+         is       => 'rw',
+         isa      => Int,
+      );
+      
+      has speed => (
+         is       => 'rw',
+         isa      => Int,
+         trigger  => method ($new, $old?) {
+            confess "Cannot travel at a speed of $new; too fast"
+               if $new > $self->$max_speed;
+         },
+      );
+      
+      method refuel (Int $x) {
+         say "Pumping gas!";
+         $self->fuel( $self->fuel + $x );
+      }
+      
+      method drive () {
+         $self->fuel( $self->fuel - 1 );
+      }
+   }
+
+You can see that the class is called Car and it has:
+
+=over
+
+=item *
+
+Three attributes: C<< $max_speed >> (which is a lexical/private attribute),
+C<fuel>, and C<speed>;
+
+=item *
+
+Two methods: C<refuel> and C<drive>.
+
+=back
+
+Remember this is a class and therefore only a template, we need to "create"
+it using an object.
+
+=head3 Attributes
+
+These store information about the object. In the example above we store the
+C<fuel>, C<speed>, and C<max_speed>. The attributes are attached to the class,
+and if there are several instances (objects) of the class then each will
+store its own version of these variables.
+
+(C<max_speed> is a lexical accessor, so cannot directly be accessed outside
+the curly braces where it was declared. Lexical accessors are created with
+L<Lexical::Accessor>, and are not currently a Moops built-in feature.)
+
+Unlike other programming languages, Perl has no native concept of attributes.
+The C<has> keyword instead sets up some extra methods for your class, called
+"accessors", which allow you to access the data for the attributes.
+
+=head3 Methods
+
+Unlike structures, OOP allows you to attach functions and procedures to your
+code. This means that not only can you store details about you car (the
+attributes), you can also allow for subroutines such as C<drive> and C<refuel>,
+which are attached to each class.
+
+=head2 OO - PIIE
+
+When talking about OOP you must remember I<OO-PIIE> (yummy pie!)
+
+=over
+
+=item B<OO>
+
+Object Orientation
+
+=item B<PIIE>
+
+Polymorphism, Inheritance, Instantiation, and Encapsulation
+
+=back
+
+=head3 Instantiation
+
+As we have seen a class is a template for something; you can't actually execute
+a class; you must instantiate it: that is create an instance of an class in the
+form of an object.
+
+   my $polo = Car->new;
+   my $escort = Car->new;
+
+The code above creates objects called C<< $polo >> and C<< $escort >>, both of
+class type Car (which we declared earlier). We can now use all the public
+attributes and methods:
+
+   $polo->refuel(100);    # assuming fuel starts at 0
+   $polo->drive();
+   $polo->drive();
+   
+   $escort->refuel(50);   # assuming fuel starts at 0
+   
+   for my $x (1 .. 20) {
+      $escort->drive();
+      $polo->drive();
+   }
+   
+   $polo->refuel(10);
+   
+   say "polo: ", $polo->fuel;
+   say "escort: ", $escort->fuel;
+
+This would output the following:
+
+   Pumping gas!
+   Pumping gas!
+   Pumping gas!
+   polo: 88
+   escort: 30
+
+=head3 Encapsulation
+
+You noticed that we used C<private_has> to declare C<max_speed> instead of
+C<has>. What this means is that these attributes are not directly accessible
+from outside the definition of the class. Let's take our polo class as an
+example:
+
+   $polo->fuel(100);   # this directly alters the fuel level of $polo
+
+In the example we access the C<fuel> attribute of the polo class and give
+the car 100 units of fuel. Because C<fuel> is declared as public, there are
+no restrictions in accessing it.
+
+However, when we try the following we run into trouble:
+
+   $polo->$max_speed(100);
+
+The reason that this wouldn't work is because we have declared the
+C<$max_speed> attribute lexically. If something is declared lexically you
+can't access it externally, but how do you access it? The only way to access
+a lexical (private) attribute is to use a public method.
+
+In the Car code example we could have:
+
+   method get_top_speed () {
+      return $self->$max_speed;
+   }
+
+Because this method is public we can call it from outside the class. And
+because C<get_top_speed> is declared inside the Car class, it can have access
+to all the private attributes and methods.
+
+=head3 Inheritance
+
+Building on the car example above, what would happen if we wanted to declare
+an electric car? Well we'd probably want to store some information on the
+number of batteries that it has:
+
+   use Moops imports => ['Lexical::Accessor'];
+   
+   class ElectricCar
+   {
+      lexical_has max_speed => (
+         is       => 'rw',
+         accessor => \(my $max_speed),
+         isa      => Int,
+         default  => 90,
+      );
+      
+      has num_batteries => (
+         is       => 'rw',
+         isa      => Int,
+         default  => 8,
+      );
+      
+      has fuel => (
+         is       => 'rw',
+         isa      => Int,
+      );
+      
+      has speed => (
+         is       => 'rw',
+         isa      => Int,
+         trigger  => method ($new, $old?) {
+            confess "Cannot travel at a speed of $new; too fast"
+               if $new > $self->$max_speed;
+         },
+      );
+      
+      method refuel (Int $x) {
+         # HOLD ON!
+      }
+   }
+
+This seems like a very long and tedious task rewriting all the same code
+again. You're right! It would be far better if we only had to declare all
+the new stuff we wanted to add. OOP allows for inheritance, where a new
+class can inherit the attributes and methods of a parent class:
+
+   class ElectricCar extends Car {
+      has num_batteries => (
+         is       => 'ro',
+         isa      => Int,
+         default  => 8,
+      );
+   }
+
+This means that everything that C<Car> declared is now accessible from
+C<ElectricCar>, as well as the new C<num_batteries> attribute. Let's
+instantiate this example and see what's possible:
+
+   my $gwiz = ElectricCar->new(num_batteries => 6, fuel => 100);
+   say $gwiz->num_batteries;    # defined in ElectricCar
+   say $gwiz->fuel;             # defined in Car
+
+Using inheritance makes creating new classes very quick and easy. It also
+allows for a modular approach to creating classes, where you might never
+use the base class at all, but only as a means of creating other child
+classes.
+
+Rather than having to rewrite the same functionality for similar objects,
+OOP allows you to reuse attributes and methods from parent classes.
+
+=head3 Polymorphsim
+
+When you were young you might have watched the I<< Mighty Morphin' Power
+Rangers >>. These guys could morph from regular people into their power
+suits. Sadly polymorphism isn't that exciting, but it does allow you to
+change the function of attributes and methods when you are inheriting from
+a parent class. Consider our car example again. When we created the
+C<ElectricCar> object we inherited from C<Car> and added the C<num_batteries>
+attribute and methods. But what happens when we try and refuel, let's take
+a look at the code:
+
+   method refuel (Int $x) {
+      say "Pumping gas!";
+      $self->fuel( $self->fuel + $x );
+   }
+
+Well this just won't do! We are creating an electric car and we don't want
+to say that we are pumping gas; what would our sandal-socked yoghurt eating
+friends say?! So for the C<ElectricCar> class, we want to inherit everything
+from C<Car>, but we want to morph(change) the C<refuel> method. To do that
+we I<override> the method inherited from the superclass:
+
+   class ElectricCar extends Car {
+      has num_batteries => (
+         is       => 'ro',
+         isa      => Int,
+         default  => 8,
+      );
+      method refuel (Int $x) {
+         say "Pure renewable energy!";
+         $self->fuel( $self->fuel + $x );
+      }
+   }

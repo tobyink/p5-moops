@@ -1,7 +1,7 @@
 language: perl
 script: HARNESS_IS_VERBOSE=1 prove -Iinc -Ilib t
 install:
-  - cpanm "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka" "Keyword::Simple" "Lexical::Accessor" "Module::Runtime" "Moo" "MooX::late" "MooseX::MungeHas" "Scalar::Util" "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Try::Tiny" "Type::Utils" "Types::XSD::Lite" "namespace::sweep" "true"
+  - cpanm "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka" "Keyword::Simple" "Lexical::Accessor" "Module::Runtime" "Moo" "MooX::late" "MooseX::MungeHas" "Scalar::Util" "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Try::Tiny" "Type::Utils" "Types::XSD::Lite" "namespace::sweep" "true" "Mouse" "Class::Tiny::Antlers"
 perl:
   - "5.14"
   - "5.16"

@@ -306,3 +306,32 @@ we I<override> the method inherited from the superclass:
          $self->fuel( $self->fuel + $x );
       }
    }
+
+=head1 BUGS
+
+Please report any other bugs to
+L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
+
+=head1 SEE ALSO
+
+L<Moops>.
+
+=head1 AUTHOR
+
+Toby Inkster E<lt>tobyink@cpan.orgE<gt>, plus the authors credited at:
+L<http://en.wikibooks.org/w/index.php?title=A-level_Computing/AQA/Problem_Solving,_Programming,_Operating_Systems,_Databases_and_Networking/Programming_Concepts/Object-oriented_programming_(OOP)&action=history>
+(as of 15 December 2013).
+
+=head1 COPYRIGHT AND LICENCE
+
+Text is available under the Creative Commons Attribution/Share-Alike
+License.
+
+L<http://creativecommons.org/licenses/by-sa/3.0/>.
+
+=head1 DISCLAIMER OF WARRANTIES
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+

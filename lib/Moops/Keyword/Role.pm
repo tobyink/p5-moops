@@ -97,7 +97,7 @@ around arguments_for_kavorka => sub
 	
 	my $using = $self->relations->{using}[0] // $self->default_oo_implementation;
 	push @keywords, qw/ override augment /
-		if $using eq 'Moose' || $using eq 'Mouse';
+		if $using =~ /^Mo[ou]se\b/;
 	
 	return (
 		$self->$next(@_),

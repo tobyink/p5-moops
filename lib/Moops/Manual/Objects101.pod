@@ -2,6 +2,8 @@
 
 =encoding utf-8
 
+=for stopwords textboxes
+
 =head1 NAME
 
 Moops::Manual::Objects101 - an introduction to object oriented programming using Moops

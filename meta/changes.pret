@@ -203,3 +203,15 @@
 	changeset [
 		item "Replace Function::Parameters with Kavorka."^^Change;
 	].
+
+`Moops 0.027 cpan:TOBYINK`
+	issued  2013-12-16;
+	changeset [
+		item [
+			a dcs:Addition, dcs:Documentation;
+			label "Moops::Manual::Objects101.";
+		];
+		item "Private attributes via Lexical::Accessor."^^Addition;
+		item "Moose/Mouse classes/roles now have override/augment method modifier keywords."^^Change;
+		item "Include an example using multi methods to implement a class method and object method with the same name as each other."^^Documentation;
+	].

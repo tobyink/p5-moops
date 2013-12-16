@@ -349,8 +349,7 @@ may support namespaces.
 =head2 Functions and Methods
 
 Moops uses L<Kavorka> to declare functions and methods within classes
-and roles. Kavorka provides the C<fun>, C<method>, C<classmethod>, and
-C<objectmethod> keywords.
+and roles. Kavorka provides the C<fun> and C<method> keywords.
 
    class Person {
       use Scalar::Util 'refaddr';
@@ -381,7 +380,7 @@ method like this:
 
    class Person {
       # ...
-      classmethod is_same_as ( Object $x, Object $y ) {
+      method is_same_as ( $class: Object $x, Object $y ) {
          refaddr($x) == refaddr($y)
       }
    }
@@ -389,9 +388,8 @@ method like this:
    # ...
    Person->is_same_as($phoebe, $ursula);   # false
 
-The C<method>, C<classmethod>, and C<objectmethod> keywords are not
-provided within packages declared using C<namespace>; only within
-classes and roles.
+The C<method> keyword is not provided within packages declared using
+C<namespace>; only within classes and roles.
 
 See also L<Kavorka::Manual::Methods> and L<Kavorka::Manual::Functions>.
 

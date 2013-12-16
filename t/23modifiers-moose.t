@@ -32,11 +32,17 @@ class Parent using Moose {
 	method process ( ScalarRef[Int] $n ) {
 		$$n *= 3;
 	}
+	method xxx () {
+		return 42;
+	}
 }
 
 role Sibling using Moose {
 	after process ( ScalarRef[Int] $n ) {
 		$$n += 2;
+	}
+	override xxx () {
+		return 666;
 	}
 }
 
@@ -90,5 +96,12 @@ is($m, '20.2345');
 	isa_ok($parm && $parm->type, 'Type::Tiny');
 	is($parm && $parm->type->display_name, 'ScalarRef[Int]');
 }
+
+subtest "override works in Moose classes" => sub
+{
+	is(Parent->xxx, 42);
+	is(Child->xxx, 666);
+	done_testing;
+};
 
 done_testing;

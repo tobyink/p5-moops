@@ -349,7 +349,8 @@ may support namespaces.
 =head2 Functions and Methods
 
 Moops uses L<Kavorka> to declare functions and methods within classes
-and roles.
+and roles. Kavorka provides the C<fun>, C<method>, C<classmethod>, and
+C<objectmethod> keywords.
 
    class Person {
       use Scalar::Util 'refaddr';
@@ -380,7 +381,7 @@ method like this:
 
    class Person {
       # ...
-      method is_same_as ( $class: Object $x, Object $y ) {
+      classmethod is_same_as ( Object $x, Object $y ) {
          refaddr($x) == refaddr($y)
       }
    }
@@ -388,8 +389,11 @@ method like this:
    # ...
    Person->is_same_as($phoebe, $ursula);   # false
 
-The C<method> keyword is not provided within packages declared using
-C<namespace>; it is only available within classes and roles.
+The C<method>, C<classmethod>, and C<objectmethod> keywords are not
+provided within packages declared using C<namespace>; only within
+classes and roles.
+
+See also L<Kavorka::Manual::Methods> and L<Kavorka::Manual::Functions>.
 
 Within Moose classes and roles, the L<MooseX::KavorkaInfo> module is
 loaded, to allow access to method signatures via the meta object
@@ -420,9 +424,16 @@ Within classes and roles, C<before>, C<after> and C<around> keywords
 are provided for declaring method modifiers. These use the same syntax
 as C<method>.
 
-Unlike Moo/Mouse/Moose, for C<around> modifiers, the coderef being
-wrapped is I<not> passed as C<< $_[0] >>. Instead, it's available in
-the global variable C<< ${^NEXT} >>.
+If your class or role is using Moose or Mouse, then you also get
+C<augment> and C<override> keywords.
+
+See also L<Kavorka::Manual::MethodModifiers>.
+
+=head2 Multi Methods
+
+L<Moops> uses L<Kavorka> to implement multi subs and multi methods.
+
+See also L<Kavorka::Manual::MultiSubs>.
 
 =head2 Type Constraints
 

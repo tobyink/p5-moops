@@ -91,7 +91,8 @@ sub generate_package_setup_oo
 sub generate_package_setup_methods
 {
 	my $self = shift;
-	return "use Kavorka '${\ ref($self) }'->arguments_for_kavorka(q[${\ $self->package }]);";
+	my @args = $self->arguments_for_kavorka($self->package);
+	return "use Kavorka qw(@args);";
 }
 
 sub generate_type_constraint_setup

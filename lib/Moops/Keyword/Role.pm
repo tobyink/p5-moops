@@ -92,9 +92,16 @@ around arguments_for_kavorka => sub
 {
 	my $next = shift;
 	my $self = shift;
+	
+	my @keywords = qw/ method classmethod objectmethod before after around /;
+	
+	my $using = $self->relations->{using}[0] // $self->default_oo_implementation;
+	push @keywords, qw/ override augment /
+		if $using eq 'Moose' || $using eq 'Mouse';
+	
 	return (
 		$self->$next(@_),
-		qw/ method before after around /,
+		@keywords,
 	);
 };
 

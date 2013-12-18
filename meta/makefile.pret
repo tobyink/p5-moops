@@ -22,6 +22,8 @@
 	:runtime-requirement    [ :on "namespace::sweep 0.006"^^:CpanId ];
 	:runtime-requirement    [ :on "true 0.18"^^:CpanId ];
 	:runtime-requirement    [ :on "perl 5.014"^^:CpanId ];
+	:runtime-conflict       [ :on "MooseX::Types::Common == 0.001011"^^:CpanId ];
+	:runtime-conflict       [ :on "MooseX::Types::URI == 0.04"^^:CpanId ];
 	:feature [
 		doap:name               "Moo";
 		doap:shortdesc          "allow classes and roles to be built with Moo";

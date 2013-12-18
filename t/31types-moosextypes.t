@@ -28,6 +28,11 @@ use Test::Requires { 'Moose' => '2.0600' };
 use Test::Requires { 'MooseX::Types::Common::Numeric' => '0.001008' };
 use Test::Fatal;
 
+BEGIN {
+	'MooseX::Types::Common::Numeric'->VERSION eq '0.001011'
+		and plan skip_all => 'MooseX::Types::Common::Numeric 0.001011 is broken';
+};
+
 use Moops;
 
 class Foo using Moose {

@@ -221,4 +221,5 @@
 	changeset [
 		item "Indicate conflict with MooseX::Types::Common 0.001011."^^Packaging;
 		item "Indicate conflict with MooseX::Types::URI 0.05."^^Packaging;
+		item "Demonstrate `is override` trait in Moops::Manual::Objects101."^^Documentation;
 	].

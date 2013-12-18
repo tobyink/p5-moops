@@ -297,37 +297,17 @@ friends say?! So for the C<ElectricCar> class, we want to inherit everything
 from C<Car>, but we want to morph(change) the C<refuel> method. To do that
 we I<override> the method inherited from the superclass:
 
-   class ElectricCar extends Car using Moose {
-      has num_batteries => (
-         is       => 'ro',
-         isa      => Int,
-         default  => 8,
-      );
-      override refuel (Int $x) {
-         say "Pure renewable energy!";
-         $self->fuel( $self->fuel + $x );
-      }
-   }
-
-Note that the C<override> keyword is only available within classes declared
-using L<Moose>. (Moose is a Perl OO framework.) It's still possible to
-override methods without Moose, using the C<method> keyword:
-
    class ElectricCar extends Car {
       has num_batteries => (
          is       => 'ro',
          isa      => Int,
          default  => 8,
       );
-      method refuel (Int $x) {
+      override refuel (Int $x) is override {
          say "Pure renewable energy!";
          $self->fuel( $self->fuel + $x );
       }
    }
-
-The advantage of the C<override> keyword is that on installation, it checks
-to make sure a method of the same name actually exists in the parent class,
-helping avoid typos.
 
 =head1 BUGS
 

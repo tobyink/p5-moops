@@ -215,3 +215,10 @@
 		item "Moose/Mouse classes/roles now have override/augment method modifier keywords."^^Change;
 		item "Include an example using multi methods to implement a class method and object method with the same name as each other."^^Documentation;
 	].
+
+`Moops 0.028 cpan:TOBYINK`
+	issued  2013-12-18;
+	changeset [
+		item "Indicate conflict with MooseX::Types::Common 0.001011."^^Packaging;
+		item "Indicate conflict with MooseX::Types::URI 0.05."^^Packaging;
+	].

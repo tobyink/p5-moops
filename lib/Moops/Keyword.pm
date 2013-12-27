@@ -73,13 +73,13 @@ sub generate_package_setup
 		'use PerlX::Define;',
 		'use Scalar::Util qw(blessed);',
 		'use Try::Tiny;',
-		'use v5.14;',
-		'use strict;',
-		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 		'BEGIN { (*true, *false) = (\&Moops::_true, \&Moops::_false) };',
 		$self->generate_type_constraint_setup,
 		$self->generate_package_setup_oo,
 		$self->generate_package_setup_methods,
+		'use v5.14;',
+		'use strict;',
+		'use warnings FATAL => qw(all); no warnings qw(void once uninitialized numeric);',
 	);
 }
 

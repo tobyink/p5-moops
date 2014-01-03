@@ -714,6 +714,14 @@ You can apply your trait using:
 Please report any other bugs to
 L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
 
+=head1 SUPPORT
+
+B<< IRC: >> support is available through in the I<< #moops >> channel
+on L<irc.perl.org|http://www.irc.perl.org/channels.html>.
+
+For anything Moo-specific, you may have better luck in the
+I<< #web-simple >> channel; or for Moose-specific queries, I<< #moose >>.
+
 =head1 SEE ALSO
 
 Similar:

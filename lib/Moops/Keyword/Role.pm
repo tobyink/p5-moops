@@ -49,7 +49,7 @@ sub generate_package_setup_oo
 		'use Lexical::Accessor;',
 	);
 	push @lines, "use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});"
-		if $using{$using} =~ /^Mo/;
+		if $using =~ /^Mo/;
 	
 	return (
 		$using{$using},

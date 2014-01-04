@@ -322,7 +322,7 @@ L<Moops>.
 
 Toby Inkster E<lt>tobyink@cpan.orgE<gt>, plus the authors credited at:
 L<http://en.wikibooks.org/w/index.php?title=A-level_Computing/AQA/Problem_Solving,_Programming,_Operating_Systems,_Databases_and_Networking/Programming_Concepts/Object-oriented_programming_(OOP)&action=history>
-(as of 15 December 2013).
+(as of 15 December 2013-2014).
 
 =head1 COPYRIGHT AND LICENCE
 

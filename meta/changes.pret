@@ -228,4 +228,5 @@
 	issued  2014-01-04;
 	changeset [
 		item "Fix availability of Lexical::Accessor within class {} blocks."^^Bugfix;
+		item "Copyright 2014."^^Documentation;
 	].

@@ -3,6 +3,9 @@
 @prefix : <http://ontologi.es/doap-deps#> .
 
 `Moops`
+	:develop-requires       [ :on "bareword::filehandles"^^:CpanId ];
+	:develop-requires       [ :on "indirect"^^:CpanId ];
+	:develop-requires       [ :on "multidimensional"^^:CpanId ];
 	:develop-recommendation [ :on "Dist::Inkt"^^:CpanId ];
 	:runtime-requirement    [ :on "Devel::Pragma 0.54"^^:CpanId ];
 	:runtime-requirement    [ :on "Exporter::Tiny 0.026"^^:CpanId ];

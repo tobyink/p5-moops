@@ -223,3 +223,9 @@
 		item "Indicate conflict with MooseX::Types::URI 0.05."^^Packaging;
 		item "Demonstrate `is override` trait in Moops::Manual::Objects101."^^Documentation;
 	].
+
+`Moops 0.029 cpan:TOBYINK`
+	issued  2014-01-04;
+	changeset [
+		item "Fix availability of Lexical::Accessor within class {} blocks."^^Bugfix;
+	].

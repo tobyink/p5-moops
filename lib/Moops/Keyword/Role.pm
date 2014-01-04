@@ -45,7 +45,7 @@ sub generate_package_setup_oo
 		or Carp::croak("Cannot create a package using $using; stopped");
 	
 	my @lines = (
-		'use namespace::sweep;',
+		'use namespace::sweep -also => "has";',
 		'use Lexical::Accessor;',
 	);
 	push @lines, "use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});"

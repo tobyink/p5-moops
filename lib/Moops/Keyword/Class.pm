@@ -37,9 +37,10 @@ sub generate_package_setup_oo
 	
 	my @lines = (
 		'use namespace::sweep;',
-		"use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});",
-#		'BEGIN { no warnings "redefine"; my $orig = \&has; *has = sub { warn __PACKAGE__." has @_"; goto $orig; } };',
+		'use Lexical::Accessor;',
 	);
+	push @lines, "use MooseX::MungeHas qw(@{[ $self->arguments_for_moosex_mungehas ]});"
+		if $using{$using} =~ /^Mo/;
 
 	if ($using eq 'Moose' or $using eq 'Mouse')
 	{

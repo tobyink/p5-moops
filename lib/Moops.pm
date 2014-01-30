@@ -15,6 +15,78 @@ use Module::Runtime qw(use_package_optimistically);
 use feature qw();
 use true qw();
 
+# Disable 'experimental' warning categories because these lead to
+# inconsistencies between the different Perl versions supported by
+# Moops.
+#
+# Disable 'void', 'once', 'uninitialized' and 'numeric' because
+# they are annoying.
+#
+# New warnings categories provided by new releases of Perl will not
+# be added here (but they may be added to a @NONFATAL_WARNINGS array).
+#
+
+our @FATAL_WARNINGS = (
+	'ambiguous',
+	'bareword',
+	'closed',
+	'closure',
+	'debugging',
+	'deprecated',
+	'digit',
+	'exec',
+	'exiting',
+#	'experimental',
+#	'experimental::lexical_subs',
+#	'experimental::lexical_topic',
+#	'experimental::regex_sets',
+#	'experimental::smartmatch',
+	'glob',
+	'illegalproto',
+	'imprecision',
+	'inplace',
+	'internal',
+	'io',
+	'layer',
+	'malloc',
+	'misc',
+	'newline',
+	'non_unicode',
+	'nonchar',
+#	'numeric',
+#	'once',
+	'overflow',
+	'pack',
+	'parenthesis',
+	'pipe',
+	'portable',
+	'precedence',
+	'printf',
+	'prototype',
+	'qw',
+	'recursion',
+	'redefine',
+	'regexp',
+	'reserved',
+	'semicolon',
+	'severe',
+	'signal',
+	'substr',
+	'surrogate',
+	'syntax',
+	'taint',
+	'threads',
+#	'uninitialized',
+	'unopened',
+	'unpack',
+	'untie',
+	'utf8',
+#	'void',
+);
+
+# Don't tamper please!
+Internals::SvREADONLY(@FATAL_WARNINGS, 1);
+
 sub class_for_import_set
 {
 	require Moops::ImportSet;
@@ -44,8 +116,8 @@ sub import
 		: undef;
 	
 	'strict'->import();
-	'warnings'->import(FATAL => 'all');
-	'warnings'->unimport(qw(once void uninitialized numeric));
+	'warnings'->unimport();
+	'warnings'->import(FATAL => @FATAL_WARNINGS);
 	'feature'->import(':5.14');
 	'true'->import();
 	
@@ -550,9 +622,10 @@ be checked using the C<< :assertions >> attribute.
 
 =head2 More Sugar
 
-Strictures, including fatal warnings, but excluding the 
-C<uninitialized>, C<void>, C<once> and C<numeric> warning categories
-is imported into all declared packages.
+L<strict> and FATAL L<warnings> are imported into all declared packages.
+However the C<uninitialized>, C<void>, C<once> and C<numeric> warning
+categories are explicitly excluded, as are any warnings categories added
+to Perl after version 5.14.
 
 Perl 5.14 features, including the C<state> and C<say> keywords,
 and sane Unicode string handling are imported into all declared
@@ -566,8 +639,8 @@ into all declared packages.
 =head2 Outer Sugar
 
 The "outer" package, where the C<< use Moops >> statement appears also
-gets a little sugar: strictures, the same warnings as "inner" packages,
-and Perl 5.14 features are all switched on.
+gets a little sugar: strict, the same warnings as "inner" packages, and
+Perl 5.14 features are all switched on.
 
 L<true> is loaded, so you don't need to do this at the end of your
 file:

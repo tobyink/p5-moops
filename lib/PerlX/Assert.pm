@@ -57,7 +57,7 @@ sub import
 		}
 		else
 		{
-			substr($$ref, 0, 0) = "0 and $do";
+			substr($$ref, 0, 0) = "() and $do";
 		}
 	});
 }

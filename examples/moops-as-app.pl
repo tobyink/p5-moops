@@ -3,7 +3,8 @@
 use Moops;
 use Carp 'verbose';
 
-class UsrBinCat {
+class UsrBinCat
+{
 	use MooX::Options;
 	
 	option filename => (

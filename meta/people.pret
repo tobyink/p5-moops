@@ -6,3 +6,7 @@ cpan:TOBYINK
 	:name  "Toby Inkster";
 	:mbox  <mailto:tobyink@cpan.org>.
 
+cpan:MMAURICE
+	:name  "Maurice Mengel";
+	:mbox  <mailto:mmaurice@cpan.org>.
+

@@ -230,3 +230,16 @@
 		item "Fix availability of Lexical::Accessor within class {} blocks."^^Bugfix;
 		item "Copyright 2014."^^Documentation;
 	].
+
+`Moops 0.030 cpan:TOBYINK`
+	issued  2014-01-30;
+	changeset [
+		item "Require at least version 0.027 of Kavorka; this resolves a conflict using Moops with MooX::Options."^^Packaging;
+		item "Hard-code a list of warnings categories to fatalize; this means that warnings categories added to future versions of Perl will not magically become fatal in Moops."^^Change;
+		item [
+			a dcs:Addition, dcs:Documentation;
+			label "Include an example using Moops to write a command-line app.";
+			dcs:blame cpan:MMAURICE;
+			seealso <https://github.com/tobyink/p5-moops/pull/1>;
+		];		
+	].

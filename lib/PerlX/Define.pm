@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package PerlX::Define;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.029';
+our $VERSION   = '0.030';
 
 use B ();
 use Keyword::Simple ();

@@ -10,7 +10,7 @@ class UsrBinCat
 	option filename => (
 		is       => 'ro',
 		format   => 's',
-		required => 1,
+		required => true,
 		doc      => 'the file to display'
 	);
 	

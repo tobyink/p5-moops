@@ -10,7 +10,7 @@
 	:runtime-requirement    [ :on "Devel::Pragma 0.54"^^:CpanId ];
 	:runtime-requirement    [ :on "Exporter::Tiny 0.026"^^:CpanId ];
 	:runtime-requirement    [ :on "Import::Into 1.000000"^^:CpanId ];
-	:runtime-requirement    [ :on "Kavorka 0.023"^^:CpanId ];
+	:runtime-requirement    [ :on "Kavorka 0.026"^^:CpanId ];
 	:runtime-requirement    [ :on "Keyword::Simple 0.01"^^:CpanId ];
 	:runtime-recommendation [ :on "Keyword::Simple 0.02"^^:CpanId; comment "Improved line number accounting." ];
 	:runtime-requirement    [ :on "Lexical::Accessor 0.003"^^:CpanId ];

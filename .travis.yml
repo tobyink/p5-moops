@@ -5,7 +5,7 @@ install:
   - cpanm -n "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka"
   - cpanm -n "Keyword::Simple" "Lexical::Accessor" "Module::Runtime"
   - cpanm -n "Moo" "MooX::late" "MooseX::MungeHas" "Scalar::Util"
-  - cpanm -n "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires"
+  - cpanm -n "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Test::Warnings"
   - cpanm -n "Try::Tiny" "Type::Utils" "Types::XSD::Lite"
   - cpanm -n "namespace::sweep" "true" "Mouse" "Class::Tiny::Antlers"
 perl:

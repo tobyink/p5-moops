@@ -57,4 +57,5 @@
 	:test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
 	:test-requirement       [ :on "Test::Requires"^^:CpanId ];
 	:test-requirement       [ :on "Test::Fatal"^^:CpanId ];
+	:test-recommendation    [ :on "Test::Warnings"^^:CpanId ];
 	:test-suggestion        [ :on "Types::XSD::Lite 0.003"^^:CpanId ].

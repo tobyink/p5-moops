@@ -109,7 +109,11 @@ sub unimport
 sub import
 {
 	my $class   = shift;
-	my %opts    = ref($_[0]) eq 'ARRAY' ? ( imports => $_[0] ) : @_;
+	my %opts    = (
+		ref($_[0]) eq 'ARRAY'              ? (imports => $_[0]) :
+		(!ref($_[0]) and $_[0] eq -strict) ? (imports => ['strictures']) :
+		@_
+	);
 	
 	my $imports = ref($opts{imports}) eq 'ARRAY'
 		? $class->class_for_import_set->new(imports => mkopt($opts{imports}))
@@ -145,7 +149,8 @@ sub import
 			$attrs{imports} = $imports if defined $imports;
 			my $kw = $parser->keyword_object(%attrs);
 			
-			if ($opts{function_parameters_everywhere} or $ENV{'MOOPS_FUNCTION_PARAMETERS_EVERYWHERE'})
+			if ($opts{function_parameters_everywhere}
+			or $ENV{'MOOPS_FUNCTION_PARAMETERS_EVERYWHERE'})
 			{
 				require Moo::Role;
 				'Moo::Role'->apply_roles_to_object($kw, 'Moops::TraitFor::Keyword::fp');
@@ -646,6 +651,7 @@ L<true> is loaded, so you don't need to do this at the end of your
 file:
 
    1;
+   
 
 =head2 Custom Sugar
 
@@ -658,6 +664,10 @@ It is possible to inject other functions into all inner packages using:
 
 This is by far the easiest way to extend Moops with project-specific
 extras.
+
+There is a shortcut for injecting L<strictures> into all inner packages:
+
+   use Moops -strict;
 
 =head1 EXTENDING
 

@@ -63,8 +63,10 @@ sub generate_package_setup_relationships
 	my $self  = shift;
 	my @roles = @{ $self->relations->{with} || [] };
 	
-	return unless @roles;
-	return sprintf "with(%s);", join ",", map perlstring($_), @roles;
+	$self->_mk_guard(
+		sprintf("with(%s);", join(",", map perlstring($_), @roles))
+	) if @roles;
+	return;
 }
 
 around known_relationships => sub

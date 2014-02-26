@@ -10,6 +10,7 @@ our $VERSION   = '0.030';
 
 use Moo;
 use B qw(perlstring);
+use Devel::GlobalDestruction;
 use Module::Runtime qw(module_notional_filename use_package_optimistically);
 use namespace::sweep;
 
@@ -21,6 +22,7 @@ has 'relations'      => (is => 'ro');
 has 'is_empty'       => (is => 'ro');
 has 'imports'        => (is => 'ro', predicate => 'has_imports');
 has 'version_checks' => (is => 'ro');
+has '_guarded'       => (is => 'ro', default => sub { [] });
 
 sub should_support_methods { 0 }
 
@@ -54,7 +56,15 @@ sub generate_code
 	
 	# Stuff that must happen at runtime rather than compile time
 	$inject .= "'Moops'->at_runtime('$package');";
-	
+
+	state $i = 0;
+	$inject .= sprintf(
+		'my $__GUARD__%d_%d = bless(sub { %s }, "Moops::Keyword::__GUARD__");',
+		++$i,
+		100_000 + int(rand 899_000),
+		join(q[;], @{$self->_guarded}),
+	);
+
 	return $inject;
 }
 
@@ -137,6 +147,17 @@ sub check_prerequisites
 	{
 		&use_package_optimistically(@$prereq) if defined $prereq->[1];
 	}
+}
+
+sub _mk_guard
+{
+	my $self = shift;
+	push @{$self->_guarded}, @_;
+}
+
+sub Moops::Keyword::__GUARD__::DESTROY
+{
+	$_[0]->() unless in_global_destruction;
 }
 
 1;

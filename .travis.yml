@@ -13,7 +13,7 @@ before_install:
   - "perl -V"
 install:
   - cpanm -n "indirect" "multidimensional" "bareword::filehandles"
-  - cpanm -n "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka"
+  - cpanm -n "Exporter::Tiny" "Import::Into" "Kavorka" "Keyword::Simple"
   - cpanm -n "Lexical::Accessor" "Module::Runtime" "Moo" "MooX::late"
   - cpanm -n "MooseX::MungeHas" "Parse::Keyword" "Scalar::Util"
   - cpanm -n "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Test::Warnings"

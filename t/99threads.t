@@ -1,3 +1,28 @@
+=pod
+
+=encoding utf-8
+
+=head1 PURPOSE
+
+Check that Moops can be used on threaded Perls. Doesn't test much
+actual functionality under threading; merely that Moops can be
+loaded, that threads can be created, and that they can see classes
+created by Moops back in the main thread.
+
+=head1 AUTHOR
+
+Toby Inkster, but adapted from a test script for L<Kavorka> by
+Aaron James Trevena E<lt>teejay@cpan.orgE<gt>.
+
+=head1 COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2014 by Aaron James Trevena.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
+
 use strict;
 use warnings;
 use Test::More;
@@ -19,6 +44,8 @@ use threads;
 my $subref = sub {
 	my $id = shift;
 	note("id:$id");
+	return "ARGH[$id]"
+		unless 'ThreadedExample::Foo'->can('new');
 	return $id;
 };
 

@@ -1,5 +1,16 @@
 language: perl
-script: HARNESS_IS_VERBOSE=1 prove -Iinc -Ilib t
+perl:
+  - "5.14"
+  - "5.14.2_thr"
+  - "5.16"
+  - "5.16.2_thr"
+  - "5.18"
+  - "5.18.2_thr"
+  - "5.19"
+before_install:
+  - "source devel.travis/travis-perlbrew"
+  - "perlbrew install-cpanm -f"
+  - "perl -V"
 install:
   - cpanm -n "indirect" "multidimensional" "bareword::filehandles"
   - cpanm -n "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka"
@@ -8,11 +19,8 @@ install:
   - cpanm -n "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Test::Warnings"
   - cpanm -n "Try::Tiny" "Type::Utils" "Types::XSD::Lite"
   - cpanm -n "namespace::sweep" "true" "Mouse" "Class::Tiny::Antlers"
-perl:
-  - "5.14"
-  - "5.16"
-  - "5.18"
-  - "5.19"
+script:
+  - HARNESS_IS_VERBOSE=1 prove -Iinc -Ilib t
 notifications:
   irc:
     channels:

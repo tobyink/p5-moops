@@ -8,9 +8,9 @@ package Moops;
 our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.030';
 
-use Devel::Pragma qw(ccstash);
 use Exporter::Tiny qw(mkopt);
 use Keyword::Simple qw();
+use Parse::Keyword qw();
 use Module::Runtime qw(use_package_optimistically);
 use feature qw();
 use true qw();
@@ -141,7 +141,7 @@ sub import
 			my $parser = $parser_class->new(
 				keyword   => $kw,
 				ref       => $ref,
-				ccstash   => scalar(ccstash),
+				ccstash   => Parse::Keyword::compiling_package(),
 			);
 			$parser->parse;
 			

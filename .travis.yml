@@ -14,8 +14,8 @@ before_install:
 install:
   - cpanm -n "indirect" "multidimensional" "bareword::filehandles"
   - cpanm -n "Devel::Pragma" "Exporter::Tiny" "Import::Into" "Kavorka"
-  - cpanm -n "Keyword::Simple" "Lexical::Accessor" "Module::Runtime"
-  - cpanm -n "Moo" "MooX::late" "MooseX::MungeHas" "Scalar::Util"
+  - cpanm -n "Lexical::Accessor" "Module::Runtime" "Moo" "MooX::late"
+  - cpanm -n "MooseX::MungeHas" "Parse::Keyword" "Scalar::Util"
   - cpanm -n "Sub::Name" "Test::Fatal" "Test::More" "Test::Requires" "Test::Warnings"
   - cpanm -n "Try::Tiny" "Type::Utils" "Types::XSD::Lite"
   - cpanm -n "namespace::sweep" "true" "Mouse" "Class::Tiny::Antlers"

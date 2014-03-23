@@ -243,3 +243,27 @@
 			seealso <https://github.com/tobyink/p5-moops/pull/1>;
 		];		
 	].
+
+`Moops 0.031 cpan:TOBYINK`
+	issued  2014-03-23;
+	changeset [
+		item [
+			a dcs:Change;
+			label "Use Parse::Keyword instead of Devel::Pragma in order to establish the currently compiling package name. Devel::Pragma has issues under ithreads.";
+			dcs:thanks cpan:PDCAWLEY;
+		];
+		item [
+			a dcs:Tests;
+			label "Test Moops in threaded Perls.";
+			dcs:blame cpan:TEEJAY;
+		];
+		item [
+			a dcs:Documentation;
+			label "Fix typo in manual.";
+			dcs:fixes RT#93553;
+			dcs:thanks cpan:RSAVAGE;
+		];
+		item "The new import parameter `-strict` enables loading strictures.pm within Moops scopes."^^Addition;
+		item "Avoid returning 0 from `assert` statements (PerlX::Assert)."^^Change;
+		item "Use the `true` constant instead of the number 1 in the cli-app.pl example."^^Documentation;
+	].

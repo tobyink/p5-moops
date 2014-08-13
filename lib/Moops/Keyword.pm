@@ -22,7 +22,7 @@ has 'relations'      => (is => 'ro');
 has 'is_empty'       => (is => 'ro');
 has 'imports'        => (is => 'ro', predicate => 'has_imports');
 has 'version_checks' => (is => 'ro');
-has '_guarded'       => (is => 'ro', default => sub { [] });
+has '_guarded'       => (is => 'lazy', default => sub { [] });
 
 sub should_support_methods { 0 }
 

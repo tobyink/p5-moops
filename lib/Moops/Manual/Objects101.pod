@@ -174,7 +174,7 @@ This would output the following:
 
 =head3 Encapsulation
 
-You noticed that we used C<private_has> to declare C<max_speed> instead of
+You noticed that we used C<lexical_has> to declare C<max_speed> instead of
 C<has>. What this means is that these attributes are not directly accessible
 from outside the definition of the class. Let's take our polo class as an
 example:

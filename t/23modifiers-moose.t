@@ -46,7 +46,8 @@ role Sibling using Moose {
 	}
 }
 
-class Child extends Parent with Sibling using Moose {
+class Child extends Parent using Moose {
+	with 'Sibling';
 	before process ( ScalarRef[Int] $n ) {
 		$$n += 5;
 	}

@@ -7,7 +7,6 @@
 	:develop-requires       [ :on "indirect"^^:CpanId ];
 	:develop-requires       [ :on "multidimensional"^^:CpanId ];
 	:develop-recommendation [ :on "Dist::Inkt"^^:CpanId ];
-	:runtime-requirement    [ :on "Devel::Pragma 0.54"^^:CpanId ];
 	:runtime-requirement    [ :on "Exporter::Tiny 0.026"^^:CpanId ];
 	:runtime-requirement    [ :on "Import::Into 1.000000"^^:CpanId ];
 	:runtime-requirement    [ :on "Kavorka 0.027"^^:CpanId ];
@@ -18,6 +17,7 @@
 	:runtime-requirement    [ :on "Moo 1.003000"^^:CpanId ];
 	:runtime-requirement    [ :on "MooX::late 0.014"^^:CpanId ];
 	:runtime-requirement    [ :on "MooseX::MungeHas 0.002"^^:CpanId ];
+	:runtime-requirement    [ :on "Parse::Keyword 0.006"^^:CpanId ];
 	:runtime-requirement    [ :on "Scalar::Util 1.24"^^:CpanId ];
 	:runtime-requirement    [ :on "Sub::Name"^^:CpanId ];
 	:runtime-requirement    [ :on "Type::Utils 0.024"^^:CpanId ];

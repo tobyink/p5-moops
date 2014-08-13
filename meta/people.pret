@@ -10,3 +10,11 @@ cpan:MMAURICE
 	:name  "Maurice Mengel";
 	:mbox  <mailto:mmaurice@cpan.org>.
 
+cpan:TEEJAY
+	:name  "Aaron James Trevena".
+
+cpan:PDCAWLEY
+	:name  "Piers Cawley".
+
+cpan:RSAVAGE
+	:name  "Ron Savage".

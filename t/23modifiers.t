@@ -38,7 +38,8 @@ role Sibling {
 	}
 }
 
-class Child extends Parent with Sibling {
+class Child extends Parent {
+	with 'Sibling';
 	before process ( ScalarRef[Int] $n ) {
 		$$n += 5;
 	}

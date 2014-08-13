@@ -407,6 +407,28 @@ L<namespace::sweep> is automatically used in all roles.
 Roles take similar L<Attribute::Handlers>-style attributes to
 classes, but don't support C<< :mutable >>.
 
+=head3 A note on consuming roles
+
+In a standard:
+
+   class MyClass with MyRole {
+      ...;
+   }
+
+You should note that role composition is delayed to happen at the
+I<end> of the class declaration. This is usually what you want.
+
+However the interaction between method modifiers and roles is
+complex, and I<sometimes> you'll want the role to be applied to
+the class part-way through the declaration. In this case you can
+use a C<with> statement I<inside> the class declaration:
+
+   class MyClass {
+      ...;
+      with "MyRole";
+      ...;
+   }
+
 =head2 Namespaces
 
 The C<namespace> keyword works as above, but declares a package without

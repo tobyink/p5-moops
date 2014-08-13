@@ -267,3 +267,23 @@
 		item "Avoid returning 0 from `assert` statements (PerlX::Assert)."^^Change;
 		item "Use the `true` constant instead of the number 1 in the cli-app.pl example."^^Documentation;
 	].
+
+`Moops 0.032 cpan:TOBYINK`
+	issued  2014-08-13;
+	changeset [
+		item [
+			a dcs:Packaging;
+			label "PerlX::Assert is no longer bundled with Moops; it has been split out into a separate distribution.";
+		];
+		item [
+			a dcs:BackCompat;
+			label "Role composition is now delayed to the end of a class declaration.";
+			dcs:thanks cpan:MSTROUT;
+		];
+		item [
+			a dcs:Documentation;
+			label "Fix a typo in Moops::Manual::Objects101.";
+			dcs:thanks cpan:RSAVAGE;
+			dcs:fixes RT#93553;
+		];
+	].

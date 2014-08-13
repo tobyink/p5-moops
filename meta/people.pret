@@ -18,3 +18,9 @@ cpan:PDCAWLEY
 
 cpan:RSAVAGE
 	:name  "Ron Savage".
+
+cpan:MSTROUT
+	:name  "Matt S Trout".
+
+cpan:RSAVAGE
+	:name  "Ron Savage".

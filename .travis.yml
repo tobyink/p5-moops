@@ -3,10 +3,8 @@ perl:
   - "5.14"
   - "5.14.2_thr"
   - "5.16"
-  - "5.16.2_thr"
   - "5.18"
-  - "5.18.2_thr"
-  - "5.19"
+  - "5.20"
 before_install:
   - "source devel.travis/travis-perlbrew"
   - "perlbrew install-cpanm -f"

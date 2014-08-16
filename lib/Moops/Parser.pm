@@ -6,7 +6,7 @@ no warnings qw(void once uninitialized numeric);
 package Moops::Parser;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.032';
+our $VERSION   = '0.033';
 
 use Moo;
 use Keyword::Simple ();

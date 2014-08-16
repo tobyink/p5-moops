@@ -287,3 +287,16 @@
 			dcs:fixes RT#93553;
 		];
 	].
+
+`Moops 0.033 cpan:TOBYINK`
+	issued  2014-08-16;
+	changeset [
+		item [
+			a dcs:Bugfix;
+			label "Fix bugs introduced in 0.032 with role application via guards.";
+		];
+		item [
+			a dcs:Update;
+			label "Take advantage of improvements in Type::Library/Type::Registry 1.000000.";
+		];
+	].

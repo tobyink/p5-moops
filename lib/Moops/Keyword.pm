@@ -121,7 +121,7 @@ sub generate_type_constraint_setup
 			: $lib->can('type_names')
 				? do {
 					require Type::Registry;
-					"use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" 
+					"use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };"
 				}
 				: do {
 					require Carp;

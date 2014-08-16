@@ -40,6 +40,11 @@ class BiteyBitey types Types::XSD::Lite :rwp :dirty
 	{
 		$self->_set_byte(ord $c);
 	}
+	
+	method _known_type (Str $name --> Maybe[Object])
+	{
+		try { Type::Registry->for_me->lookup($name) };
+	}
 }
 
 my $bitey = BiteyBitey->new(byte => 127);
@@ -73,5 +78,8 @@ like(
 
 ok exists(&BiteyBitey::UnsignedByte);
 ok !exists(&BiteyBitey::FileHandle);
+
+ok !!BiteyBitey->_known_type('UnsignedByte');
+ok  !BiteyBitey->_known_type('MonkeyBizness');
 
 done_testing;

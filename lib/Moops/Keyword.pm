@@ -109,14 +109,19 @@ sub generate_package_setup_methods
 sub generate_type_constraint_setup
 {
 	my $self = shift;
-	require Type::Registry;
 	return map {
 		my $lib = use_package_optimistically($_);
 		$lib->isa('Type::Library')
-			? "use $lib -types; BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" :
-		$lib->can('type_names')
-			? "use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" :
-		do { require Carp; Carp::croak("'$lib' is not a type constraint library") };
+			? "use $lib -types;"
+			: $lib->can('type_names')
+				? do {
+					require Type::Registry;
+					"use $lib ('$lib'->type_names); BEGIN { 'Type::Registry'->for_me->add_types(q[$lib]) };" 
+				}
+				: do {
+					require Carp;
+					Carp::croak("'$lib' is not a recognized type constraint library")
+				};
 	} @{ $self->relations->{types} || [] };
 }
 

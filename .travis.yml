@@ -11,6 +11,8 @@ matrix:
   include:
     - perl: 5.18
       env: COVERAGE=1
+    - perl: 5.18
+      env: MOOPS_FUNCTION_PARAMETERS_EVERYWHERE=1
 before_install:
   - export DIST_INKT_PROFILE="Dist::Inkt::Profile::TOBYINK"
   - git clone git://github.com/tobyink/perl-travis-helper
@@ -21,6 +23,7 @@ before_install:
   - cd $BUILD_DIR
 install:
   - cpan-install --deps
+  - cpan-install "Function::Parameters"
   - cpan-install --coverage
 before_script:
   - coverage-setup
@@ -33,4 +36,3 @@ notifications:
     channels:
       - "irc.perl.org#moops"
     on_success: change
-

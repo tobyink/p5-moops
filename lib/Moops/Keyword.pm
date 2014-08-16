@@ -56,15 +56,20 @@ sub generate_code
 	
 	# Stuff that must happen at runtime rather than compile time
 	$inject .= "'Moops'->at_runtime('$package');";
-
+	
+	my @guarded = @{ $self->_guarded };
 	state $i = 0;
-	$inject .= sprintf(
-		'my $__GUARD__%d_%d = bless(sub { %s }, "Moops::Keyword::__GUARD__");',
-		++$i,
-		100_000 + int(rand 899_000),
-		join(q[;], @{$self->_guarded}),
-	);
-
+	if (@guarded)
+	{
+		require Scope::Guard;
+		$inject .= sprintf(
+			'my $__GUARD__%d_%d = Scope::Guard->new(sub { %s });',
+			++$i,
+			100_000 + int(rand 899_000),
+			join(q[;], @guarded),
+		);
+	}
+	
 	return $inject;
 }
 
@@ -158,11 +163,6 @@ sub _mk_guard
 {
 	my $self = shift;
 	push @{$self->_guarded}, @_;
-}
-
-sub Moops::Keyword::__GUARD__::DESTROY
-{
-	$_[0]->() unless in_global_destruction;
 }
 
 1;

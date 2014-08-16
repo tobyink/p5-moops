@@ -41,7 +41,7 @@ class BiteyBitey types Types::XSD::Lite :rwp :dirty
 		$self->_set_byte(ord $c);
 	}
 	
-	method _known_type (Str $name --> Maybe[Object])
+	method _known_type (Str $name)
 	{
 		try { Type::Registry->for_me->lookup($name) };
 	}

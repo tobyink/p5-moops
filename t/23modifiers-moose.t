@@ -24,6 +24,12 @@ the same terms as the Perl 5 programming language system itself.
 use strict;
 use warnings;
 use Test::More;
+
+BEGIN {
+	plan skip_all => "test does not support Function::Parameters"
+		if $ENV{MOOPS_FUNCTION_PARAMETERS_EVERYWHERE};
+};
+
 use Test::Requires { 'Moose' => '2.0600' };
 
 use Moops;

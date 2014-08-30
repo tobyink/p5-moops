@@ -23,15 +23,24 @@ use strict;
 use warnings;
 use lib qw( t ../t );
 use Test::More;
+use Test::Fatal;
 
-my $retval = eval {
-	require ReturnsTrue;
+subtest "module ending in an explicit false statement returns true" => sub
+{
+	my $retval;
+	my $exception = exception { $retval = do { require ReturnsTrue } };
+	is($exception, undef, 'no exception');
+	ok($retval, 'require returned true');
+	new_ok('ReturnsTrue');
 };
 
-note("GOT: '$retval'");
-
-ok($retval, 'require returned true');
-
-new_ok('ReturnsTrue');
+subtest "module ending in no explicit statement returns true" => sub
+{
+	my $retval;
+	my $exception = exception { $retval = do { require ReturnsTrueAgain } };
+	is($exception, undef, 'no exception');
+	ok($retval, 'require returned true');
+	new_ok('ReturnsTrueAgain');
+};
 
 done_testing;

@@ -4,7 +4,7 @@
 
 =head1 PURPOSE
 
-Class C<ReturnsTrue> used by 05true.t.
+Class C<ReturnsTrueAgain> used by 05true.t.
 
 This class needs to be defined externally because we are testing
 whether Moops-based modules automatically return a true value.
@@ -23,10 +23,8 @@ the same terms as the Perl 5 programming language system itself.
 =cut
 
 use Moops;
-class ReturnsTrue {
+class ReturnsTrueAgain {
 	method foo { 42 }
 }
-
-0;
 
 # should be an implicit "1;" here

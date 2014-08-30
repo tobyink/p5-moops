@@ -824,8 +824,16 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
 B<< IRC: >> support is available through in the I<< #moops >> channel
 on L<irc.perl.org|http://www.irc.perl.org/channels.html>.
 
-For anything Moo-specific, you may have better luck in the
-I<< #web-simple >> channel; or for Moose-specific queries, I<< #moose >>.
+For general Moose/Moo queries which don't seem to be related to Moops'
+syntactic sugar, your question may be answered more quickly in the
+I<< #moose >> channel.
+
+B<< Web: >> if you ask a question on PerlMonks in
+L<Seekers of Perl Wisdom|http://www.perlmonks.org/?node_id=479> with
+"Moops" in the subject line, it should be answered pretty quickly.
+
+There is a L<moops tag|http://stackoverflow.com/questions/tagged/moops>
+on StackOverflow.
 
 =head1 SEE ALSO
 
@@ -835,10 +843,10 @@ L<https://github.com/stevan/p5-mop-redux>.
 
 Main functionality exposed by this module:
 L<Moo>/L<MooX::late>, L<Kavorka>, L<Try::Tiny>, L<Types::Standard>,
-L<namespace::sweep>, L<true>.
+L<namespace::sweep>, L<true>, L<PerlX::Assert>.
 
 Internals fueled by:
-L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>, L<Devel::Pragma>,
+L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>,
 L<Attribute::Handlers>.
 
 L<http://en.wikipedia.org/wiki/The_Bubble_Boy_(Seinfeld)>.

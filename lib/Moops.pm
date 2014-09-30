@@ -9,6 +9,7 @@ our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.033';
 
 use Exporter::Tiny qw(mkopt);
+use Import::Into;
 use Keyword::Simple qw();
 use Parse::Keyword qw();
 use Module::Runtime qw(use_package_optimistically);
@@ -131,6 +132,14 @@ sub import
 			'Moo::Role'->create_class_with_roles($class->class_for_parser, @{$opts{traits}})
 		}
 		: $class->class_for_parser;
+
+	$^H{'Moops/parser_class'} = $parser_class;
+	
+	require Kavorka;
+	Kavorka->import::into(
+		1,
+		multi => { traits => ['Moops::Variant'] },
+	);
 	
 	for my $kw ($parser_class->keywords)
 	{

@@ -116,6 +116,8 @@ sub import
 		@_
 	);
 	
+	my $use_fp = $opts{function_parameters_everywhere} || $ENV{'MOOPS_FUNCTION_PARAMETERS_EVERYWHERE'};
+	
 	my $imports = ref($opts{imports}) eq 'ARRAY'
 		? $class->class_for_import_set->new(imports => mkopt($opts{imports}))
 		: undef;
@@ -132,14 +134,17 @@ sub import
 			'Moo::Role'->create_class_with_roles($class->class_for_parser, @{$opts{traits}})
 		}
 		: $class->class_for_parser;
-
+	
 	$^H{'Moops/parser_class'} = $parser_class;
 	
-	require Kavorka;
-	Kavorka->import::into(
-		1,
-		multi => { traits => ['Moops::Variant'] },
-	);
+	if (! $use_fp)
+	{
+		require Kavorka;
+		Kavorka->import::into(
+			1,
+			multi => { traits => ['Moops::Variant'] },
+		);
+	}
 	
 	for my $kw ($parser_class->keywords)
 	{
@@ -158,8 +163,7 @@ sub import
 			$attrs{imports} = $imports if defined $imports;
 			my $kw = $parser->keyword_object(%attrs);
 			
-			if ($opts{function_parameters_everywhere}
-			or $ENV{'MOOPS_FUNCTION_PARAMETERS_EVERYWHERE'})
+			if ($use_fp)
 			{
 				require Moo::Role;
 				'Moo::Role'->apply_roles_to_object($kw, 'Moops::TraitFor::Keyword::fp');

@@ -1,9 +1,9 @@
 package Moops::Variant;
 
-use Moo::Role;
 use Package::Variant ();
 use Parse::Keyword {};
 use Parse::KeywordX;
+use Moo::Role;
 
 has moops_parser => (
 	is => 'ro',
@@ -131,6 +131,7 @@ after parse_traits => sub
 	package #
 		Moops::Variant::_LineHacker;
 	use Moo::Role;
+	
 	around generate_package_setup => sub
 	{
 		my $next = shift;
@@ -151,7 +152,7 @@ after parse_traits => sub
 			}
 			elsif (/^use Kavorka/) {
 				my @args = $self->arguments_for_kavorka;
-				"use Kavorka -traits => [qw/Moops::Variant::_SubHacker/], qw(@args);";
+				"use Kavorka -traits => [qw/Moops::Variant::_SubHacker/], multi => { traits => [qw/Moops::Variant/] }, qw(@args);";
 			}
 			else {
 				$_;
@@ -176,8 +177,44 @@ after parse_traits => sub
 {
 	package #
 		Moops::Variant::_SubHacker;
+	use Parse::Keyword {};
+	use Parse::KeywordX;
 	use Moo::Role;
 	
+	has name_generator => (
+		is => 'rwp',
+		predicate => 1,
+	);
+	
+	around parse_subname => sub
+	{
+		my $next = shift;
+		my $self = shift;
+		
+		lex_read_space;
+		if (lex_peek(200) =~ /\A("[^"]+")/)
+		{
+			my $gen = $1;
+			lex_read(length $gen);
+			lex_read_space;
+			$self->_set_declared_name('__DYNAMIC_NAME__');
+			$self->_set_name_generator(sub {
+				my $pad = shift;
+				require Eval::TypeTiny;
+				Eval::TypeTiny::eval_closure(
+					source       => "sub { $gen }",
+					environment  => $pad,
+				)->();
+			});
+		}
+		else
+		{
+			$self->$next(@_);
+		}
+		
+		();
+	};
+		
 	our $_anon;
 	BEGIN { $_anon = 1 };
 	around is_anonymous => sub { $_anon };
@@ -195,14 +232,17 @@ after parse_traits => sub
 		my $orig_qn   = $self->qualified_name;
 		my $orig_body = $self->body;
 		
+		my $level = 0;
+		++$level until caller($level) eq $orig_pkg;
+		my $pad = PadWalker::peek_my($level+1);
+		
+		my $subname = $self->has_name_generator
+			? $self->name_generator->($pad)
+			: $self->declared_name;
+		
 		$self->{package} = $variant;
-		$self->_set_qualified_name($variant . "::" . $self->declared_name);
-		$self->{body} = do {
-			my $level = 0;
-			++$level until caller($level) eq $orig_pkg;
-			my $pad = PadWalker::peek_my($level+1);
-			sub { $self->_poke_pads($pad); goto $orig_body };
-		};
+		$self->_set_qualified_name($variant . "::" . $subname);
+		$self->{body} = sub { $self->_poke_pads($pad); goto $orig_body };
 		
 		local $_anon = 0;
 		my $r = $self->$next(@_);

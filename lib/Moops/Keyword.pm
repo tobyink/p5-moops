@@ -108,7 +108,7 @@ sub generate_package_setup_methods
 {
 	my $self = shift;
 	my @args = $self->arguments_for_kavorka($self->package);
-	return "use Kavorka qw(@args);";
+	return "use Kavorka multi => { traits => [qw(Moops::Variant)] }, qw(@args);";
 }
 
 sub generate_type_constraint_setup
@@ -132,7 +132,7 @@ sub generate_type_constraint_setup
 
 sub arguments_for_kavorka
 {
-	return qw/ multi fun /;
+	return qw/ fun /;
 }
 
 sub known_relationships

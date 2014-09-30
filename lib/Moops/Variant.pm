@@ -2,8 +2,14 @@ package Moops::Variant;
 
 use Moo::Role;
 use Package::Variant ();
+use Parse::Keyword {};
+use Parse::KeywordX;
 
-has moops_parser => (is => 'ro', required => 1);
+has moops_parser => (
+	is => 'ro',
+	required => 1,
+	handles => [qw/ known_relationships qualify_relationship version_relationship /],
+);
 
 around multi_parse => sub
 {
@@ -70,6 +76,57 @@ sub install_sub
 	$code;
 }
 
+after parse_traits => sub
+{
+	my $self = shift;
+	lex_read_space;
+	
+	my $moops = $self->moops_parser;
+	my $rels  = join "|", map quotemeta, $self->known_relationships;
+	
+	while (lex_peek(40) =~ m{ \A ($rels) \s }xsm)
+	{
+		my $kw = $1;
+		my $with_version = $self->version_relationship($kw);
+		
+		my @names;
+		lex_read(length($kw));
+		lex_read_space;
+		my ($name, undef, $args) = parse_trait;
+		$name = $moops->qualify_module_name($name, $kw);
+		lex_read_space;
+		push @names, $name;
+		
+		if ($with_version and lex_peek(40) =~ m{ \A (v?[0-9._]+) }xsm)
+		{
+			my $ver = $1;
+			lex_read(length $ver);
+			lex_read_space;
+			push @{ $self->moops_parser->version_checks }, [ $name, $ver ];
+		}
+		
+		while (lex_peek(1) eq ',')
+		{
+			my ($name, undef, $args) = parse_trait;
+			$name = $moops->qualify_module_name($name, $kw);
+			lex_read_space;
+			push @names, $name;
+			
+			if ($with_version and lex_peek(40) =~ m{ \A (v?[0-9._]+) }xsm)
+			{
+				my $ver = $1;
+				lex_read(length $ver);
+				lex_read_space;
+				push @{ $self->moops_parser->version_checks }, [ $name, $ver ];
+			}
+		}
+		
+		push @{ $moops->relations->{$kw} }, @names;
+		
+		$moops->keyword_object->check_prerequisites;
+	}
+};
+
 {
 	package #
 		Moops::Variant::_LineHacker;
@@ -86,6 +143,11 @@ sub install_sub
 				push @mods, $1;
 				push @subs, qw/ has extends with before after around /;
 				();
+			}
+			elsif (/^use (Moose|Moose::Role|Mouse|Mouse::Role);(.*)/) {
+				push @mods, $1;
+				push @subs, qw/ has extends with before after around super inner augment override /;
+				$2;
 			}
 			elsif (/^use Kavorka/) {
 				my @args = $self->arguments_for_kavorka;

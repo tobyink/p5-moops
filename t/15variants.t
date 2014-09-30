@@ -17,12 +17,12 @@ class Person 1.1 :ro {
 
 multi class GenderedPerson (:$gender) extends Person 1.0
 {
-	method gender { $gender };
-	method "is_$gender" { 1 };
+	method gender { $gender }
+	method "is_$gender" { 1 }
 	
 	if ($gender eq 'male')
 	{
-		method has_penis { 1 };
+		method has_penis { 1 }
 	}
 }
 

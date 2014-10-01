@@ -56,10 +56,14 @@ my $pascal = $Chameleon->new(name => "Pascal");
 	[ map Local::Wocal::Nipple->new, 1..4 ],
 );
 
+::isa_ok($sven, $Reindeer);
+
 ::is($pascal->name, "Pascal");
 ::is($pascal->binomial, 'Chamaeleo chamaeleon');
 ::ok($pascal->is_chameleon);
 ::ok(!$pascal->can('nipples'));
 ::ok(!$pascal->can('get_nipples'));
+
+::isa_ok($pascal, $Chameleon);
 
 ::done_testing;

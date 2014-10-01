@@ -11,34 +11,47 @@ package Local::Wocal;
 
 use Moops;
 
-class Person 1.1 :ro {
+class Animal 1.1 :ro
+{
 	has name => (isa => Str, required => 1);
 }
 
-multi class GenderedPerson (:$gender) extends Person 1.0
+multi class Species (Str :$common_name, Str :$binomial, Bool :$is_mammal?)
+	extends Animal 1.0
 {
-	method gender { $gender }
-	method "is_$gender" { 1 }
+	method binomial { $binomial }
+	method "is_\L$common_name" { 1 }
 	
-	if ($gender eq 'male')
+	if ($is_mammal)
 	{
-		method has_penis { 1 }
+		method get_nipples { return "nipple" }
 	}
 }
 
-my $alice = GenderedPerson(gender => "female")->new(name => "Alice");
-my $bob   = GenderedPerson(gender => "male")->new(name => "Bob");
+my $Reindeer = Species(
+	common_name => 'Reindeer',
+	binomial => 'Rangifer tarandus',
+	is_mammal => 1,
+);
 
-::isnt(ref $alice, ref $bob);
+my $Chameleon = Species(
+	common_name => 'Chameleon',
+	binomial => 'Chamaeleo chamaeleon',
+);
 
-::is($alice->name, "Alice");
-::is($alice->gender, "female");
-::ok($alice->is_female);
-::ok(not $alice->can('has_penis'));
+::isnt($Reindeer, $Chameleon);
 
-::is($bob->name, "Bob");
-::is($bob->gender, "male");
-::ok($bob->is_male);
-::ok($bob->can('has_penis'));
+my $sven = $Reindeer->new(name => "Sven");
+my $pascal = $Chameleon->new(name => "Pascal");
+
+::is($sven->name, "Sven");
+::is($sven->binomial, "Rangifer tarandus");
+::ok($sven->is_reindeer);
+::ok($sven->can('get_nipples'));
+
+::is($pascal->name, "Pascal");
+::is($pascal->binomial, 'Chamaeleo chamaeleon');
+::ok($pascal->is_chameleon);
+::ok(!$pascal->can('get_nipples'));
 
 ::done_testing;

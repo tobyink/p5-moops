@@ -11,6 +11,8 @@ package Local::Wocal;
 
 use Moops;
 
+class Nipple 1.0;
+
 class Animal 1.1 :ro
 {
 	has name => (isa => Str, required => 1);
@@ -24,7 +26,8 @@ multi class Species (Str :$common_name, Str :$binomial, Bool :$is_mammal?)
 	
 	if ($is_mammal)
 	{
-		method get_nipples { return "nipple" }
+		has nipples => (is => 'ro', isa => ArrayRef[Object], required => true);
+		method get_nipples { @{$self->nipples} }
 	}
 }
 
@@ -41,17 +44,22 @@ my $Chameleon = Species(
 
 ::isnt($Reindeer, $Chameleon);
 
-my $sven = $Reindeer->new(name => "Sven");
+my $sven = $Reindeer->new(name => "Sven", nipples => [ map Local::Wocal::Nipple->new, 1..4 ]);
 my $pascal = $Chameleon->new(name => "Pascal");
 
 ::is($sven->name, "Sven");
 ::is($sven->binomial, "Rangifer tarandus");
 ::ok($sven->is_reindeer);
 ::ok($sven->can('get_nipples'));
+::is_deeply(
+	[ $sven->get_nipples ],
+	[ map Local::Wocal::Nipple->new, 1..4 ],
+);
 
 ::is($pascal->name, "Pascal");
 ::is($pascal->binomial, 'Chamaeleo chamaeleon');
 ::ok($pascal->is_chameleon);
+::ok(!$pascal->can('nipples'));
 ::ok(!$pascal->can('get_nipples'));
 
 ::done_testing;

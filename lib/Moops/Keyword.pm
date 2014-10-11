@@ -61,9 +61,9 @@ sub generate_code
 	state $i = 0;
 	if (@guarded)
 	{
-		require Scope::Guard;
+		require Guard;
 		$inject .= sprintf(
-			'my $__GUARD__%d_%d = Scope::Guard->new(sub { %s });',
+			'my $__GUARD__%d_%d = Guard::guard { %s };',
 			++$i,
 			100_000 + int(rand 899_000),
 			join(q[;], @guarded),

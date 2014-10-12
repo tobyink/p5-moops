@@ -5,7 +5,7 @@
 =head1 PURPOSE
 
 Check that L<Try::Tiny>, C<confess> and C<blessed> are imported into
-packages, and work as expected, but get cleaned away by L<namespace::sweep>.
+packages, and work as expected, but get cleaned away by L<namespace::autoclean>.
 
 =head1 AUTHOR
 

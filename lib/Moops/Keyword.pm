@@ -12,7 +12,7 @@ use Moo;
 use B qw(perlstring);
 use Devel::GlobalDestruction;
 use Module::Runtime qw(module_notional_filename use_package_optimistically);
-use namespace::sweep;
+use namespace::autoclean;
 
 has 'keyword'        => (is => 'ro');
 has 'ccstash'        => (is => 'ro');

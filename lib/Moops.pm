@@ -336,7 +336,7 @@ use a trailing semicolon.
 
 If using Moose or Mouse, classes are automatically made immutable. 
 
-L<namespace::sweep> is automatically used in all classes.
+L<namespace::autoclean> is automatically used in all classes.
 
 Between the class declaration and its body, L<Attribute::Handlers>-style
 attributes may be provided:
@@ -357,7 +357,7 @@ C<< :assertions >> - enables assertion checking (see below)
 
 =item *
 
-C<< :dirty >> - suppresses namespace::sweep
+C<< :dirty >> - suppresses namespace::autoclean
 
 =item *
 
@@ -402,7 +402,7 @@ roles.)
 
 If roles use Moo, the L<MooX::late> extension is enabled.
 
-L<namespace::sweep> is automatically used in all roles.
+L<namespace::autoclean> is automatically used in all roles.
 
 Roles take similar L<Attribute::Handlers>-style attributes to
 classes, but don't support C<< :mutable >>.
@@ -438,7 +438,7 @@ any class-specific or role-specific semantics.
       # ...
    }
 
-L<namespace::sweep> is not automatically used in namespaces.
+L<namespace::autoclean> is not automatically used in namespaces.
 
 L<Attribute::Handlers>-style attributes are supported for namespaces,
 but most of the built-in attributes make any sense without class/role
@@ -617,7 +617,7 @@ problem of using L<MooseX::Types> type libraries in L<Moo> classes:
 =head2 Constants
 
 The useful constants C<true> and C<false> are imported into all declared
-packages. (Within classes and roles, namespace::sweep will later remove
+packages. (Within classes and roles, namespace::autoclean will later remove
 them from the symbol table, so they don't form part of your package's API.)
 These constants can help make attribute declarations more readable.
 
@@ -630,7 +630,7 @@ L<PerlX::Define>):
       define PI = 3.2;
    }
 
-Constants declared this way will I<not> be swept away by namespace::sweep,
+Constants declared this way will I<not> be swept away by namespace::autoclean,
 and are considered part of your package's API.
 
 =head2 Assertions
@@ -843,7 +843,7 @@ L<https://github.com/stevan/p5-mop-redux>.
 
 Main functionality exposed by this module:
 L<Moo>/L<MooX::late>, L<Kavorka>, L<Try::Tiny>, L<Types::Standard>,
-L<namespace::sweep>, L<true>, L<PerlX::Assert>.
+L<namespace::autoclean>, L<true>, L<PerlX::Assert>.
 
 Internals fueled by:
 L<Keyword::Simple>, L<Module::Runtime>, L<Import::Into>,

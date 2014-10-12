@@ -10,7 +10,7 @@ our $VERSION   = '0.033';
 
 use Moo;
 extends 'Moops::Keyword';
-use namespace::sweep;
+use namespace::autoclean;
 
 around generate_package_setup => sub
 {

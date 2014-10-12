@@ -19,7 +19,7 @@
 	:runtime-requirement    [ :on "Parse::Keyword 0.006"^^:CpanId ];
 	:runtime-requirement    [ :on "PerlX::Assert 0.902"^^:CpanId ];
 	:runtime-requirement    [ :on "Scalar::Util 1.40"^^:CpanId ];
-	:runtime-requirement    [ :on "Scope::Guard"^^:CpanId ];
+	:runtime-requirement    [ :on "Variable::Magic"^^:CpanId ];
 	:runtime-requirement    [ :on "Type::Utils 1.000000"^^:CpanId ];
 	:runtime-requirement    [ :on "Try::Tiny 0.12"^^:CpanId ];
 	:runtime-requirement    [ :on "namespace::autoclean 0.20"^^:CpanId ];

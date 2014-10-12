@@ -61,9 +61,8 @@ sub generate_code
 	state $i = 0;
 	if (@guarded)
 	{
-		require Scope::Guard;
 		$inject .= sprintf(
-			'my $__GUARD__%d_%d = Scope::Guard->new(sub { %s });',
+			'my $__GUARD__%d_%d = "Moops::Keyword"->scope_guard(sub { %s });',
 			++$i,
 			100_000 + int(rand 899_000),
 			join(q[;], @guarded),
@@ -163,6 +162,17 @@ sub _mk_guard
 {
 	my $self = shift;
 	push @{$self->_guarded}, @_;
+}
+
+use Variable::Magic qw(wizard cast);
+sub scope_guard {
+	shift;
+	state $wiz = wizard(
+		data => sub { $_[1] },
+		free => sub { $_[1]() },
+	);
+	cast my($magic), $wiz, $_[0];
+	\$magic;
 }
 
 1;

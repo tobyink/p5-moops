@@ -24,3 +24,12 @@ cpan:MSTROUT
 
 cpan:RSAVAGE
 	:name  "Ron Savage".
+
+cpan:GOLDBB
+	:name  "Ben Goldberg".
+
+cpan:AMON
+	:name  "Lukas Atkinson".
+
+cpan:SAUBER
+	:name  "Søren Døssing".

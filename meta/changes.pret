@@ -300,3 +300,24 @@
 			label "Take advantage of improvements in Type::Library/Type::Registry 1.000000.";
 		];
 	].
+
+`Moops 0.034 cpan:TOBYINK`
+	issued  2014-10-12;
+	changeset [
+		item [
+			a dcs:Bugfix;
+			dcs:fixes RT#99389;
+			dcs:fixes RT#99409;
+			label "Fix enormous memory leak leading to segfault caused when a role application in a scope guard threw an exception.";
+			comment "Ben Goldberg supplied a nice implementation of scope guards using Variable::Magic.";
+			dcs:thanks cpan:GOLDBB;
+			dcs:thanks cpan:AMON;
+			dcs:thanks cpan:SAUBER;
+			seealso RT#99438;
+		];
+		item "Bundle a multimethod example (stolen from MooseX:MultiMethods)."^^Documentation;
+		item "Improvements to the SUPPORT and SEE ALSO sections of the documentation."^^Documentation;
+		item "Test that `use true` is imported by Moops."^^Tests;
+		item "Remove outdated dependency on Sub::Name from packaging metadata."^^Packaging;
+		item "namespace::autoclean now supports Moo enough that we can start using it instead of namespace::sweep."^^Update;
+	].

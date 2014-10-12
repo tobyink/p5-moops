@@ -225,6 +225,28 @@ Unstable.
 Until version 1.000, stuff might change, but not without good
 reason.
 
+=head2 Planned Changes
+
+=over
+
+=item *
+
+Support for using Function::Parameters to handle method signatures
+is likely to be dropped.
+
+=item *
+
+Parameterized class and parameterized role support is planned.
+
+=item *
+
+The internals for parsing C<class>, C<role>, C<namespace>, and C<library>
+may change to use L<Parse::Keyword> rather than L<Keyword::Simple>. This
+will likely break any extensions that rely on subclassing or adding traits
+to the L<Moops::Parser> or L<Moops::Keyword> classes.
+
+=back
+
 =head1 DESCRIPTION
 
 Moops is sugar for declaring and using roles and classes in Perl.

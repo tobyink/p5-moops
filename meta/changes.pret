@@ -320,4 +320,5 @@
 		item "Test that `use true` is imported by Moops."^^Tests;
 		item "Remove outdated dependency on Sub::Name from packaging metadata."^^Packaging;
 		item "namespace::autoclean now supports Moo enough that we can start using it instead of namespace::sweep."^^Update;
+		item "Warn about some planned changes."^^Documentation;
 	].

@@ -322,3 +322,9 @@
 		item "namespace::autoclean now supports Moo enough that we can start using it instead of namespace::sweep."^^Update;
 		item "Warn about some planned changes."^^Documentation;
 	].
+
+`Moops 0.035 cpan:TOBYINK`
+	issued  2018-06-26;
+	changeset [
+		item "Explicit dependency on strictures.pm."^^Packaging;
+	].

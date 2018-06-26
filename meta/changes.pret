@@ -327,4 +327,5 @@
 	issued  2018-06-26;
 	changeset [
 		item "Explicit dependency on strictures.pm."^^Packaging;
+		item "Add note about Devel::CallParser issue to documentation."^^Documentation;
 	].

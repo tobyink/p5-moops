@@ -23,6 +23,7 @@
 	:runtime-requirement    [ :on "Type::Utils 1.000000"^^:CpanId ];
 	:runtime-requirement    [ :on "Try::Tiny 0.12"^^:CpanId ];
 	:runtime-requirement    [ :on "namespace::autoclean 0.20"^^:CpanId ];
+	:runtime-requirement    [ :on "strictures"^^:CpanId ];
 	:runtime-requirement    [ :on "true 0.18"^^:CpanId ];
 	:runtime-requirement    [ :on "perl 5.014"^^:CpanId ];
 	:runtime-conflict       [ :on "MooseX::Types::Common == 0.001011"^^:CpanId ];

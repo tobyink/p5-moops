@@ -329,3 +329,9 @@
 		item "Explicit dependency on strictures.pm."^^Packaging;
 		item "Add note about Devel::CallParser issue to documentation."^^Documentation;
 	].
+
+`Moops 0.036 cpan:TOBYINK`
+	issued  2018-08-09;
+	changeset [
+		item "PerlX::Define is now distributed separately."^^Packaging;
+	].

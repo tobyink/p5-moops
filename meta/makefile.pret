@@ -18,6 +18,7 @@
 	:runtime-requirement    [ :on "MooseX::MungeHas 0.007"^^:CpanId ];
 	:runtime-requirement    [ :on "Parse::Keyword 0.006"^^:CpanId ];
 	:runtime-requirement    [ :on "PerlX::Assert 0.902"^^:CpanId ];
+	:runtime-requirement    [ :on "PerlX::Define 0.100"^^:CpanId ];
 	:runtime-requirement    [ :on "Scalar::Util 1.40"^^:CpanId ];
 	:runtime-requirement    [ :on "Variable::Magic"^^:CpanId ];
 	:runtime-requirement    [ :on "Type::Utils 1.000000"^^:CpanId ];

@@ -224,10 +224,10 @@ Unstable.
 
 Will probably never be stable.
 
-A lot of the modules that Moops is built on have problems. In
-particular, L<Devel::CallParser> is broken on a lot of Perl versions,
-and L<Parse::Keyword> has I<< fundamental errors in the way it handles
-closures>> (which Moops works around using L<PadWalker>).
+A lot of the modules that Moops is built on have problems. In particular,
+L<Devel::CallParser> is broken on a lot of Perl versions, and
+L<Parse::Keyword> has I<< fundamental errors in the way it handles closures >>
+(which Moops works around using L<PadWalker>).
 
 Moops will remain on CPAN for the foreseeable future and I'll continue
 to accept patches that fix bugs, but don't expect any new features to

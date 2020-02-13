@@ -222,30 +222,20 @@ Moops - Moops Object-Oriented Programming Sugar
 
 Unstable.
 
-Until version 1.000, stuff might change, but not without good
-reason.
+Will probably never be stable.
 
-=head2 Planned Changes
+A lot of the modules that Moops is built on have problems. In
+particular, L<Devel::CallParser> is broken on a lot of Perl versions,
+and L<Parse::Keyword> has I<< fundamental errors in the way it handles
+closures>> (which Moops works around using L<PadWalker>).
 
-=over
+Moops will remain on CPAN for the foreseeable future and I'll continue
+to accept patches that fix bugs, but don't expect any new features to
+be added.
 
-=item *
-
-Support for using Function::Parameters to handle method signatures
-is likely to be dropped.
-
-=item *
-
-Parameterized class and parameterized role support is planned.
-
-=item *
-
-The internals for parsing C<class>, C<role>, C<namespace>, and C<library>
-may change to use L<Parse::Keyword> rather than L<Keyword::Simple>. This
-will likely break any extensions that rely on subclassing or adding traits
-to the L<Moops::Parser> or L<Moops::Keyword> classes.
-
-=back
+For a replacement, consider L<MooX::Pression>. It's not a drop-in
+replacement but it has a similar syntax to Moops, and provides many
+of the same features.
 
 =head1 DESCRIPTION
 

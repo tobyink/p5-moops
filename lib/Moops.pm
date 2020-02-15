@@ -233,9 +233,8 @@ Moops will remain on CPAN for the foreseeable future and I'll continue
 to accept patches that fix bugs, but don't expect any new features to
 be added.
 
-For a replacement, consider L<MooX::Pression>. It's not a drop-in
-replacement but it has a similar syntax to Moops, and provides many
-of the same features.
+For a replacement, consider L<Zydeco>. It's not a drop-in replacement but
+it has a similar syntax to Moops, and provides many of the same features.
 
 =head1 DESCRIPTION
 

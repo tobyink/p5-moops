@@ -834,6 +834,14 @@ Try installing L<Alt::Devel::CallParser::ButWorking>.
 Please report any other bugs to
 L<http://rt.cpan.org/Dist/Display.html?Queue=Moops>.
 
+=head1 GOTCHAS
+
+Certain software (like the CPAN indexer!) greps Perl source code looking
+for C<package> statements to determine which packages a module provides.
+Moops uses C<class> and C<role> keywords to declare packages, so it may
+be necessary to provide some dummy C<package> statements at the end of your
+module if you need to support such software.
+
 =head1 SUPPORT
 
 B<< IRC: >> support is available through in the I<< #moops >> channel

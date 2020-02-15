@@ -342,3 +342,9 @@
 		item "Add dependency on Devel::GlobalDestruction."^^Packaging;
 		item "Update STATUS section."^^Documentation;
 	].
+
+`Moops 0.038 cpan:TOBYINK`
+	issued  2020-02-15;
+	changeset [
+		item "Add GOTCHAS section."^^Documentation;
+	].
